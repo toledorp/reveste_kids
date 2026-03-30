@@ -9,6 +9,7 @@ import Planet from "./models/Planets.js";
 import Vehicle from "./models/Vehicles.js";
 import Film from "./models/Films.js";
 import Specie from "./models/Species.js";
+import Starship from "./models/Starships.js"
 
 //importando o model de usuario
 import User from "./models/Users.js";
@@ -19,6 +20,8 @@ import planetRoutes from "./routes/planetRoutes.js";
 import vehicleRoutes from "./routes/vehicleRoutes.js";
 import filmRoutes from "./routes/filmRoutes.js";
 import specieRoutes from "./routes/specieRoutes.js";
+import starshipRoutes from "./routes/starshipRoutes.js"; 
+
 
 //Importando o cors
 import cors from "cors";
@@ -41,6 +44,7 @@ app.use("/", planetRoutes);
 app.use("/", vehicleRoutes);
 app.use("/", filmRoutes);
 app.use("/", specieRoutes);
+app.use("/", starshipRoutes);
 
 //iniciando a conexão com o banco mongodb
 mongoose.connect("mongodb://127.0.0.1:27017/starwars");
