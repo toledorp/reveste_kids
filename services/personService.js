@@ -46,7 +46,7 @@ class personService {
   // metodo para atualizar um personagem (update)
   async update(id, name, birth_year, homeworld, species, descriptions) {
     try {
-      await Person.findByIdAndUpdate(
+      const update = await Person.findByIdAndUpdate(
         id,
         { name, 
           birth_year, 
@@ -55,9 +55,10 @@ class personService {
           descriptions },
         { new: true, runValidators: true }, // opção para retornar o documento atualizado e validar os dados
       );
-      console.log(`O personagem com a ID ${id} foi alterado.`);
+
+      return update;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

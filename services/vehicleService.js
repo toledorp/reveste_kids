@@ -77,7 +77,7 @@ class vehicleService {
     vehicle_class,
   ) {
     try {
-      await Vehicle.findByIdAndUpdate(
+      const updated = await Vehicle.findByIdAndUpdate(
         id,
         {
           name,
@@ -94,9 +94,10 @@ class vehicleService {
         },
         { new: true, runValidators: true }, // opção para retornar o documento atualizado e validar os dados
       );
-      console.log(`O veículo com a ID ${id} foi alterado.`);
+
+      return updated;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

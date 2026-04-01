@@ -58,16 +58,39 @@ class planetService {
   }
 
   // metodo para atualizar um planeta (update)
-  async update(id, name, rotation_period, orbital_period, diameter, climate, gravity, terrain, surface_water, population) {
+  async update(
+    id,
+    name,
+    rotation_period,
+    orbital_period,
+    diameter,
+    climate,
+    gravity,
+    terrain,
+    surface_water,
+    population,
+  ) {
     try {
-      await Planet.findByIdAndUpdate(
+      const updated = await Planet.findByIdAndUpdate(
         id,
-        { name, rotation_period, orbital_period, diameter, climate, gravity, terrain, surface_water, population },
+        {
+          name,
+          rotation_period,
+          orbital_period,
+          diameter,
+          climate,
+          gravity,
+          terrain,
+          surface_water,
+          population,
+        },
         { new: true, runValidators: true }, // opção para retornar o documento atualizado e validar os dados
       );
-      console.log(`O planeta com a ID ${id} foi alterado.`);
+
+      return updated;
+      //   console.log(`O planeta com a ID ${id} foi alterado.`);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

@@ -86,7 +86,8 @@ const updateSpecie = async (req, res) => {
         average_lifespan,
         language,
       } = req.body;
-      await specieService.update(
+      const update = await specieService.update(
+        id,
         name,
         classification,
         designation,
@@ -97,10 +98,11 @@ const updateSpecie = async (req, res) => {
         average_lifespan,
         language,
       );
+      if(!update){
+        res.status(404).json({ message: "Espécie não encontrado" });
+      }
       res.status(200).json({ message: "Espécie atualizado com sucesso!" });
-    } else {
-      res.status(404).json({ message: "Espécie não encontrado" });
-    }
+    } 
   } catch (error) {
     console.log(error);
     res.status(500).json({

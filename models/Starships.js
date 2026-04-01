@@ -18,4 +18,4 @@ const starshipSchema = new mongoose.Schema({
 
 const Starship = mongoose.model("Starship", starshipSchema);
 
-export default starshipSchema;
+export default Starship;

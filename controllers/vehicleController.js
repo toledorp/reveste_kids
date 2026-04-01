@@ -92,7 +92,7 @@ const updateVehicle = async (req, res) => {
         consumables,
         vehicle_class,
       } = req.body;
-      await vehicleService.update(
+      const update = await vehicleService.update(
         id,
         name,
         model,
@@ -106,10 +106,11 @@ const updateVehicle = async (req, res) => {
         consumables,
         vehicle_class,
       );
+      if(!update){
+        res.status(404).json({ message: "Veículo não encontrado" });
+      }
       res.status(200).json({ message: "Veículo atualizado com sucesso!" });
-    } else {
-      res.status(404).json({ message: "Veículo não encontrado" });
-    }
+    } 
   } catch (error) {
     console.log(error);
     res.status(500).json({

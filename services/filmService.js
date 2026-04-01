@@ -44,9 +44,9 @@ class filmService {
   }
 
   // metodo para atualizar um filme (update)
-  async update(title, episode_id, opening_crawl, director, release_date) {
+  async update(id, title, episode_id, opening_crawl, director, release_date) {
     try {
-      await Film.findByIdAndUpdate(
+      const update = await Film.findByIdAndUpdate(
         id,
         {
           title,
@@ -57,9 +57,9 @@ class filmService {
         },
         { new: true, runValidators: true }, // opção para retornar o documento atualizado e validar os dados
       );
-      console.log(`O filme com a ID ${id} foi alterado.`);
+      return update;
     } catch (error) {
-      console.log(error);
+      throw(error);
     }
   }
 

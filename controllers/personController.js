@@ -72,7 +72,7 @@ const updatePerson = async (req, res) => {
     const id = req.params.id;
     if (ObjectId.isValid(id)) {
       const { name, birth_year, homeworld, species, descriptions } = req.body;
-      await personService.update(
+      const update = await personService.update(
         id,
         name,
         birth_year,
@@ -80,10 +80,11 @@ const updatePerson = async (req, res) => {
         species,
         descriptions,
       );
+      if(!update){
+        res.status(404).json({ message: "Personagem não encontrado" });
+      }
       res.status(200).json({ message: "Personagem atualizado com sucesso!" });
-    } else {
-      res.status(404).json({ message: "Personagem não encontrado" });
-    }
+    } 
   } catch (error) {
     console.log(error);
     res

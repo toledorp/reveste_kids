@@ -59,6 +59,7 @@ class specieService {
 
   // metodo para atualizar uma espécie (update)
   async update(
+    id,
     name,
     classification,
     designation,
@@ -70,7 +71,7 @@ class specieService {
     language,
   ) {
     try {
-      await Specie.findByIdAndUpdate(
+      const updated = await Specie.findByIdAndUpdate(
         id,
         {
           name,
@@ -85,9 +86,10 @@ class specieService {
         },
         { new: true, runValidators: true }, // opção para retornar o documento atualizado e validar os dados
       );
-      console.log(`A espécie com a ID ${id} foi alterado.`);
+
+      return updated;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

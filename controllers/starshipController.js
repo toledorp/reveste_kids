@@ -34,7 +34,7 @@ const createStarship = async (req, res) => {
       MGLT,
       starship_class,
     } = req.body;
-    await starshipService.Create(
+    await starshipService.create(
       name,
       model,
       manufacturer,
@@ -66,7 +66,7 @@ const deleteStarship = async (req, res) => {
     const id = req.params.id;
     if (ObjectId.isValid(id)) {
       await starshipService.delete(id);
-      res.status(204).json({ message: "A espaçonave foi excluida com sucesso" });
+      res.status(204);
     } else {
       res.status(400).json({ error: "Ocorreu um erro na validação da ID" });
     }
@@ -98,7 +98,8 @@ const updateStarship = async (req, res) => {
         MGLT,
         starship_class,
       } = req.body;
-      await starshipService.update(
+      const update = await starshipService.update(
+        id,
         name,
         model,
         manufacturer,
@@ -113,10 +114,11 @@ const updateStarship = async (req, res) => {
         MGLT,
         starship_class,
       );
+      if(!update){
+        return res.status(404).json({ message: "Espaçonave não encontrada"});
+      }
       res.status(200).json({ message: "Espaçonave atualizado com sucesso!" });
-    } else {
-      res.status(404).json({ message: "Espaçonave não encontrado" });
-    }
+    } 
   } catch (error) {
     console.log(error);
     res.status(500).json({

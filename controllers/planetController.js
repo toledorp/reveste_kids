@@ -86,7 +86,7 @@ const updatePlanet = async (req, res) => {
         surface_water,
         population,
       } = req.body;
-      await planetService.update(
+      const update = await planetService.update(
         id,
         name,
         rotation_period,
@@ -98,10 +98,11 @@ const updatePlanet = async (req, res) => {
         surface_water,
         population,
       );
+      if(!update){
+        res.status(404).json({ message: "Planeta não encontrado" });
+      }
       res.status(200).json({ message: "Planeta atualizado com sucesso!" });
-    } else {
-      res.status(404).json({ message: "Planeta não encontrado" });
-    }
+    } 
   } catch (error) {
     console.log(error);
     res.status(500).json({

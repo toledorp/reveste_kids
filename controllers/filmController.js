@@ -64,16 +64,18 @@ const updateFilm = async (req, res) => {
     if (ObjectId.isValid(id)) {
       const { title, episode_id, opening_crawl, director, release_date } =
         req.body;
-      await filmService.update(
+      const update = await filmService.update(
+        id,
         title,
         episode_id,
         opening_crawl,
         director,
         release_date,
       );
+      if (!update) {
+        res.status(404).json({ message: "Filme não encontrado" });
+      }
       res.status(200).json({ message: "Filme atualizado com sucesso!" });
-    } else {
-      res.status(404).json({ message: "Filme não encontrado" });
     }
   } catch (error) {
     console.log(error);
@@ -92,9 +94,7 @@ const getOneFilm = async (req, res) => {
       //Verificando se o filme foi encontrado
       if (!film) {
         // se o filme não existir (1 = not)
-        res
-          .status(404)
-          .json({ error: "O filme buscado não foi encontrado." });
+        res.status(404).json({ error: "O filme buscado não foi encontrado." });
       } else {
         // filme encontrado
         res.status(200).json({ film });

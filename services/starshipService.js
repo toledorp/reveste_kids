@@ -17,7 +17,7 @@ class starshipService {
   }
 
   // método para cadastrar uma espaçonave
-  async Create(
+  async create(
     name,
     model,
     manufacturer,
@@ -66,46 +66,48 @@ class starshipService {
   }
 
   // metodo para atualizar uma espaçonave (update)
-  async update(
-    name,
-    model,
-    manufacturer,
-    cost_in_credits,
-    length,
-    max_atmosphering_speed,
-    crew,
-    passengers,
-    cargo_capacity,
-    consumables,
-    hyperdrive_rating,
-    MGLT,
-    starship_class,
-  ) {
-    try {
-      await Starship.findByIdAndUpdate(
-        id,
-        {
-          name,
-          model,
-          manufacturer,
-          cost_in_credits,
-          length,
-          max_atmosphering_speed,
-          crew,
-          passengers,
-          cargo_capacity,
-          consumables,
-          hyperdrive_rating,
-          MGLT,
-          starship_class,
-        },
-        { new: true, runValidators: true }, // opção para retornar o documento atualizado e validar os dados
-      );
-      console.log(`A espaçonave com a ID ${id} foi alterado.`);
-    } catch (error) {
-      console.log(error);
-    }
+async update(
+  id,
+  name,
+  model,
+  manufacturer,
+  cost_in_credits,
+  length,
+  max_atmosphering_speed,
+  crew,
+  passengers,
+  cargo_capacity,
+  consumables,
+  hyperdrive_rating,
+  MGLT,
+  starship_class,
+) {
+  try {
+    const updated = await Starship.findByIdAndUpdate(
+      id,
+      {
+        name,
+        model,
+        manufacturer,
+        cost_in_credits,
+        length,
+        max_atmosphering_speed,
+        crew,
+        passengers,
+        cargo_capacity,
+        consumables,
+        hyperdrive_rating,
+        MGLT,
+        starship_class,
+      },
+      { new: true, runValidators: true }
+    );
+
+    return updated;
+  } catch (error) {
+    throw error;
   }
+}
 
   // metodo para listar uma espaçonave (findOne)
   async getOne(id) {
