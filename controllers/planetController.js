@@ -3,7 +3,7 @@ import planetService from "../services/planetService.js";
 //importando ObjectId do mongodb
 import { ObjectId } from "mongodb";
 
-//Funçao para tratar a requisiçao de listar os personagems
+//Funçao para tratar a requisiçao de listar os planetas
 const getAllPlanets = async (req, res) => {
   try {
     const planets = await planetService.getAll();
@@ -18,7 +18,7 @@ const getAllPlanets = async (req, res) => {
 const createPlanet = async (req, res) => {
   try {
     //Desestruturação
-    // coletadno os dados do corpo da requisição
+    // coletando os dados do corpo da requisição
     const {
       name,
       rotation_period,
@@ -52,7 +52,7 @@ const createPlanet = async (req, res) => {
   }
 };
 
-// função para tratar a requisição de DELETAR um personagem
+// função para tratar a requisição de DELETAR um planeta
 const deletePlanet = async (req, res) => {
   try {
     const id = req.params.id;
@@ -106,12 +106,12 @@ const updatePlanet = async (req, res) => {
     console.log(error);
     res.status(500).json({
       error:
-        "Erro interno do servidor. Não foi possível atualizar o personagem",
+        "Erro interno do servidor. Não foi possível atualizar o planeta",
     });
   }
 };
 
-//função para buscar um unico personagem
+//função para buscar um unico planeta
 const getOnePlanet = async (req, res) => {
   try {
     const id = req.params.id;

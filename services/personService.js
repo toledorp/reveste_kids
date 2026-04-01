@@ -24,6 +24,7 @@ class personService {
         name,
         birth_year,
         homeworld,
+        species,
         descriptions,
       });
       await newPerson.save(); // .save()metodo do Mongose para cadastar no BD

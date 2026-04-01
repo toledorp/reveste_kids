@@ -55,7 +55,7 @@ const createStarship = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "Erro interno do servidor. Não foi possivel cadastrar a espécie",
+      error: "Erro interno do servidor. Não foi possivel cadastrar a espaçonave",
     });
   }
 };
@@ -73,7 +73,7 @@ const deleteStarship = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "Erro interno do servidor. Não foi possível deletar a espécie",
+      error: "Erro interno do servidor. Não foi possível deletar a espaçonave",
     });
   }
 };

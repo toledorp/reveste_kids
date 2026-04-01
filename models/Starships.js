@@ -1,16 +1,5 @@
 import mongoose from "mongoose";
 
-// o campo "description" será um documento aninhado
-// const descriptionSchema = new mongoose.Schema({
-//    String,
-//  String,
-//     hair_color: String,
-//     skiString,
-//     eye_color: String,
-//     gender: String,
-
-// })
-
 const starshipSchema = new mongoose.Schema({
   name: String,
   model: String,

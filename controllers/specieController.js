@@ -18,7 +18,7 @@ const getAllSpecies = async (req, res) => {
 const createSpecie = async (req, res) => {
   try {
     //Desestruturação
-    // coletadno os dados do corpo da requisição
+    // coletando os dados do corpo da requisição
     const {
       name,
       classification,

@@ -5,7 +5,7 @@ class filmService {
   // metodo (servio) para buscar todos os registro no banco
   // funções assincronas são nao bloqueantes
   async getAll() {
-    // funçoes asincronas são não bloqueates
+    // funçoes assincronas são não bloqueates
     try {
       // try trata o sucesso
       const films = await Film.find(); // .find é motodo do mongoose para viscar reigistro no bd
