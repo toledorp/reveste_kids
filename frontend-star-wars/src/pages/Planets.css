@@ -1,0 +1,79 @@
+.planets {
+  min-height: 100vh;
+  background: #020611;
+  padding: 120px 20px 80px;
+}
+
+.planets-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.planets-title {
+  color: #ffe81f;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.planets-subtitle {
+  color: #d9d9d9;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 1rem;
+}
+
+.planets-message {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.planets-message.error {
+  color: #ff6b6b;
+}
+
+.planets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.planet-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 232, 31, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 232, 31, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.planet-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 22px rgba(255, 232, 31, 0.2);
+}
+
+.planet-card h3 {
+  color: #ffe81f;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.planet-card p {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .planets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .planets-title {
+    font-size: 2rem;
+  }
+}

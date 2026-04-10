@@ -1,0 +1,121 @@
+.characters {
+  background: #020611;
+  padding: 80px 20px;
+}
+
+.characters-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.characters-title {
+  color: #ffe81f;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.characters-subtitle {
+  color: #d9d9d9;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 1rem;
+}
+
+.characters-message {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.characters-message.error {
+  color: #ff6b6b;
+}
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.character-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 232, 31, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 232, 31, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.character-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 22px rgba(255, 232, 31, 0.2);
+}
+
+.character-card h3 {
+  color: #ffe81f;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.character-card p {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pagination-btn,
+.pagination-number {
+  background: rgba(255, 232, 31, 0.1);
+  border: 1px solid rgba(255, 232, 31, 0.4);
+  color: #ffe81f;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: bold;
+}
+
+.pagination-btn:hover,
+.pagination-number:hover {
+  background: rgba(255, 232, 31, 0.2);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-number.active {
+  background: #ffe81f;
+  color: #000;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .characters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .characters-title {
+    font-size: 2rem;
+  }
+}
