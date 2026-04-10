@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const specieSchema = new mongoose.Schema({
+  swapi_id: Number,
   name: String,
   classification: String,
   designation: String,
