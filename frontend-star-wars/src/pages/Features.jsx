@@ -52,7 +52,7 @@ export default function Features() {
   function handleLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login");
+    window.location.href = "/";
   }
 
   function handleGoHome() {
