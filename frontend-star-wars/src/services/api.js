@@ -34,3 +34,13 @@ export async function getCharacters() {
     },
   });
 }
+
+export async function getPlanets() {
+  const token = localStorage.getItem("token");
+
+  return fetchData("/planets", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
