@@ -1,7 +1,6 @@
 .starships {
-  min-height: 100vh;
   background: #020611;
-  padding: 120px 20px 80px;
+  padding: 80px 20px;
 }
 
 .starships-container {
@@ -66,6 +65,49 @@
 .starship-card p {
   margin-bottom: 8px;
   line-height: 1.5;
+}
+
+.pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pagination-btn,
+.pagination-number {
+  background: rgba(255, 232, 31, 0.1);
+  border: 1px solid rgba(255, 232, 31, 0.4);
+  color: #ffe81f;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: bold;
+}
+
+.pagination-btn:hover,
+.pagination-number:hover {
+  background: rgba(255, 232, 31, 0.2);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-number.active {
+  background: #ffe81f;
+  color: #000;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 @media (max-width: 900px) {

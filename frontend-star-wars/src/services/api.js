@@ -65,3 +65,13 @@ export async function getFilms() {
   });
 }
 
+export async function getStarships() {
+  const token = localStorage.getItem("token");
+
+  return fetchData("/starships", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
