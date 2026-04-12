@@ -217,13 +217,14 @@ https://figma.com/seu-projeto
 
 ## 📸 Demonstração
 
+### Tela inicial
 ![Tela inicial](assets/home.png)
 
+### Dashboard
 ![Dashboard](assets/dashboard.png)
 
-![API funcionando](assets/api.png)
-
----
+### Teste da API
+![Teste da API](assets/api.png)
 
 ## 🧠 Desafios enfrentados
 
