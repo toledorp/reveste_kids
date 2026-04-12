@@ -1,6 +1,22 @@
 # 🚀 Star Wars API - Fullstack
 
-API REST desenvolvida com Node.js, Express e MongoDB Atlas para gerenciamento de dados do universo Star Wars, com frontend em React para consumo dos dados.
+API REST desenvolvida com **Node.js, Express e MongoDB Atlas** para gerenciamento de dados do universo Star Wars, com **frontend em React** para consumo dos dados.
+
+---
+
+## 📸 Application Preview
+
+### 🏠 Home
+
+![Home Screenshot](assets/home.png)
+
+### 📊 Dashboard
+
+![Dashboard Screenshot](assets/dashboard.png)
+
+### 🔌 API (Insomnia)
+
+![API Screenshot](assets/api.png)
 
 ---
 
@@ -20,7 +36,7 @@ Este projeto foi desenvolvido como parte da disciplina **Desenvolvimento Web III
 
 ## 🛠️ Tecnologias utilizadas
 
-### Backend
+### 🔧 Backend
 
 * Node.js
 * Express
@@ -28,13 +44,13 @@ Este projeto foi desenvolvido como parte da disciplina **Desenvolvimento Web III
 * Mongoose
 * Dotenv
 
-### Frontend
+### 🎨 Frontend
 
 * React
 * Vite
 * Axios
 
-### Ferramentas
+### 🧪 Ferramentas
 
 * Insomnia (testes de API)
 * Git e GitHub
@@ -44,7 +60,7 @@ Este projeto foi desenvolvido como parte da disciplina **Desenvolvimento Web III
 
 ## 📂 Estrutura do projeto
 
-```
+```text
 ATV01_API_STAR_WARS/
 │
 ├── backend-star-wars/
@@ -60,7 +76,12 @@ ATV01_API_STAR_WARS/
 │   ├── pages/
 │   └── package.json
 │
-├── package.json (raiz)
+├── assets/
+│   ├── home.png
+│   ├── dashboard.png
+│   └── api.png
+│
+├── package.json
 └── README.md
 ```
 
@@ -70,22 +91,24 @@ ATV01_API_STAR_WARS/
 
 ### 1. Clonar o repositório
 
+```bash
+git clone https://github.com/toledorp/ATV01_API_STAR_WARS.git
 ```
-git clone https://github.com/toledorp/ATV01_API_STAR_WARS
+
 ---
 
 ### 2. Instalar dependências
 
 #### Backend
 
-```
+```bash
 cd backend-star-wars
 npm install
 ```
 
 #### Frontend
 
-```
+```bash
 cd ../frontend-star-wars
 npm install
 ```
@@ -96,7 +119,7 @@ npm install
 
 Crie um arquivo `.env` dentro da pasta **backend-star-wars**:
 
-```
+```env
 MONGO_URI=sua_string_do_mongodb_atlas
 PORT=4000
 ```
@@ -107,7 +130,7 @@ PORT=4000
 
 Na raiz do projeto:
 
-```
+```bash
 npm run dev
 ```
 
@@ -152,17 +175,17 @@ npm run dev
 
 * GET `/species` → lista todos
 * GET `/species/:id` → busca por id
-* POST `/species` → cria planeta
+* POST `/species` → cria species
 * PUT `/species/:id` → atualiza
 * DELETE `/species/:id` → remove
 
 ---
 
-### 🛸 Vehicles 
+### 🛸 Vehicles
 
 * GET `/vehicles` → lista todos
 * GET `/vehicles/:id` → busca por id
-* POST `/vehicles` → cria planeta
+* POST `/vehicles` → cria vehicle
 * PUT `/vehicles/:id` → atualiza
 * DELETE `/vehicles/:id` → remove
 
@@ -172,14 +195,15 @@ npm run dev
 
 * GET `/starships` → lista todos
 * GET `/starships/:id` → busca por id
-* POST `/starships` → cria planeta
+* POST `/starships` → cria starship
 * PUT `/starships/:id` → atualiza
 * DELETE `/starships/:id` → remove
 
+---
 
 ## 🧩 Exemplo de estrutura de dados (com aninhamento)
 
-```
+```json
 {
   "name": "C-3PO",
   "birth_year": "112BBY",
@@ -194,7 +218,6 @@ npm run dev
     "gender": "n/a"
   }
 }
-
 ```
 
 ✔️ Atende ao requisito de documento aninhado solicitado no trabalho.
@@ -217,7 +240,7 @@ O banco de dados está hospedado na nuvem utilizando o **MongoDB Atlas**.
 
 Adicionar aqui o link do Figma:
 
-```
+```text
 https://figma.com/seu-projeto
 ```
 
@@ -238,7 +261,7 @@ https://figma.com/seu-projeto
 
 A documentação pode ser acessada via Swagger (caso implementado):
 
-```
+```text
 http://localhost:4000/api-docs
 ```
 
