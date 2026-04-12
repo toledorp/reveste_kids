@@ -45,6 +45,16 @@ export async function getPlanets() {
   });
 }
 
+export async function getSpecies() {
+  const token = localStorage.getItem("token");
+
+  return fetchData("/species", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
 export async function getFilms() {
   const token = localStorage.getItem("token");
 
@@ -54,3 +64,4 @@ export async function getFilms() {
     },
   });
 }
+
