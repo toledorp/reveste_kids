@@ -44,3 +44,13 @@ export async function getPlanets() {
     },
   });
 }
+
+export async function getFilms() {
+  const token = localStorage.getItem("token");
+
+  return fetchData("/films", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
