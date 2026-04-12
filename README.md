@@ -8,6 +8,7 @@ API REST desenvolvida com Node.js, Express e MongoDB Atlas para gerenciamento de
 
 ![Home Screenshot](assets/screenshot-home.png)
 ![Dashboard Screenshot](assets/screenshot-dashboard.png)
+![API Screenshot](assets/screenshot-api.png)
 
 ---
 
