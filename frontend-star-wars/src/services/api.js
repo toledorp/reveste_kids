@@ -65,6 +65,16 @@ export async function getFilms() {
   });
 }
 
+export async function getVehicles() {
+  const token = localStorage.getItem("token");
+
+  return fetchData("/vehicles", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
 export async function getStarships() {
   const token = localStorage.getItem("token");
 
@@ -74,4 +84,3 @@ export async function getStarships() {
     },
   });
 }
-
