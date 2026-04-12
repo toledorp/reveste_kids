@@ -23,6 +23,12 @@
   white-space: nowrap;
 }
 
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .navbar-home {
   color: #ffffff;
   text-decoration: none;
@@ -32,6 +38,22 @@
 
 .navbar-home:hover {
   color: #ffe81f;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid #ffe81f;
+  color: #ffe81f;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #ffe81f;
+  color: #000;
 }
 
 @media (max-width: 768px) {
@@ -45,5 +67,14 @@
 
   .navbar-home {
     font-size: 0.95rem;
+  }
+
+  .navbar-actions {
+    gap: 10px;
+  }
+
+  .logout-btn {
+    padding: 5px 10px;
+    font-size: 0.9rem;
   }
 }

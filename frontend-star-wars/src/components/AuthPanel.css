@@ -1,0 +1,129 @@
+.auth-panel {
+  min-height: 100vh;
+  background: #020611;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px 60px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 232, 31, 0.3);
+  border-radius: 18px;
+  padding: 32px 28px;
+  box-shadow: 0 0 18px rgba(255, 232, 31, 0.08);
+  backdrop-filter: blur(6px);
+}
+
+.auth-title {
+  color: #ffe81f;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.auth-subtitle {
+  color: #d9d9d9;
+  text-align: center;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 232, 31, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  outline: none;
+}
+
+.auth-form input::placeholder {
+  color: #bfbfbf;
+}
+
+.auth-form input:focus {
+  border-color: #ffe81f;
+  box-shadow: 0 0 0 2px rgba(255, 232, 31, 0.15);
+}
+
+.auth-form button {
+  margin-top: 8px;
+  background: #ffe81f;
+  color: #000;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.auth-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(255, 232, 31, 0.25);
+}
+
+.auth-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.auth-message {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.auth-message.success {
+  color: #7dff9b;
+}
+
+.auth-message.error {
+  color: #ff7b7b;
+}
+
+.auth-toggle {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #d9d9d9;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: #ffe81f;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.toggle-btn:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 26px 20px;
+  }
+
+  .auth-title {
+    font-size: 1.7rem;
+  }
+}

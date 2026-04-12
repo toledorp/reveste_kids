@@ -9,12 +9,13 @@ export async function fetchData(endpoint, options = {}) {
     },
   });
 
+  const data = await response.json().catch(() => ({}));
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.error || `Erro HTTP: ${response.status}`);
+    throw new Error(data.error || `Erro HTTP: ${response.status}`);
   }
 
-  return response.json();
+  return data;
 }
 
 export async function loginUser(email, password) {

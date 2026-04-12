@@ -1,19 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
-  return (
-    <header className="navbar">
-      <Link to="/" className="navbar-logo">
-        STAR WARS
-      </Link>
+  const navigate = useNavigate();
 
-      <nav>
-        <Link to="/" className="navbar-home">
-          Home
-        </Link>
-      </nav>
-    </header>
+  const isAuthenticated = !!localStorage.getItem("token");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/"); // volta pra home
+    window.location.reload(); // força re-render
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="logo">STAR WARS</div>
+
+      <div className="nav-links">
+        <Link to="/">Home</Link>
+
+        {isAuthenticated && (
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        )}
+      </div>
+    </nav>
   );
 }
 

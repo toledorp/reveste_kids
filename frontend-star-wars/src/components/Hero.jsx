@@ -1,6 +1,6 @@
 import "./Hero.css";
 
-function Hero() {
+function Hero({ onStart }) {
   return (
     <section className="hero">
       <div className="hero-overlay">
@@ -9,7 +9,7 @@ function Hero() {
           <p>
             Discover characters, films and starships from the Star Wars universe
           </p>
-          <button>Start Exploring</button>
+          <button onClick={onStart}>Start Exploring</button>
         </div>
       </div>
     </section>

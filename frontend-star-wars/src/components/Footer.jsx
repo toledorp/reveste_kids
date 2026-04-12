@@ -9,14 +9,6 @@ function Footer() {
         <p className="footer-text">
           Explore a galáxia, descubra personagens e mergulhe no universo Star Wars.
         </p>
-
-        <div className="footer-links">
-          <a href="#">Home</a>
-          <a href="#">Characters</a>
-          <a href="#">Films</a>
-          <a href="#">Starships</a>
-        </div>
-
         <p className="footer-copy">
           © 2026 Star Wars Explorer - Projeto acadêmico
         </p>

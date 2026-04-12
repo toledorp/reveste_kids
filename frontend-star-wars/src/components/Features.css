@@ -1,16 +1,27 @@
-.features {
+/* .features {
   width: 100%;
   background: url("../assets/space-bg.jpg") center/cover no-repeat;
   padding: 40px 20px 80px;
   display: flex;
   justify-content: center;
   margin-top: 0;
+} */
+
+.features {
+  min-height: calc(100vh - 90px);
+  background: #020611;
+  padding: 40px 20px 80px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 👈 ESSA LINHA RESOLVE */
 }
 
 .features-overlay {
   width: 100%;
   max-width: 1200px;
   text-align: center;
+  margin: 0 auto;
 }
 
 .features-title {

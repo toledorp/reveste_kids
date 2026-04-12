@@ -30,45 +30,11 @@ function Features() {
   return (
     <section className="features">
       <div className="features-overlay">
-        <h2 className="features-title">Explore o universo Star Wars</h2>
-
+        <h2 className="features-title">TESTE FEATURES</h2>
         <div className="features-grid">
-          <Link to="/characters" className="feature-card">
+          <div className="feature-card">
             <h3>Personagens</h3>
-
-            {character ? (
-              <>
-                <p><strong>{character.name}</strong></p>
-                <p>Homeworld: {character.homeworld}</p>
-              </>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </Link>
-
-          <div className="feature-card">
-            <h3>Filmes</h3>
-            <p>Explore os episódios da saga</p>
-          </div>
-
-          <div className="feature-card">
-            <h3>Planetas</h3>
-            <p>Descubra mundos incríveis</p>
-          </div>
-
-          <div className="feature-card">
-            <h3>Espaçonaves</h3>
-            <p>Conheça naves lendárias</p>
-          </div>
-
-          <div className="feature-card">
-            <h3>Espécies</h3>
-            <p>Veja diferentes raças</p>
-          </div>
-
-          <div className="feature-card">
-            <h3>Veículos</h3>
-            <p>Explore transportes icônicos</p>
+            <p>Teste ok</p>
           </div>
         </div>
       </div>
