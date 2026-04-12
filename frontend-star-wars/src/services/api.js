@@ -24,3 +24,13 @@ export async function loginUser(email, password) {
     body: JSON.stringify({ email, password }),
   });
 }
+
+export async function getCharacters() {
+  const token = localStorage.getItem("token");
+
+  return fetchData("/persons", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}

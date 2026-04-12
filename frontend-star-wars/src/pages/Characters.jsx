@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { fetchData } from "../services/api";
+import { getCharacters } from "../services/api";
 import "./Characters.css";
 
 function Characters() {
@@ -16,14 +16,7 @@ function Characters() {
         setLoading(true);
         setError("");
 
-        const token = localStorage.getItem("token");
-
-        const data = await fetchData("/persons", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const data = await getCharacters();
         const personsList = Array.isArray(data) ? data : data.persons || [];
         setCharacters(personsList);
       } catch (err) {
@@ -87,12 +80,16 @@ function Characters() {
                   <h3>{character.name}</h3>
 
                   <p>
-                    <strong>Birth Year:</strong>{" "}
-                    {character["birth year"] ?? "N/A"}
+                    <strong>Birth Year:</strong> {character.birth_year ?? "N/A"}
                   </p>
 
                   <p>
-                    <strong>Homeworld:</strong> {character.homeworld ?? "N/A"}
+                    <strong>Homeworld:</strong>{" "}
+                    {character.homeworld?.name ?? "N/A"}
+                  </p>
+
+                  <p>
+                    <strong>Species:</strong> {character.species?.name ?? "N/A"}
                   </p>
 
                   <p>
@@ -128,19 +125,20 @@ function Characters() {
               </button>
 
               <div className="pagination-numbers">
-                {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-                  (pageNumber) => (
-                    <button
-                      key={pageNumber}
-                      className={`pagination-number ${
-                        currentPage === pageNumber ? "active" : ""
-                      }`}
-                      onClick={() => goToPage(pageNumber)}
-                    >
-                      {pageNumber}
-                    </button>
-                  )
-                )}
+                {Array.from(
+                  { length: totalPages },
+                  (_, index) => index + 1,
+                ).map((pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    className={`pagination-number ${
+                      currentPage === pageNumber ? "active" : ""
+                    }`}
+                    onClick={() => goToPage(pageNumber)}
+                  >
+                    {pageNumber}
+                  </button>
+                ))}
               </div>
 
               <button
