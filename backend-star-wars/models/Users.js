@@ -1,12 +1,29 @@
-//importando o mongose no model de usuarios
-import mongose from "mongoose";
+import mongoose from "mongoose";
 
-const userSchema = new mongose.Schema({
-    name: String,
-    email: String,
-    password: String,
-})
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["admin", "user"],
+      default: "user",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const User = mongose.model("User", userSchema); // "Users"é o nome da coleção
-
-export default User;
+export default mongoose.model("Users", userSchema);
