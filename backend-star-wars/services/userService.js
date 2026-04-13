@@ -3,17 +3,20 @@ import User from "../models/Users.js"
 
 class userService{
     //Metodo para cadastar um usuario
-    async Create(name, email, password){
+    async Create(name, email, password, role = "user"){
         try{
             const newUser = new User({
                 name,
                 email,
-                password
+                password,
+                role
             })
             //.save() -> utilzado para gravar um registro no BD
             await newUser.save();
+            return newUser
         }catch (error){
             console.log(error)
+            throw error
         }
     }
 
@@ -25,6 +28,7 @@ class userService{
             return user
         }catch (error) {
             console.log(error)
+            throw error
         }
     }
 }
