@@ -230,10 +230,8 @@ O banco de dados está hospedado na nuvem utilizando o **MongoDB Atlas**.
 
 ## 🎨 Protótipo do Frontend
 
-[Adicionar aqui o link do Figma:](https://www.figma.com/proto/2KIfzXKWMaD8ZzBU6ABgr7/api_star-wars?node-id=0-1&t=ULhOFcygZzI4HqTi-1)
-
 ```text
-https://figma.com/seu-projeto
+(https://www.figma.com/proto/2KIfzXKWMaD8ZzBU6ABgr7/api_star-wars?node-id=0-1&t=ULhOFcygZzI4HqTi-1)
 ```
 
 ---
