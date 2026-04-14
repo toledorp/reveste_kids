@@ -5,6 +5,23 @@ Sistema fullstack desenvolvido com **Node.js, Express, MongoDB Atlas e React**, 
 
 ---
 
+
+## 📸 Application Preview
+
+### 🏠 Home
+
+![Home Screenshot](assets/screenshot-home.png)
+
+### 📊 Dashboard
+
+![Dashboard Screenshot](assets/screenshot-dashboard.png)
+
+### 🔌 API (Insomnia)
+
+![API Screenshot](assets/screenshot-api.png)
+
+---
+
 ## 📌 Objetivo
 
 Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco na construção de uma aplicação fullstack completa.
@@ -43,47 +60,83 @@ Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco na 
 
 ## 📂 Estrutura do projeto
 
+```text
 ATV01_API_STAR_WARS/
+│
 ├── backend-star-wars/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── index.js
+│   └── package.json
+│
 ├── frontend-star-wars/
+│   ├── src/
+│   ├── components/
+│   ├── pages/
+│   └── package.json
+│
 ├── assets/
+│   ├── home.png
+│   ├── dashboard.png
+│   └── api.png
+│
+├── package.json
 └── README.md
+```
 
 ---
 
 ## ⚙️ Como executar o projeto
 
-### 1. Instalar dependências
+### 1. Clonar o repositório
 
-Backend:
+```bash
+git clone https://github.com/toledorp/ATV01_API_STAR_WARS.git
+```
+
+### 2. Instalar dependências
+
+#### Backend
+
+```bash
 cd backend-star-wars
 npm install
+```
 
-Frontend:
+#### Frontend
+
+```bash
 cd ../frontend-star-wars
 npm install
+```
 
 ---
 
-### 2. Configurar .env
+### 3. Configurar variáveis de ambiente
 
-backend-star-wars/.env
+Crie um arquivo `.env` dentro da pasta **backend-star-wars**:
 
-MONGODB_URI=sua_string
-JWTSECRET=sua_chave
+```env
+MONGO_URI=sua_string_do_mongodb_atlas
 PORT=4000
+```
 
 ---
 
-### 3. Executar
+### 4. Executar aplicação
 
-Backend:
-npm run dev
+Na raiz do projeto:
 
-Frontend:
+```bash
 npm run dev
+```
+
+- Backend: http://localhost:4000
+- Frontend: http://localhost:5173
 
 ---
+
 
 ## 🌐 Acessos
 
@@ -205,6 +258,25 @@ MongoDB Atlas
 - Paginação
 - Swagger
 
+## 🧩 Exemplo de estrutura de dados (com aninhamento)
+
+```json
+{
+  "name": "C-3PO",
+  "birth_year": "112BBY",
+  "homeworld": "Tatooine",
+  "species": "Droid",
+  "descriptions": {
+    "height": 167,
+    "mass": 75,
+    "hair_color": "n/a",
+    "skin_color": "gold",
+    "eye_color": "yellow",
+    "gender": "n/a"
+  }
+}
+```
+
 ---
 
 ## 📘 Swagger
@@ -226,14 +298,57 @@ Tudo via interface gráfica.
 
 ---
 
-## 👨‍💻 Autores
+## 🧪 Testes da API
 
-- Camila Machado de Souza  
-- Ricardo Sugano  
-- Rogerio Pupo Toledo  
+Os testes foram realizados utilizando o **Insomnia**, validando todos os endpoints de CRUD (Create, Read, Update e Delete).
+
+---
+
+## ☁️ Banco de dados
+
+O banco de dados está hospedado na nuvem utilizando o **MongoDB Atlas**.
+
+---
+
+## 🎨 Protótipo do Frontend
+
+Adicionar aqui o link do Figma:
+
+```text
+https://www.figma.com/proto/2KIfzXKWMaD8ZzBU6ABgr7/api_star-wars?node-id=0-1&t=ULhOFcygZzI4HqTi-1
+```
+
+---
+
+## 🧠 Desafios enfrentados
+
+- Configuração do MongoDB Atlas
+- Conexão entre backend e banco de dados
+- Estruturação de rotas REST
+- Implementação do CRUD completo
+- Integração entre frontend e backend
+- Organização do projeto fullstack
+
+---
+
+## 📘 Documentação da API
+
+A documentação pode ser acessada via Swagger (caso implementado):
+
+```text
+http://localhost:4000/api-docs
+```
+
+---
+
+## 👨‍💻 Autor(es)
+
+- Camila Machado de Souza
+- Ricardo Sugano
+- Rogerio Pupo Toledo
 
 ---
 
 ## 📄 Licença
 
-Projeto acadêmico sem fins comerciais.
+Este projeto é acadêmico e não possui fins comerciais.
