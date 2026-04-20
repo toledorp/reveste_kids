@@ -4,13 +4,14 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer-container">
-        <h2 className="footer-logo">STAR WARS</h2>
+        <h2 className="footer-logo">Reveste Kids</h2>
 
         <p className="footer-text">
-          Explore a galáxia, descubra personagens e mergulhe no universo Star Wars.
+          Plataforma de troca de roupas com experiência social inspirada em apps curtos e visuais.
         </p>
+
         <p className="footer-copy">
-          © 2026 Star Wars Explorer - Projeto acadêmico
+          © 2026 Reveste Kids - Projeto acadêmico
         </p>
       </div>
     </footer>

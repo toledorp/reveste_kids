@@ -1,6 +1,6 @@
 .auth-panel {
   min-height: 100vh;
-  background: #020611;
+  background: #050505;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,21 +10,20 @@
 .auth-card {
   width: 100%;
   max-width: 460px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 232, 31, 0.3);
-  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(192, 132, 252, 0.24);
+  border-radius: 20px;
   padding: 32px 28px;
-  box-shadow: 0 0 18px rgba(255, 232, 31, 0.08);
+  box-shadow: 0 0 18px rgba(192, 132, 252, 0.08);
   backdrop-filter: blur(6px);
 }
 
 .auth-title {
-  color: #ffe81f;
+  color: #c084fc;
   text-align: center;
   font-size: 2rem;
   margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 .auth-subtitle {
@@ -44,10 +43,11 @@
   width: 100%;
   padding: 14px 16px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 232, 31, 0.25);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(192, 132, 252, 0.18);
+  background: rgba(255, 255, 255, 0.05);
   color: #ffffff;
   outline: none;
+  box-sizing: border-box;
 }
 
 .auth-form input::placeholder {
@@ -55,14 +55,14 @@
 }
 
 .auth-form input:focus {
-  border-color: #ffe81f;
-  box-shadow: 0 0 0 2px rgba(255, 232, 31, 0.15);
+  border-color: #c084fc;
+  box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.15);
 }
 
 .auth-form button {
   margin-top: 8px;
-  background: #ffe81f;
-  color: #000;
+  background: #c084fc;
+  color: #111111;
   border: none;
   padding: 14px 18px;
   border-radius: 10px;
@@ -73,7 +73,7 @@
 
 .auth-form button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 18px rgba(255, 232, 31, 0.25);
+  box-shadow: 0 0 18px rgba(192, 132, 252, 0.25);
 }
 
 .auth-form button:disabled {
@@ -108,7 +108,7 @@
 .toggle-btn {
   background: transparent;
   border: none;
-  color: #ffe81f;
+  color: #c084fc;
   cursor: pointer;
   font-weight: bold;
   transition: 0.3s ease;

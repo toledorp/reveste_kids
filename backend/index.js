@@ -13,6 +13,8 @@ import vehicleRoutes from "./routes/vehicleRoutes.js";
 import starshipRoutes from "./routes/starshipRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
+import clothingRoutes from "./routes/clothingRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -30,6 +32,8 @@ app.use("/", planetRoutes);
 app.use("/", specieRoutes);
 app.use("/", vehicleRoutes);
 app.use("/", starshipRoutes);
+
+app.use("/", clothingRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URI)

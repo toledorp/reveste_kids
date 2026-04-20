@@ -31,7 +31,7 @@ function AuthPanel({ onAuthSuccess }) {
         // decodificar o token para pegar o role
         const payload = JSON.parse(atob(data.token.split(".")[1]));
         localStorage.setItem("role", payload.role);
-        
+
         setMessage("Login realizado com sucesso.");
 
         setTimeout(() => {
@@ -66,8 +66,8 @@ function AuthPanel({ onAuthSuccess }) {
 
         <p className="auth-subtitle">
           {isLoginMode
-            ? "Entre para acessar o universo Star Wars."
-            : "Crie sua conta para explorar a galáxia."}
+            ? "Entre para acessar seu perfil e começar a trocar roupas."
+            : "Crie sua conta para publicar peças e encontrar novas trocas."}
         </p>
 
         <form className="auth-form" onSubmit={handleSubmit}>

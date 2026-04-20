@@ -7,6 +7,7 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     localStorage.removeItem("user");
     navigate("/");
   };
@@ -14,17 +15,25 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-logo" onClick={() => navigate("/")}>
-        STAR WARS EXPLORER
+        Reveste Kids
       </div>
 
       <div className="navbar-actions">
-        <Link to="/" className="nav-link-btn">
-          Home
+        <Link to="/feed" className="nav-link-btn">
+          Feed
+        </Link>
+
+        <Link to="/closet" className="nav-link-btn">
+          Meu Closet
+        </Link>
+
+        <Link to="/matches" className="nav-link-btn">
+          Matches
         </Link>
 
         {isAuthenticated && (
           <button className="logout-btn" onClick={handleLogout}>
-            Logout
+            Sair
           </button>
         )}
       </div>

@@ -12,6 +12,8 @@ import Starships from "./pages/Starships";
 import Species from "./pages/Species";
 import Vehicles from "./pages/Vehicles";
 
+import Feed from "./pages/Feed";
+
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +28,8 @@ function App() {
         <Route path="/starships" element={<Starships />} />
         <Route path="/species" element={<Species />} />
         <Route path="/vehicles" element={<Vehicles />} />
+
+        <Route path="/feed" element={<Feed />} />
       </Routes>
 
       <Footer />
