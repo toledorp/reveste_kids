@@ -15,6 +15,7 @@ import Vehicles from "./pages/Vehicles";
 import Feed from "./pages/Feed";
 import MyCloset from "./pages/MyCloset";
 import AddClothing from "./pages/AddClothing";
+import Matches from "./pages/Matches";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
         <Route path="/feed" element={<Feed />} />
         <Route path="/closet" element={<MyCloset />} />
         <Route path="/add-clothing" element={<AddClothing />} />
-        
+        <Route path="/matches" element={<Matches />} />
       </Routes>
 
       <Footer />

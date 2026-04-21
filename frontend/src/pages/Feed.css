@@ -114,3 +114,26 @@
 .feed-container {
   padding-top: 120px; /* 👈 compensa navbar fixa */
 }
+
+.like-btn {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.like-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  font-size: 24px;
+  background: #1f1f1f;
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.like-btn.liked {
+  background: #8b5cf6;
+  border-color: #c084fc;
+}
