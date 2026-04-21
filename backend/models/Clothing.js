@@ -18,9 +18,9 @@ const clothingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String,
-      default: "",
+    images: {
+      type: [String],
+      default: [],
     },
     condition: {
       type: String,
@@ -34,7 +34,7 @@ const clothingSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.model("Clothing", clothingSchema);

@@ -16,9 +16,9 @@ export default function Feed() {
       {clothes.map((item) => (
         <article key={item._id} className="feed-card">
           <div className="feed-image-wrapper">
-            {item.image ? (
+            {item.images && item.images.length > 0 ? (
               <img
-                src={item.image}
+                src={item.images[0]}
                 alt={item.title}
                 className="feed-image"
               />
@@ -31,12 +31,20 @@ export default function Feed() {
 
           <div className="feed-info">
             <h2 className="feed-title">{item.title}</h2>
-            <p className="feed-description">{item.description || "Sem descrição"}</p>
+            <p className="feed-description">
+              {item.description || "Sem descrição"}
+            </p>
 
             <div className="feed-meta">
-              <span><strong>Tamanho:</strong> {item.size}</span>
-              <span><strong>Categoria:</strong> {item.category}</span>
-              <span><strong>Condição:</strong> {item.condition}</span>
+              <span>
+                <strong>Tamanho:</strong> {item.size}
+              </span>
+              <span>
+                <strong>Categoria:</strong> {item.category}
+              </span>
+              <span>
+                <strong>Condição:</strong> {item.condition}
+              </span>
             </div>
           </div>
 

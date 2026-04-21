@@ -27,6 +27,10 @@ function Navbar() {
           Meu Closet
         </Link>
 
+        <Link to="/add-clothing" className="nav-link-btn">
+          Cadastrar Peça
+        </Link>
+
         <Link to="/matches" className="nav-link-btn">
           Matches
         </Link>
