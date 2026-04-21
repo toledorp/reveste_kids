@@ -13,6 +13,8 @@ import Species from "./pages/Species";
 import Vehicles from "./pages/Vehicles";
 
 import Feed from "./pages/Feed";
+import MyCloset from "./pages/MyCloset";
+import AddClothing from "./pages/AddClothing";
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
         <Route path="/vehicles" element={<Vehicles />} />
 
         <Route path="/feed" element={<Feed />} />
+        <Route path="/closet" element={<MyCloset />} />
+        <Route path="/add-clothing" element={<AddClothing />} />
+        
       </Routes>
 
       <Footer />
