@@ -14,6 +14,9 @@ import starshipRoutes from "./routes/starshipRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 import clothingRoutes from "./routes/clothingRoutes.js";
+import interestRoutes from "./routes/interestRoutes.js";
+
+
 
 dotenv.config();
 
@@ -34,6 +37,7 @@ app.use("/", vehicleRoutes);
 app.use("/", starshipRoutes);
 
 app.use("/", clothingRoutes);
+app.use("/api", interestRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URI)

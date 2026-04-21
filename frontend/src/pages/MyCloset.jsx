@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./MyCloset.css";
+import MediaCarousel from "../components/MediaCarousel";
 
 function MyCloset() {
   const [clothes, setClothes] = useState([]);
@@ -167,17 +168,16 @@ function MyCloset() {
             {clothes.map((item) => (
               <article key={item._id} className="closet-card">
                 <div className="closet-image-wrapper">
-                  {item.images && item.images.length > 0 ? (
-                    <img
-                      src={item.images[0]}
-                      alt={item.title}
-                      className="closet-image"
-                    />
-                  ) : (
-                    <div className="closet-image-placeholder">
-                      <span>Sem imagem</span>
-                    </div>
-                  )}
+                  <MediaCarousel
+                    images={
+                      item.images && item.images.length > 0
+                        ? item.images
+                        : item.image
+                          ? [item.image]
+                          : []
+                    }
+                    alt={item.title}
+                  />
                 </div>
 
                 <div className="closet-info">
