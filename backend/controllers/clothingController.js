@@ -2,14 +2,14 @@ import clothingService from "../services/clothingService.js";
 
 const createClothing = async (req, res) => {
   try {
-    const { title, description, size, category, images, condition } = req.body;
+    const { title, description, size, category, media, condition } = req.body;
 
     const clothing = await clothingService.create({
       title,
       description,
       size,
       category,
-      images,
+      media,
       condition,
       userId: req.loggerUser.id,
     });

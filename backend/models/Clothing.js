@@ -18,8 +18,20 @@ const clothingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    images: {
-      type: [String],
+    media: {
+      type: [
+        {
+          type: {
+            type: String,
+            enum: ["image", "video"],
+            required: true,
+          },
+          url: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
       default: [],
     },
     condition: {

@@ -6,6 +6,7 @@ export default function Feed() {
   const [clothes, setClothes] = useState([]);
   const [likedIds, setLikedIds] = useState([]);
   const [loadingLikes, setLoadingLikes] = useState(true);
+  const [matchedUserIds, setMatchedUserIds] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:4000/clothes")
@@ -38,6 +39,26 @@ export default function Feed() {
       .catch((error) => {
         console.log(error);
         setLoadingLikes(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    fetch("http://localhost:4000/api/matches", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const ids = data.map((match) => match.user?._id).filter(Boolean);
+        setMatchedUserIds(ids);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
 
@@ -94,12 +115,14 @@ export default function Feed() {
   return (
     <main className="feed-container">
       {clothes.map((item) => {
-        const previewImages =
-          item.images && item.images.length > 0
-            ? item.images
-            : item.image
-              ? [item.image]
-              : [];
+        const previewMedia =
+          item.media && item.media.length > 0
+            ? item.media
+            : item.images && item.images.length > 0
+              ? item.images.map((url) => ({ type: "image", url }))
+              : item.image
+                ? [{ type: "image", url: item.image }]
+                : [];
 
         const ownerId =
           item.userId && typeof item.userId === "object"
@@ -109,10 +132,17 @@ export default function Feed() {
         const isOwnClothing = ownerId === loggedUserId;
 
         const isLiked = likedIds.includes(item._id);
+
+        const hasMatch = matchedUserIds.includes(ownerId);
+
         return (
           <article key={item._id} className="feed-card">
             <div className="feed-image-wrapper">
-              <MediaCarousel images={previewImages} alt={item.title} />
+              <MediaCarousel media={previewMedia} alt={item.title} />
+
+              {hasMatch && !isOwnClothing && (
+                <div className="match-badge">💜 Match</div>
+              )}
             </div>
 
             <div className="feed-info">

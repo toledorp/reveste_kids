@@ -10,7 +10,7 @@ function AddClothing() {
     description: "",
     size: "",
     category: "",
-    images: "",
+    media: [],
     condition: "",
   });
 
@@ -18,6 +18,7 @@ function AddClothing() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,7 +60,7 @@ function AddClothing() {
         description: "",
         size: "",
         category: "",
-        images: [],
+        media: [],
         condition: "",
       });
 
@@ -87,7 +88,7 @@ function AddClothing() {
     try {
       setUploadingImages(true);
 
-      const uploadedUrls = [];
+      const uploadedMedia = [];
 
       for (const file of selectedFiles) {
         const formDataCloud = new FormData();
@@ -108,18 +109,75 @@ function AddClothing() {
           throw new Error("Erro ao fazer upload das imagens");
         }
 
-        uploadedUrls.push(data.secure_url);
+        uploadedMedia.push({
+          type: "image",
+          url: data.secure_url,
+        });
       }
 
-      setFormData((prev) => ({
-        ...prev,
-        images: uploadedUrls,
-      }));
+      setFormData((prev) => {
+        const existingVideos = prev.media.filter(
+          (item) => item.type === "video",
+        );
+
+        return {
+          ...prev,
+          media: [...existingVideos, ...uploadedMedia],
+        };
+      });
     } catch (error) {
       console.log(error);
       alert("Erro ao enviar imagens");
     } finally {
       setUploadingImages(false);
+    }
+  };
+
+  const handleVideoUpload = async (file) => {
+    if (!file) return;
+
+    try {
+      setUploadingVideo(true);
+
+      const formDataCloud = new FormData();
+      formDataCloud.append("file", file);
+      formDataCloud.append("upload_preset", "reveste_kids_upload");
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/djgu3sdab/video/upload",
+        {
+          method: "POST",
+          body: formDataCloud,
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error("Erro ao fazer upload do vídeo");
+      }
+
+      setFormData((prev) => {
+        const existingImages = prev.media.filter(
+          (item) => item.type === "image",
+        );
+
+        return {
+          ...prev,
+          media: [
+            {
+              type: "video",
+              url: data.secure_url,
+            },
+            ...existingImages,
+          ],
+        };
+      });
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao enviar vídeo");
+    } finally {
+      setUploadingVideo(false);
     }
   };
 
@@ -184,11 +242,27 @@ function AddClothing() {
 
           {uploadingImages && <p>Enviando imagens...</p>}
 
-          {formData.images.length > 0 && (
+          <input
+            type="file"
+            accept="video/*"
+            onChange={(e) => handleVideoUpload(e.target.files[0])}
+          />
+
+          {uploadingVideo && <p>Enviando vídeo...</p>}
+
+          {formData.media.length > 0 && (
             <div className="add-clothing-preview-grid">
-              {formData.images.map((imageUrl, index) => (
+              {formData.media.map((item, index) => (
                 <div key={index} className="add-clothing-preview-item">
-                  <img src={imageUrl} alt={`Prévia ${index + 1}`} />
+                  {item.type === "video" ? (
+                    <video
+                      src={item.url}
+                      controls
+                      className="add-preview-video"
+                    />
+                  ) : (
+                    <img src={item.url} alt={`Prévia ${index + 1}`} />
+                  )}
                 </div>
               ))}
             </div>
