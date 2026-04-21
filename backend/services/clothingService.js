@@ -56,6 +56,16 @@ class ClothingService {
       throw error;
     }
   }
+
+  async getByUserId(userId) {
+    try {
+      const clothes = await Clothing.find({ userId }).populate("userId", "name email");
+      return clothes;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
 
 export default new ClothingService();

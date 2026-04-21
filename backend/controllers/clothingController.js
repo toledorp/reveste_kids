@@ -2,14 +2,14 @@ import clothingService from "../services/clothingService.js";
 
 const createClothing = async (req, res) => {
   try {
-    const { title, description, size, category, image, condition } = req.body;
+    const { title, description, size, category, images, condition } = req.body;
 
     const clothing = await clothingService.create({
       title,
       description,
       size,
       category,
-      image,
+      images,
       condition,
       userId: req.loggerUser.id,
     });
@@ -116,10 +116,25 @@ const deleteClothing = async (req, res) => {
   }
 };
 
+const getMyClothes = async (req, res) => {
+  try {
+    const userId = req.loggerUser.id;
+
+    const clothes = await clothingService.getByUserId(userId);
+
+    return res.status(200).json(clothes);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Não foi possível buscar as peças do usuário",
+    });
+  }
+};
 export default {
   createClothing,
   getAllClothes,
   getClothingById,
+  getMyClothes,
   updateClothing,
   deleteClothing,
 };
