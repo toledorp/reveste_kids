@@ -1,29 +1,27 @@
 import { useState } from "react";
 import "./MediaCarousel.css";
 
-function MediaCarousel({ images = [], alt = "Imagem" }) {
+function MediaCarousel({ media = [], alt = "Mídia" }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
 
-  if (!images || images.length === 0) {
+  if (!media || media.length === 0) {
     return (
       <div className="carousel-placeholder">
-        <span>Sem imagem</span>
+        <span>Sem mídia</span>
       </div>
     );
   }
 
+  const currentItem = media[currentIndex];
+
   const goToPrevious = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
-    );
+    setCurrentIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1
-    );
+    setCurrentIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
   };
 
   const handleTouchStart = (e) => {
@@ -39,13 +37,8 @@ function MediaCarousel({ images = [], alt = "Imagem" }) {
 
     const distance = touchStartX - touchEndX;
 
-    if (distance > 50) {
-      goToNext();
-    }
-
-    if (distance < -50) {
-      goToPrevious();
-    }
+    if (distance > 50) goToNext();
+    if (distance < -50) goToPrevious();
 
     setTouchStartX(0);
     setTouchEndX(0);
@@ -58,13 +51,23 @@ function MediaCarousel({ images = [], alt = "Imagem" }) {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <img
-        src={images[currentIndex]}
-        alt={`${alt} ${currentIndex + 1}`}
-        className="carousel-image"
-      />
+      {currentItem.type === "video" ? (
+        <video
+          src={currentItem.url}
+          className="carousel-image"
+          controls
+          muted
+          playsInline
+        />
+      ) : (
+        <img
+          src={currentItem.url}
+          alt={`${alt} ${currentIndex + 1}`}
+          className="carousel-image"
+        />
+      )}
 
-      {images.length > 1 && (
+      {media.length > 1 && (
         <>
           <button
             type="button"
@@ -83,13 +86,11 @@ function MediaCarousel({ images = [], alt = "Imagem" }) {
           </button>
 
           <div className="carousel-dots">
-            {images.map((_, index) => (
+            {media.map((_, index) => (
               <button
                 key={index}
                 type="button"
-                className={`carousel-dot ${
-                  index === currentIndex ? "active" : ""
-                }`}
+                className={`carousel-dot ${index === currentIndex ? "active" : ""}`}
                 onClick={() => setCurrentIndex(index)}
               />
             ))}

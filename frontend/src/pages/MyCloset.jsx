@@ -14,7 +14,7 @@ function MyCloset() {
     description: "",
     size: "",
     category: "",
-    image: "",
+    media: [],
     condition: "",
   });
 
@@ -60,7 +60,7 @@ function MyCloset() {
       }
 
       setClothes((prevClothes) =>
-        prevClothes.filter((item) => item._id !== id),
+        prevClothes.filter((item) => item._id !== id)
       );
     } catch (error) {
       console.log(error);
@@ -71,13 +71,22 @@ function MyCloset() {
   };
 
   const openEditModal = (item) => {
+    const currentMedia =
+      item.media && item.media.length > 0
+        ? item.media
+        : item.images && item.images.length > 0
+        ? item.images.map((url) => ({ type: "image", url }))
+        : item.image
+        ? [{ type: "image", url: item.image }]
+        : [];
+
     setEditingItem(item);
     setFormData({
       title: item.title || "",
       description: item.description || "",
       size: item.size || "",
       category: item.category || "",
-      image: item.image || "",
+      media: currentMedia,
       condition: item.condition || "",
     });
   };
@@ -89,7 +98,7 @@ function MyCloset() {
       description: "",
       size: "",
       category: "",
-      image: "",
+      media: [],
       condition: "",
     });
   };
@@ -121,7 +130,7 @@ function MyCloset() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(formData),
-        },
+        }
       );
 
       const data = await response.json();
@@ -134,8 +143,8 @@ function MyCloset() {
 
       setClothes((prevClothes) =>
         prevClothes.map((item) =>
-          item._id === updatedItem._id ? updatedItem : item,
-        ),
+          item._id === updatedItem._id ? updatedItem : item
+        )
       );
 
       closeEditModal();
@@ -165,58 +174,60 @@ function MyCloset() {
           </div>
         ) : (
           <div className="closet-grid">
-            {clothes.map((item) => (
-              <article key={item._id} className="closet-card">
-                <div className="closet-image-wrapper">
-                  <MediaCarousel
-                    images={
-                      item.images && item.images.length > 0
-                        ? item.images
-                        : item.image
-                          ? [item.image]
-                          : []
-                    }
-                    alt={item.title}
-                  />
-                </div>
+            {clothes.map((item) => {
+              const previewMedia =
+                item.media && item.media.length > 0
+                  ? item.media
+                  : item.images && item.images.length > 0
+                  ? item.images.map((url) => ({ type: "image", url }))
+                  : item.image
+                  ? [{ type: "image", url: item.image }]
+                  : [];
 
-                <div className="closet-info">
-                  <h2>{item.title}</h2>
-                  <p>{item.description || "Sem descrição"}</p>
-
-                  <div className="closet-meta">
-                    <span>
-                      <strong>Tamanho:</strong> {item.size}
-                    </span>
-                    <span>
-                      <strong>Categoria:</strong> {item.category}
-                    </span>
-                    <span>
-                      <strong>Condição:</strong> {item.condition}
-                    </span>
+              return (
+                <article key={item._id} className="closet-card">
+                  <div className="closet-image-wrapper">
+                    <MediaCarousel media={previewMedia} alt={item.title} />
                   </div>
 
-                  <div className="closet-actions">
-                    <button
-                      type="button"
-                      className="closet-edit-btn"
-                      onClick={() => openEditModal(item)}
-                    >
-                      Editar
-                    </button>
+                  <div className="closet-info">
+                    <h2>{item.title}</h2>
+                    <p>{item.description || "Sem descrição"}</p>
 
-                    <button
-                      type="button"
-                      className="closet-delete-btn"
-                      onClick={() => handleDelete(item._id)}
-                      disabled={deletingId === item._id}
-                    >
-                      {deletingId === item._id ? "Excluindo..." : "Excluir"}
-                    </button>
+                    <div className="closet-meta">
+                      <span>
+                        <strong>Tamanho:</strong> {item.size}
+                      </span>
+                      <span>
+                        <strong>Categoria:</strong> {item.category}
+                      </span>
+                      <span>
+                        <strong>Condição:</strong> {item.condition}
+                      </span>
+                    </div>
+
+                    <div className="closet-actions">
+                      <button
+                        type="button"
+                        className="closet-edit-btn"
+                        onClick={() => openEditModal(item)}
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        type="button"
+                        className="closet-delete-btn"
+                        onClick={() => handleDelete(item._id)}
+                        disabled={deletingId === item._id}
+                      >
+                        {deletingId === item._id ? "Excluindo..." : "Excluir"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              );
+            })}
           </div>
         )}
       </main>
@@ -276,14 +287,6 @@ function MyCloset() {
                 name="condition"
                 placeholder="Condição"
                 value={formData.condition}
-                onChange={handleChange}
-              />
-
-              <input
-                type="text"
-                name="image"
-                placeholder="URL da imagem"
-                value={formData.image}
                 onChange={handleChange}
               />
 

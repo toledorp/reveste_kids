@@ -36,6 +36,7 @@
   width: 100%;
   height: 360px;
   background: #111;
+  position: reltive;
 }
 
 .feed-image {
@@ -136,4 +137,18 @@
 .like-btn.liked {
   background: #8b5cf6;
   border-color: #c084fc;
+}
+
+.match-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(139, 92, 246, 0.92);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+  z-index: 3;
 }
