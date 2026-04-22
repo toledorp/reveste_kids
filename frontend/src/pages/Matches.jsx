@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import MediaCarousel from "../components/MediaCarousel";
 import "./Matches.css";
 
 function Matches() {
@@ -24,6 +25,24 @@ function Matches() {
       });
   }, []);
 
+  const getPreviewMedia = (clothing) => {
+    if (!clothing) return [];
+
+    if (clothing.media && clothing.media.length > 0) {
+      return clothing.media;
+    }
+
+    if (clothing.images && clothing.images.length > 0) {
+      return clothing.images.map((url) => ({ type: "image", url }));
+    }
+
+    if (clothing.image) {
+      return [{ type: "image", url: clothing.image }];
+    }
+
+    return [];
+  };
+
   if (loading) {
     return <div className="matches-loading">Carregando matches...</div>;
   }
@@ -42,15 +61,8 @@ function Matches() {
       ) : (
         <div className="matches-grid">
           {matches.map((match, index) => {
-            const myLikedImage =
-              match.myLikedClothing?.images?.[0] ||
-              match.myLikedClothing?.image ||
-              "";
-
-            const likedMyImage =
-              match.likedMyClothing?.images?.[0] ||
-              match.likedMyClothing?.image ||
-              "";
+            const myLikedMedia = getPreviewMedia(match.myLikedClothing);
+            const likedMyMedia = getPreviewMedia(match.likedMyClothing);
 
             return (
               <article key={index} className="match-card">
@@ -61,11 +73,12 @@ function Matches() {
 
                 <div className="match-items">
                   <div className="match-item">
-                    {myLikedImage ? (
-                      <img src={myLikedImage} alt={match.myLikedClothing?.title} />
-                    ) : (
-                      <div className="match-placeholder">Sem imagem</div>
-                    )}
+                    <div className="match-media-wrapper">
+                      <MediaCarousel
+                        media={myLikedMedia}
+                        alt={match.myLikedClothing?.title || "Peça curtida"}
+                      />
+                    </div>
                     <h3>{match.myLikedClothing?.title}</h3>
                     <span>Peça que você curtiu</span>
                   </div>
@@ -73,11 +86,12 @@ function Matches() {
                   <div className="match-versus">↔</div>
 
                   <div className="match-item">
-                    {likedMyImage ? (
-                      <img src={likedMyImage} alt={match.likedMyClothing?.title} />
-                    ) : (
-                      <div className="match-placeholder">Sem imagem</div>
-                    )}
+                    <div className="match-media-wrapper">
+                      <MediaCarousel
+                        media={likedMyMedia}
+                        alt={match.likedMyClothing?.title || "Peça que curtiu você"}
+                      />
+                    </div>
                     <h3>{match.likedMyClothing?.title}</h3>
                     <span>Peça que curtiu você</span>
                   </div>

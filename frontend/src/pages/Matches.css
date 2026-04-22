@@ -66,12 +66,18 @@
   padding-bottom: 14px;
 }
 
-.match-item img,
+/* .match-item img,
 .match-placeholder {
   width: 100%;
   height: 240px;
   object-fit: cover;
   display: block;
+  background: #111;
+} */
+
+.match-media-wrapper {
+  width: 100%;
+  height: 240px;
   background: #111;
 }
 

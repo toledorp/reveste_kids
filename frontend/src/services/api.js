@@ -27,27 +27,3 @@ export async function loginUser(email, password) {
     body: JSON.stringify({ email, password }),
   });
 }
-
-export async function getCharacters() {
-  return fetchData("/persons");
-}
-
-export async function getPlanets() {
-  return fetchData("/planets");
-}
-
-export async function getSpecies() {
-  return fetchData("/species");
-}
-
-export async function getFilms() {
-  return fetchData("/films");
-}
-
-export async function getVehicles() {
-  return fetchData("/vehicles");
-}
-
-export async function getStarships() {
-  return fetchData("/starships");
-}
