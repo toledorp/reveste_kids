@@ -1,43 +1,41 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
-import Home from "./pages/Home";
-import Features from "./pages/Features";
-import Characters from "./pages/Characters";
-import Films from "./pages/Films";
-import Planets from "./pages/Planets";
-import Starships from "./pages/Starships";
-import Species from "./pages/Species";
-import Vehicles from "./pages/Vehicles";
-
+import AuthPanel from "./components/AuthPanel";
 import Feed from "./pages/Feed";
 import MyCloset from "./pages/MyCloset";
 import AddClothing from "./pages/AddClothing";
 import Matches from "./pages/Matches";
 
+function LoginPage() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    return <Navigate to="/feed" replace />;
+  }
+
+  return <AuthPanel onAuthSuccess={() => navigate("/feed")} />;
+}
+
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
-
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/features" element={<Features />} />
-        <Route path="/characters" element={<Characters />} />
-        <Route path="/films" element={<Films />} />
-        <Route path="/planets" element={<Planets />} />
-        <Route path="/starships" element={<Starships />} />
-        <Route path="/species" element={<Species />} />
-        <Route path="/vehicles" element={<Vehicles />} />
-
+        <Route path="/" element={<LoginPage />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/closet" element={<MyCloset />} />
         <Route path="/add-clothing" element={<AddClothing />} />
         <Route path="/matches" element={<Matches />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-
       <Footer />
     </BrowserRouter>
   );

@@ -1,10 +1,10 @@
 const swaggerSpec = {
   openapi: "3.0.0",
   info: {
-    title: "Star Wars API",
+    title: "Reveste Kids API",
     version: "1.0.0",
     description:
-      "Documentação da API do projeto fullstack Star Wars com autenticação JWT e CRUD de filmes, personagens, planetas, espécies, veículos e espaçonaves.",
+      "Documentação da API do projeto fullstack Reveste Kids com autenticação JWT e CRUD de filmes, personagens, planetas, espécies, veículos e espaçonaves.",
   },
   servers: [
     {
