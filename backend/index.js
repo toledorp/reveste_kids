@@ -3,18 +3,20 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
+import http from "http";
 
 import swaggerSpec from "./swagger.js";
+import { initSocket } from "./socket.js";
 
 import userRoutes from "./routes/userRoutes.js";
 import clothingRoutes from "./routes/clothingRoutes.js";
 import interestRoutes from "./routes/interestRoutes.js";
-
-
+import chatRoutes from "./routes/chatRoutes.js";
 
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
 const port = 4000;
 
 app.use(express.json());
@@ -25,12 +27,16 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/", userRoutes);
 app.use("/", clothingRoutes);
 app.use("/api", interestRoutes);
+app.use("/api/chat", chatRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Conectado ao MongoDB Atlas");
-    app.listen(port, () => {
+
+    initSocket(server);
+
+    server.listen(port, () => {
       console.log(`API rodando em http://localhost:${port}`);
       console.log(`Swagger disponível em http://localhost:${port}/api-docs`);
     });
