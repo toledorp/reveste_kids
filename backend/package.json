@@ -20,6 +20,7 @@
     "mongodb": "^7.1.0",
     "mongoose": "^9.2.2",
     "nodemon": "^3.1.14",
+    "socket.io": "^4.8.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   }
