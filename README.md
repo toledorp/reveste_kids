@@ -1,36 +1,20 @@
-# 🚀 Star Wars API - Fullstack
+# 🚀 Reveste Kids - Plataforma de Troca de Roupas
 
-Sistema fullstack desenvolvido com **Node.js, Express, MongoDB Atlas e React**, permitindo gerenciamento completo (CRUD) dos dados do universo Star Wars com **interface administrativa integrada**.
-
----
-
-
-## 📸 Application Preview
-
-### 🏠 Home
-
-![Home Screenshot](assets/screenshot-home.png)
-
-### 📊 Dashboard
-
-![Dashboard Screenshot](assets/screenshot-dashboard.png)
-
-### 🔌 API (Insomnia)
-
-![API Screenshot](assets/screenshot-api.png)
+Sistema fullstack desenvolvido com **Node.js, Express, MongoDB Atlas, React e Cloudinary**, permitindo que usuários cadastrem roupas, interajam via likes e realizem trocas através de matches.
 
 ---
 
 ## 📌 Objetivo
 
-Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco na construção de uma aplicação fullstack completa.
+Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco na construção de uma aplicação moderna estilo **rede social de troca de roupas**, incluindo:
 
-✔ API REST estruturada  
-✔ Integração com MongoDB Atlas  
-✔ Frontend em React consumindo API  
-✔ Autenticação com JWT  
-✔ Painel administrativo com CRUD completo via interface  
-✔ Documentação interativa com Swagger  
+✔ Cadastro de peças  
+✔ Upload de imagens e vídeos  
+✔ Feed interativo  
+✔ Sistema de likes  
+✔ Matches entre usuários  
+✔ CRUD completo via interface  
+✔ API documentada com Swagger  
 
 ---
 
@@ -41,46 +25,104 @@ Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco na 
 - Express
 - MongoDB Atlas
 - Mongoose
+- JWT (Autenticação)
 - Dotenv
-- JSON Web Token (JWT)
 - Swagger UI Express
 
 ### 🎨 Frontend
 - React
 - Vite
 - Fetch API
+- CSS moderno (UI estilo app)
+
+### ☁️ Upload de mídia
+- Cloudinary
 
 ### 🧪 Ferramentas
 - Insomnia
-- Swagger
+- Swagger UI
 - Git e GitHub
+
+---
+
+## 📸 Funcionalidades principais
+
+### 👕 Roupas
+- Cadastro de peças via frontend
+- Upload múltiplo de imagens
+- Suporte a vídeos
+- Edição e exclusão
+
+### 📰 Feed
+- Exibição das peças em formato de **carousel (swipe)**
+- Suporte a imagens e vídeos
+- Visual moderno estilo rede social
+
+### ❤️ Likes
+- Curtir peças de outros usuários
+- Descurtir
+- Bloqueio de like em peças do próprio usuário
+
+### 🔥 Matches
+- Match automático quando há interesse mútuo
+- Tela dedicada exibindo as peças envolvidas
+
+### 👤 Meu Closet
+- Visualização das próprias peças
+- Edição via modal moderno
+- Exclusão
+
+---
+
+## ☁️ Cloudinary (Upload de mídia)
+
+O sistema utiliza o **Cloudinary** para armazenamento de mídia:
+
+- Upload direto do frontend
+- Suporte a múltiplas imagens
+- Suporte a vídeos
+- URLs otimizadas automaticamente
+- CDN global (alta performance)
+
+### Estrutura de mídia
+
+```json
+{
+  "media": [
+    {
+      "type": "image",
+      "url": "https://..."
+    },
+    {
+      "type": "video",
+      "url": "https://..."
+    }
+  ]
+}
+```
 
 ---
 
 ## 📂 Estrutura do projeto
 
 ```text
-ATV01_API_STAR_WARS/
+reveste_kids/
 │
-├── backend-star-wars/
+├── backend/
+│   ├── controllers/
 │   ├── models/
 │   ├── routes/
 │   ├── services/
-│   ├── index.js
-│   └── package.json
+│   ├── middleware/
+│   └── index.js
 │
-├── frontend-star-wars/
+├── frontend/
 │   ├── src/
-│   ├── components/
-│   ├── pages/
-│   └── package.json
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── services/
+│   └── index.html
 │
-├── assets/
-│   ├── home.png
-│   ├── dashboard.png
-│   └── api.png
-│
-├── package.json
 └── README.md
 ```
 
@@ -88,25 +130,27 @@ ATV01_API_STAR_WARS/
 
 ## ⚙️ Como executar o projeto
 
-### 1. Clonar o repositório
+### 1. Clonar repositório
 
 ```bash
-git clone https://github.com/toledorp/ATV01_API_STAR_WARS.git
+git clone https://github.com/toledorp/reveste_kids.git
 ```
+
+---
 
 ### 2. Instalar dependências
 
 #### Backend
 
 ```bash
-cd backend-star-wars
+cd backend
 npm install
 ```
 
 #### Frontend
 
 ```bash
-cd ../frontend-star-wars
+cd ../frontend
 npm install
 ```
 
@@ -114,10 +158,11 @@ npm install
 
 ### 3. Configurar variáveis de ambiente
 
-Crie um arquivo `.env` dentro da pasta **backend-star-wars**:
+Crie um arquivo `.env` dentro da pasta **backend**:
 
 ```env
-MONGO_URI=sua_string_do_mongodb_atlas
+MONGO_URI=sua_string_mongodb
+JWT_SECRET=sua_chave_secreta
 PORT=4000
 ```
 
@@ -125,229 +170,105 @@ PORT=4000
 
 ### 4. Executar aplicação
 
-Na raiz do projeto:
-
 ```bash
 npm run dev
 ```
 
-- Backend: http://localhost:4000
-- Frontend: http://localhost:5173
-
 ---
-
 
 ## 🌐 Acessos
 
-Backend: http://localhost:4000  
-Frontend: http://localhost:5173  
-Swagger: http://localhost:4000/api-docs  
+- Frontend: http://localhost:5173  
+- Backend: http://localhost:4000  
+- Swagger: http://localhost:4000/api-docs  
 
 ---
 
 ## 🔐 Autenticação
 
-Sistema com JWT e dois níveis:
+Sistema com JWT:
 
-Usuário:
-- Visualiza dados
-
-Admin:
-- Cria
-- Edita
-- Exclui
-
----
-
-## 🧩 Funcionalidades
-
-### Backend
-- CRUD completo
-- API REST
-- MongoDB Atlas
-- JWT
-- Middleware de autorização
-- Swagger
-
-### Frontend
+- Registro de usuário
 - Login
-- Painel admin
-- CRUD visual
-- Paginação
-- Controle por perfil
+- Rotas protegidas
 
 ---
 
-## 📚 Entidades
+## 🔗 Endpoints principais
 
-- Films
-- Characters
-- Planets
-- Species
-- Vehicles
-- Starships
+### Auth
+```
+POST /user
+POST /auth
+```
 
----
+### Roupas
+```
+GET /clothes
+POST /clothes
+PUT /clothes/:id
+DELETE /clothes/:id
+GET /clothes/user
+```
 
-## 🔗 Endpoints
+### Likes
+```
+POST /like/:id
+DELETE /like/:id
+```
 
-Auth:
-POST /user  
-POST /auth  
-
-Films:
-GET /films  
-POST /films  
-PUT /films/:id  
-DELETE /films/:id  
-
-Characters:
-GET /persons  
-POST /persons  
-PUT /persons/:id  
-DELETE /persons/:id  
-
-Planets:
-GET /planets  
-POST /planets  
-PUT /planets/:id  
-DELETE /planets/:id  
-
-Species:
-GET /species  
-POST /species  
-PUT /species/:id  
-DELETE /species/:id  
-
-Vehicles:
-GET /vehicles  
-POST /vehicles  
-PUT /vehicles/:id  
-DELETE /vehicles/:id  
-
-Starships:
-GET /starships  
-POST /starships  
-PUT /starships/:id  
-DELETE /starships/:id  
-
----
-
-## 🧪 Testes
-
-- Insomnia  
-- Swagger  
-- Frontend  
-
----
-
-## ☁️ Banco
-
-MongoDB Atlas
-
----
-
-## 🧠 Desafios
-
-- MongoDB Atlas
-- JWT
-- Integração front/back
-- CRUD completo
-- Controle de acesso
-- Paginação
-- Swagger
-
-## 🧩 Exemplo de estrutura de dados (com aninhamento)
-
-```json
-{
-  "name": "C-3PO",
-  "birth_year": "112BBY",
-  "homeworld": "Tatooine",
-  "species": "Droid",
-  "descriptions": {
-    "height": 167,
-    "mass": 75,
-    "hair_color": "n/a",
-    "skin_color": "gold",
-    "eye_color": "yellow",
-    "gender": "n/a"
-  }
-}
+### Matches
+```
+GET /matches
 ```
 
 ---
 
 ## 📘 Swagger
 
+A documentação interativa da API está disponível em:
+
+```
 http://localhost:4000/api-docs
+```
 
 ---
 
-## 🎨 Painel Admin
+## 🧠 Diferenciais do projeto
 
-Permite:
-
-- Criar
-- Editar
-- Excluir
-- Paginar dados
-
-Tudo via interface gráfica.
+- Upload de mídia com Cloudinary (imagens + vídeos)
+- Interface estilo aplicativo moderno (UX)
+- Sistema de match baseado em interesse mútuo
+- Feed com carousel (swipe)
+- Arquitetura fullstack bem definida
+- Projeto preparado para evolução
 
 ---
 
-## 🧪 Testes da API
+## 🧪 Testes
 
-Os testes foram realizados utilizando o **Insomnia**, validando todos os endpoints de CRUD (Create, Read, Update e Delete).
+- Insomnia
+- Swagger
+- Testes via frontend
 
 ---
 
 ## ☁️ Banco de dados
 
-O banco de dados está hospedado na nuvem utilizando o **MongoDB Atlas**.
-
----
-
-## 🎨 Protótipo do Frontend
-
-Adicionar aqui o link do Figma:
-
-```text
-https://www.figma.com/proto/2KIfzXKWMaD8ZzBU6ABgr7/api_star-wars?node-id=0-1&t=ULhOFcygZzI4HqTi-1
-```
-
----
-
-## 🧠 Desafios enfrentados
-
-- Configuração do MongoDB Atlas
-- Conexão entre backend e banco de dados
-- Estruturação de rotas REST
-- Implementação do CRUD completo
-- Integração entre frontend e backend
-- Organização do projeto fullstack
-
----
-
-## 📘 Documentação da API
-
-A documentação pode ser acessada via Swagger (caso implementado):
-
-```text
-http://localhost:4000/api-docs
-```
+MongoDB Atlas (cloud)
 
 ---
 
 ## 👨‍💻 Autor(es)
 
-- Camila Machado de Souza
-- Ricardo Sugano
-- Rogerio Pupo Toledo
+- Camila Machado de Souza 
+- Felipe Guedes
+- Kaio Sumikawa 
+- Ricardo Sugano  
+- Rogerio Pupo Toledo  
 
 ---
 
 ## 📄 Licença
 
-Este projeto é acadêmico e não possui fins comerciais.
+Projeto acadêmico sem fins comerciais.
