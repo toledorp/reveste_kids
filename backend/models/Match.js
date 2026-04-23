@@ -1,31 +1,39 @@
 import mongoose from "mongoose";
 
-const MatchSchema = new mongoose.Schema(
+const matchSchema = new mongoose.Schema(
   {
-    postId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Clothing",
-      required: true,
-    },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true,
     },
+
     interestedUserId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true,
     },
+
+    // 👇 NOVO (duas peças)
+    ownerClothingId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Clothing",
+      required: true,
+    },
+
+    interestedClothingId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Clothing",
+      required: true,
+    },
+
     status: {
       type: String,
-      enum: ["MATCHED", "CLOSED", "CANCELLED"],
+      enum: ["PENDING", "MATCHED"],
       default: "MATCHED",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-const Match = mongoose.model("Match", MatchSchema);
-
-export default Match;
+export default mongoose.model("Match", matchSchema);

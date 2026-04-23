@@ -3,9 +3,21 @@ import Match from "../models/Match.js";
 import Message from "../models/Message.js";
 import { getIo } from "../socket.js";
 
-const createMatch = async ({ postId, ownerId, interestedUserId }) => {
-  if (!postId || !ownerId || !interestedUserId) {
-    throw new Error("postId, ownerId e interestedUserId são obrigatórios");
+const createMatch = async ({
+  ownerId,
+  interestedUserId,
+  ownerClothingId,
+  interestedClothingId,
+}) => {
+  if (
+    !ownerId ||
+    !interestedUserId ||
+    !ownerClothingId ||
+    !interestedClothingId
+  ) {
+    throw new Error(
+      "ownerId, interestedUserId, ownerClothingId e interestedClothingId são obrigatórios",
+    );
   }
 
   if (String(ownerId) === String(interestedUserId)) {
@@ -13,9 +25,10 @@ const createMatch = async ({ postId, ownerId, interestedUserId }) => {
   }
 
   const existingMatch = await Match.findOne({
-    postId,
     ownerId,
     interestedUserId,
+    ownerClothingId,
+    interestedClothingId,
     status: "MATCHED",
   });
 
@@ -24,9 +37,10 @@ const createMatch = async ({ postId, ownerId, interestedUserId }) => {
   }
 
   const match = await Match.create({
-    postId,
     ownerId,
     interestedUserId,
+    ownerClothingId,
+    interestedClothingId,
     status: "MATCHED",
   });
 
@@ -35,24 +49,24 @@ const createMatch = async ({ postId, ownerId, interestedUserId }) => {
 
 const sendMessage = async ({ matchId, senderId, content }) => {
   if (!matchId || !senderId || !content) {
-    throw new Error('matchId, senderId e content são obrigatórios');
+    throw new Error("matchId, senderId e content são obrigatórios");
   }
 
   const match = await Match.findById(matchId);
 
   if (!match) {
-    throw new Error('Match não encontrado');
+    throw new Error("Match não encontrado");
   }
 
   const isOwner = String(match.ownerId) === String(senderId);
   const isInterested = String(match.interestedUserId) === String(senderId);
 
   if (!isOwner && !isInterested) {
-    throw new Error('Usuário não pertence a este match');
+    throw new Error("Usuário não pertence a este match");
   }
 
-  if (match.status !== 'MATCHED') {
-    throw new Error('Este match não está ativo');
+  if (match.status !== "MATCHED") {
+    throw new Error("Este match não está ativo");
   }
 
   const receiverId = isOwner ? match.interestedUserId : match.ownerId;
@@ -117,6 +131,8 @@ const getMatchesByUser = async (userId) => {
   })
     .populate("ownerId", "name email")
     .populate("interestedUserId", "name email")
+    .populate("ownerClothingId")
+    .populate("interestedClothingId")
     .sort({ createdAt: -1 });
 
   return matches;
