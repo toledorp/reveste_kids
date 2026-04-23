@@ -60,4 +60,23 @@ const getMessagesByMatch = async (req, res) => {
   }
 };
 
-export { createMatch, sendMessage, getMessagesByMatch };
+const getMatchesByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const matches = await chatService.getMatchesByUser(userId);
+
+    return res.status(200).json(matches);
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message || "Erro ao buscar matches",
+    });
+  }
+};
+
+export {
+  createMatch,
+  sendMessage,
+  getMessagesByMatch,
+  getMatchesByUser,
+};

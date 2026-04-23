@@ -6,5 +6,6 @@ const router = express.Router();
 router.post('/matches', chatController.createMatch);
 router.post('/messages', chatController.sendMessage);
 router.get('/matches/:matchId/messages', chatController.getMessagesByMatch);
+router.get("/users/:userId/matches", chatController.getMatchesByUser);
 
 export default router;

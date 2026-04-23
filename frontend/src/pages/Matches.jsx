@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import MediaCarousel from "../components/MediaCarousel";
 import "./Matches.css";
 
 function Matches() {
@@ -7,14 +6,20 @@ function Matches() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    fetch("http://localhost:4000/api/matches", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
+    if (!user?._id) {
+      setLoading(false);
+      return;
+    }
+
+    fetch(`http://localhost:4000/api/chat/users/${user._id}/matches`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Erro ao buscar matches");
+        }
+        return res.json();
+      })
       .then((data) => {
         setMatches(data);
         setLoading(false);
@@ -25,27 +30,18 @@ function Matches() {
       });
   }, []);
 
-  const getPreviewMedia = (clothing) => {
-    if (!clothing) return [];
-
-    if (clothing.media && clothing.media.length > 0) {
-      return clothing.media;
+  const getOtherUser = (match, currentUserId) => {
+    if (String(match.ownerId?._id) === String(currentUserId)) {
+      return match.interestedUserId;
     }
-
-    if (clothing.images && clothing.images.length > 0) {
-      return clothing.images.map((url) => ({ type: "image", url }));
-    }
-
-    if (clothing.image) {
-      return [{ type: "image", url: clothing.image }];
-    }
-
-    return [];
+    return match.ownerId;
   };
 
   if (loading) {
     return <div className="matches-loading">Carregando matches...</div>;
   }
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
     <main className="matches-container">
@@ -60,40 +56,22 @@ function Matches() {
         </div>
       ) : (
         <div className="matches-grid">
-          {matches.map((match, index) => {
-            const myLikedMedia = getPreviewMedia(match.myLikedClothing);
-            const likedMyMedia = getPreviewMedia(match.likedMyClothing);
+          {matches.map((match) => {
+            const otherUser = getOtherUser(match, user?._id);
 
             return (
-              <article key={index} className="match-card">
+              <article key={match._id} className="match-card">
                 <div className="match-user">
-                  <h2>{match.user?.name || "Usuário"}</h2>
-                  <p>{match.user?.email}</p>
+                  <h2>{otherUser?.name || "Usuário"}</h2>
+                  <p>{otherUser?.email || "Email não disponível"}</p>
                 </div>
 
-                <div className="match-items">
+                <div className="match-items" style={{ gridTemplateColumns: "1fr" }}>
                   <div className="match-item">
-                    <div className="match-media-wrapper">
-                      <MediaCarousel
-                        media={myLikedMedia}
-                        alt={match.myLikedClothing?.title || "Peça curtida"}
-                      />
-                    </div>
-                    <h3>{match.myLikedClothing?.title}</h3>
-                    <span>Peça que você curtiu</span>
-                  </div>
-
-                  <div className="match-versus">↔</div>
-
-                  <div className="match-item">
-                    <div className="match-media-wrapper">
-                      <MediaCarousel
-                        media={likedMyMedia}
-                        alt={match.likedMyClothing?.title || "Peça que curtiu você"}
-                      />
-                    </div>
-                    <h3>{match.likedMyClothing?.title}</h3>
-                    <span>Peça que curtiu você</span>
+                    <h3>Match ativo</h3>
+                    <span>ID do match: {match._id}</span>
+                    <br />
+                    <span>Status: {match.status}</span>
                   </div>
                 </div>
               </article>

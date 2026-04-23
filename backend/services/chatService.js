@@ -106,4 +106,25 @@ const getMessagesByMatch = async ({ matchId, userId }) => {
   return messages;
 };
 
-export { createMatch, sendMessage, getMessagesByMatch };
+const getMatchesByUser = async (userId) => {
+  if (!userId) {
+    throw new Error("userId é obrigatório");
+  }
+
+  const matches = await Match.find({
+    $or: [{ ownerId: userId }, { interestedUserId: userId }],
+    status: "MATCHED",
+  })
+    .populate("ownerId", "name email")
+    .populate("interestedUserId", "name email")
+    .sort({ createdAt: -1 });
+
+  return matches;
+};
+
+export {
+  createMatch,
+  sendMessage,
+  getMessagesByMatch,
+  getMatchesByUser,
+};

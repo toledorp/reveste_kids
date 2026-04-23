@@ -1,31 +1,31 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const MatchSchema = new mongoose.Schema(
   {
     postId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Clothing',
+      ref: "Clothing",
       required: true,
     },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "Users",
       required: true,
     },
     interestedUserId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "Users",
       required: true,
     },
     status: {
       type: String,
-      enum: ['MATCHED', 'CLOSED', 'CANCELLED'],
-      default: 'MATCHED',
+      enum: ["MATCHED", "CLOSED", "CANCELLED"],
+      default: "MATCHED",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Match = mongoose.model('Match', MatchSchema);
+const Match = mongoose.model("Match", MatchSchema);
 
 export default Match;
