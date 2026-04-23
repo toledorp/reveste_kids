@@ -28,9 +28,19 @@ function AuthPanel({ onAuthSuccess }) {
 
         localStorage.setItem("token", data.token);
 
-        // decodificar o token para pegar o role
         const payload = JSON.parse(atob(data.token.split(".")[1]));
+
         localStorage.setItem("role", payload.role);
+
+        // 🔥 NOVO
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            _id: payload.id,
+            email: payload.email,
+            role: payload.role,
+          }),
+        );
 
         setMessage("Login realizado com sucesso.");
 
