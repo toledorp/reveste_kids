@@ -13,6 +13,8 @@ import MyCloset from "./pages/MyCloset";
 import AddClothing from "./pages/AddClothing";
 import Matches from "./pages/Matches";
 
+import ChatTest from "./pages/ChatTest";
+
 function LoginPage() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -34,6 +36,10 @@ function App() {
         <Route path="/closet" element={<MyCloset />} />
         <Route path="/add-clothing" element={<AddClothing />} />
         <Route path="/matches" element={<Matches />} />
+
+        {/* opcional: rota de teste */}
+        <Route path="/chat-test" element={<ChatTest />} />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
