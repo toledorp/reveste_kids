@@ -32,7 +32,7 @@ function AuthPanel({ onAuthSuccess }) {
 
         localStorage.setItem("role", payload.role);
 
-        // 🔥 NOVO
+        // NOVO
         localStorage.setItem(
           "user",
           JSON.stringify({
