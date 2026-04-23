@@ -1,13 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { socket } from "../services/socket";
 import "./Matches.css";
 
 function Matches() {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [messageLoading, setMessageLoading] = useState(false);
+  const [content, setContent] = useState("");
+
+  const user = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-
     if (!user?._id) {
       setLoading(false);
       return;
@@ -23,31 +34,112 @@ function Matches() {
       .then((data) => {
         setMatches(data);
         setLoading(false);
+
+        if (data.length > 0) {
+          setSelectedMatch(data[0]);
+        }
       })
       .catch((error) => {
         console.log(error);
         setLoading(false);
       });
+  }, [user?._id]);
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.on("connect", () => {
+      console.log("Socket conectado:", socket.id);
+    });
+
+    socket.on("new-message", (message) => {
+      setMessages((prev) => {
+        const alreadyExists = prev.some((msg) => String(msg._id) === String(message._id));
+        if (alreadyExists) return prev;
+        return [...prev, message];
+      });
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("new-message");
+      socket.disconnect();
+    };
   }, []);
 
-  const getOtherUser = (match, currentUserId) => {
-    if (String(match.ownerId?._id) === String(currentUserId)) {
+  useEffect(() => {
+    if (!selectedMatch?._id || !user?._id) return;
+
+    socket.emit("join-match-room", { matchId: selectedMatch._id });
+
+    setMessageLoading(true);
+
+    fetch(
+      `http://localhost:4000/api/chat/matches/${selectedMatch._id}/messages?userId=${user._id}`
+    )
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Erro ao carregar mensagens");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setMessages(data);
+        setMessageLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setMessages([]);
+        setMessageLoading(false);
+      });
+  }, [selectedMatch?._id, user?._id]);
+
+  const getOtherUser = (match) => {
+    if (!user?._id) return null;
+
+    if (String(match.ownerId?._id) === String(user._id)) {
       return match.interestedUserId;
     }
+
     return match.ownerId;
+  };
+
+  const handleSendMessage = async () => {
+    if (!selectedMatch?._id || !user?._id || !content.trim()) return;
+
+    try {
+      const response = await fetch("http://localhost:4000/api/chat/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          matchId: selectedMatch._id,
+          senderId: user._id,
+          content,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao enviar mensagem");
+      }
+
+      setContent("");
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao enviar mensagem");
+    }
   };
 
   if (loading) {
     return <div className="matches-loading">Carregando matches...</div>;
   }
 
-  const user = JSON.parse(localStorage.getItem("user"));
-
   return (
     <main className="matches-container">
       <div className="matches-header">
         <h1>Matches</h1>
-        <p>Usuários com interesse mútuo em troca de peças.</p>
+        <p>Converse com usuários com interesse mútuo em troca de peças.</p>
       </div>
 
       {matches.length === 0 ? (
@@ -55,28 +147,68 @@ function Matches() {
           <p>Ainda não há matches.</p>
         </div>
       ) : (
-        <div className="matches-grid">
-          {matches.map((match) => {
-            const otherUser = getOtherUser(match, user?._id);
+        <div className="matches-layout">
+          <aside className="matches-sidebar">
+            {matches.map((match) => {
+              const otherUser = getOtherUser(match);
+              const isActive = String(selectedMatch?._id) === String(match._id);
 
-            return (
-              <article key={match._id} className="match-card">
-                <div className="match-user">
-                  <h2>{otherUser?.name || "Usuário"}</h2>
-                  <p>{otherUser?.email || "Email não disponível"}</p>
-                </div>
+              return (
+                <button
+                  key={match._id}
+                  className={`match-list-item ${isActive ? "active" : ""}`}
+                  onClick={() => setSelectedMatch(match)}
+                >
+                  <strong>{otherUser?.name || "Usuário"}</strong>
+                  <span>{otherUser?.email || "Email não disponível"}</span>
+                </button>
+              );
+            })}
+          </aside>
 
-                <div className="match-items" style={{ gridTemplateColumns: "1fr" }}>
-                  <div className="match-item">
-                    <h3>Match ativo</h3>
-                    <span>ID do match: {match._id}</span>
-                    <br />
-                    <span>Status: {match.status}</span>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+          <section className="chat-panel">
+            <div className="chat-panel-header">
+              <h2>{getOtherUser(selectedMatch)?.name || "Conversa"}</h2>
+              <p>{getOtherUser(selectedMatch)?.email || ""}</p>
+            </div>
+
+            <div className="chat-messages">
+              {messageLoading ? (
+                <div className="chat-empty">Carregando mensagens...</div>
+              ) : messages.length === 0 ? (
+                <div className="chat-empty">Nenhuma mensagem ainda.</div>
+              ) : (
+                messages.map((msg) => {
+                  const isMine =
+                    String(msg.senderId?._id || msg.senderId) === String(user?._id);
+
+                  return (
+                    <div
+                      key={msg._id}
+                      className={`chat-bubble ${isMine ? "mine" : "theirs"}`}
+                    >
+                      <p>{msg.content}</p>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            <div className="chat-input-area">
+              <input
+                type="text"
+                placeholder="Digite sua mensagem"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSendMessage();
+                  }
+                }}
+              />
+              <button onClick={handleSendMessage}>Enviar</button>
+            </div>
+          </section>
         </div>
       )}
     </main>
