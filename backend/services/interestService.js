@@ -7,7 +7,11 @@ class InterestService {
     const existing = await Interest.findOne({ userId, clothingId });
 
     if (existing) {
-      return existing;
+      return {
+        interest: existing,
+        matchCreated: false,
+        message: "Like já existia",
+      };
     }
 
     const newInterest = await Interest.create({ userId, clothingId });
@@ -15,13 +19,21 @@ class InterestService {
     const likedClothing = await Clothing.findById(clothingId);
 
     if (!likedClothing) {
-      return newInterest;
+      return {
+        interest: newInterest,
+        matchCreated: false,
+        message: "Peça curtida não encontrada",
+      };
     }
 
     const likedClothingOwnerId = likedClothing.userId;
 
     if (String(likedClothingOwnerId) === String(userId)) {
-      return newInterest;
+      return {
+        interest: newInterest,
+        matchCreated: false,
+        message: "Usuário curtiu a própria peça",
+      };
     }
 
     const currentUserClothes = await Clothing.find({ userId });
@@ -32,38 +44,54 @@ class InterestService {
       clothingId: { $in: currentUserClothingIds },
     });
 
-    if (reciprocalInterest) {
-      const existingMatch = await Match.findOne({
-        $or: [
-          {
-            ownerId: likedClothingOwnerId,
-            interestedUserId: userId,
-            ownerClothingId: clothingId,
-            interestedClothingId: reciprocalInterest.clothingId,
-          },
-          {
-            ownerId: userId,
-            interestedUserId: likedClothingOwnerId,
-            ownerClothingId: reciprocalInterest.clothingId,
-            interestedClothingId: clothingId,
-          },
-        ],
-      });
+    if (!reciprocalInterest) {
+      return {
+        interest: newInterest,
+        matchCreated: false,
+        message: "Like registrado sem match",
+      };
+    }
 
-      if (!existingMatch) {
-        await Match.create({
+    const existingMatch = await Match.findOne({
+      $or: [
+        {
           ownerId: likedClothingOwnerId,
           interestedUserId: userId,
           ownerClothingId: clothingId,
           interestedClothingId: reciprocalInterest.clothingId,
-          status: "MATCHED",
-        });
+        },
+        {
+          ownerId: userId,
+          interestedUserId: likedClothingOwnerId,
+          ownerClothingId: reciprocalInterest.clothingId,
+          interestedClothingId: clothingId,
+        },
+      ],
+    });
 
-        console.log("🔥 Match criado automaticamente");
-      }
+    if (existingMatch) {
+      return {
+        interest: newInterest,
+        matchCreated: false,
+        match: existingMatch,
+        message: "Match já existia",
+      };
     }
 
-    return newInterest;
+    const match = await Match.create({
+      ownerId: likedClothingOwnerId,
+      interestedUserId: userId,
+      ownerClothingId: clothingId,
+      interestedClothingId: reciprocalInterest.clothingId,
+      status: "MATCHED",
+    });
+
+    return {
+      interest: newInterest,
+      matchCreated: true,
+      match,
+      message: "Match criado automaticamente",
+    };
   }
 
   async unlike(userId, clothingId) {
@@ -97,7 +125,7 @@ class InterestService {
         const mutualLike = receivedLikes.find(
           (receivedLike) =>
             receivedLike.userId &&
-            receivedLike.userId._id.toString() === otherUserId
+            receivedLike.userId._id.toString() === otherUserId,
         );
 
         if (mutualLike) {
@@ -113,8 +141,8 @@ class InterestService {
         (match, index, self) =>
           index ===
           self.findIndex(
-            (item) => item.user._id.toString() === match.user._id.toString()
-          )
+            (item) => item.user._id.toString() === match.user._id.toString(),
+          ),
       );
 
       return uniqueMatches;

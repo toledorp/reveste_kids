@@ -5,10 +5,11 @@ const like = async (req, res) => {
     const userId = req.loggerUser.id;
     const { clothingId } = req.params;
 
-    const interest = await interestService.like(userId, clothingId);
+    const result = await interestService.like(userId, clothingId);
 
-    return res.status(200).json(interest);
+    return res.status(200).json(result);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Erro ao curtir peça" });
   }
 };

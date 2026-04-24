@@ -1,78 +1,164 @@
-.closet-container {
+.closet-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
   min-height: 100vh;
   background: #050505;
   color: #ffffff;
-  padding: 120px 20px 50px;
+}
+
+/* SIDEBAR */
+
+.closet-sidebar {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  padding: 28px 22px;
+  background: #050505;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.closet-sidebar h1 {
+  margin: 0 0 28px;
+  color: #c084fc;
+  font-size: 2rem;
+}
+
+.closet-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.closet-menu button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  text-align: left;
+  padding: 13px 12px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.closet-menu button:hover {
+  background: #111111;
+}
+
+.closet-user-card {
+  margin-top: auto;
+  padding: 14px;
+  border-radius: 14px;
+  background: #111111;
+  border: 1px solid rgba(192, 132, 252, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.closet-user-card span {
+  color: #aaaaaa;
+  font-size: 0.8rem;
+}
+
+.closet-user-card strong {
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+/* PAGE */
+
+.closet-container {
+  min-height: 100vh;
+  padding: 44px 48px;
+  background:
+    radial-gradient(
+      circle at top center,
+      rgba(192, 132, 252, 0.08),
+      transparent 32%
+    ),
+    #050505;
 }
 
 .closet-header {
-  max-width: 1100px;
-  margin: 0 auto 30px;
+  max-width: 1180px;
+  margin: 0 auto 32px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .closet-header h1 {
-  font-size: 2.2rem;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
   color: #c084fc;
+  font-size: 2.6rem;
 }
 
 .closet-header p {
+  margin: 0;
   color: #d4d4d4;
   font-size: 1rem;
 }
 
+.closet-add-btn {
+  border: none;
+  background: #c084fc;
+  color: #111111;
+  padding: 13px 18px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.closet-add-btn:hover {
+  transform: translateY(-2px);
+  background: #a855f7;
+}
+
+/* GRID */
+
 .closet-grid {
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 26px;
 }
 
 .closet-card {
-  background: linear-gradient(180deg, #1a1a1a 0%, #101010 100%);
-  border: 1px solid rgba(192, 132, 252, 0.2);
-  border-radius: 22px;
+  background: linear-gradient(180deg, #181818 0%, #101010 100%);
+  border: 1px solid rgba(192, 132, 252, 0.18);
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.38);
+  transition: 0.2s ease;
+}
+
+.closet-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(192, 132, 252, 0.42);
 }
 
 .closet-image-wrapper {
   width: 100%;
-  aspect-ratio: 4 / 5; /* tipo card de roupa */
-  background: #111;
-}
-
-.closet-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-/* .closet-card:hover .closet-image {
-  transform: scale(1.05);
-} */
-
-.closet-image-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1b1028, #0e0e0e);
-  color: #c084fc;
-  font-size: 16px;
-  font-weight: 600;
+  aspect-ratio: 4 / 5;
+  background: #111111;
+  overflow: hidden;
 }
 
 .closet-info {
-  padding: 16px;
+  padding: 18px;
 }
 
 .closet-info h2 {
-  margin: 0 0 10px;
-  font-size: 1.4rem;
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  color: #ffffff;
 }
 
 .closet-info p {
@@ -83,48 +169,21 @@
 
 .closet-meta {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.95rem;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.closet-empty,
-.closet-loading {
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #d4d4d4;
-  font-size: 1.1rem;
-  text-align: center;
-  padding: 20px;
-}
-
-.closet-actions {
-  margin-top: 18px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.closet-delete-btn {
-  border: none;
-  background: #ef4444;
+.closet-meta span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(192, 132, 252, 0.18);
+  border: 1px solid rgba(192, 132, 252, 0.26);
   color: #ffffff;
-  padding: 10px 16px;
-  border-radius: 10px;
+  font-size: 0.78rem;
   font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s ease;
 }
 
-.closet-delete-btn:hover {
-  background: #dc2626;
-}
-
-.closet-delete-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
+/* ACTIONS */
 
 .closet-actions {
   margin-top: 18px;
@@ -133,15 +192,19 @@
   gap: 10px;
 }
 
-.closet-edit-btn {
+.closet-edit-btn,
+.closet-delete-btn {
   border: none;
-  background: #8b5cf6;
   color: #ffffff;
   padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: 700;
+  border-radius: 12px;
+  font-weight: 800;
   cursor: pointer;
   transition: 0.2s ease;
+}
+
+.closet-edit-btn {
+  background: #8b5cf6;
 }
 
 .closet-edit-btn:hover {
@@ -149,14 +212,7 @@
 }
 
 .closet-delete-btn {
-  border: none;
   background: #ef4444;
-  color: #ffffff;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s ease;
 }
 
 .closet-delete-btn:hover {
@@ -167,6 +223,41 @@
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+/* EMPTY / LOADING */
+
+.closet-empty,
+.closet-loading {
+  min-height: 60vh;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: 24px;
+  color: #d4d4d4;
+}
+
+.closet-empty h2 {
+  margin: 0 0 10px;
+  color: #c084fc;
+  font-size: 2rem;
+}
+
+.closet-empty p {
+  margin: 0 0 18px;
+}
+
+.closet-empty button {
+  justify-self: center;
+  border: none;
+  background: #c084fc;
+  color: #111111;
+  padding: 13px 18px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* MODAL */
 
 .modal-overlay {
   position: fixed;
@@ -247,24 +338,22 @@
   margin-top: 8px;
 }
 
-.modal-cancel-btn {
+.modal-cancel-btn,
+.modal-save-btn {
   border: none;
-  background: #2b2b2b;
   color: #ffffff;
   padding: 12px 18px;
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
 }
 
+.modal-cancel-btn {
+  background: #2b2b2b;
+}
+
 .modal-save-btn {
-  border: none;
   background: #8b5cf6;
-  color: #ffffff;
-  padding: 12px 18px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
 }
 
 .modal-save-btn:hover {
@@ -274,4 +363,64 @@
 .modal-save-btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .closet-layout {
+    display: block;
+  }
+
+  .closet-sidebar {
+    position: static;
+    height: auto;
+    padding: 20px 16px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .closet-sidebar h1 {
+    font-size: 1.7rem;
+    margin-bottom: 14px;
+  }
+
+  .closet-menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .closet-user-card {
+    margin-top: 14px;
+  }
+
+  .closet-container {
+    padding: 28px 16px;
+  }
+
+  .closet-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .closet-header h1 {
+    font-size: 2rem;
+  }
+
+  .closet-add-btn {
+    width: 100%;
+  }
+
+  .closet-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .closet-actions {
+    justify-content: stretch;
+  }
+
+  .closet-edit-btn,
+  .closet-delete-btn {
+    flex: 1;
+  }
 }

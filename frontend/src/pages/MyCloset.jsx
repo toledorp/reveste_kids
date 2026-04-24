@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MyCloset.css";
 import MediaCarousel from "../components/MediaCarousel";
 
 function MyCloset() {
+  const navigate = useNavigate();
+
   const [clothes, setClothes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
   const [savingEdit, setSavingEdit] = useState(false);
+  const [uploadingEditImages, setUploadingEditImages] = useState(false);
+  const [uploadingEditVideo, setUploadingEditVideo] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -17,6 +22,14 @@ function MyCloset() {
     media: [],
     condition: "",
   });
+
+  const user = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,7 +41,7 @@ function MyCloset() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setClothes(data);
+        setClothes(data || []);
         setLoading(false);
       })
       .catch((error) => {
@@ -36,6 +49,22 @@ function MyCloset() {
         setLoading(false);
       });
   }, []);
+
+  const getPreviewMedia = (item) => {
+    if (item?.media && item.media.length > 0) {
+      return item.media;
+    }
+
+    if (item?.images && item.images.length > 0) {
+      return item.images.map((url) => ({ type: "image", url }));
+    }
+
+    if (item?.image) {
+      return [{ type: "image", url: item.image }];
+    }
+
+    return [];
+  };
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Deseja excluir esta peça?");
@@ -71,28 +100,23 @@ function MyCloset() {
   };
 
   const openEditModal = (item) => {
-    const currentMedia =
-      item.media && item.media.length > 0
-        ? item.media
-        : item.images && item.images.length > 0
-        ? item.images.map((url) => ({ type: "image", url }))
-        : item.image
-        ? [{ type: "image", url: item.image }]
-        : [];
-
     setEditingItem(item);
+
     setFormData({
       title: item.title || "",
       description: item.description || "",
       size: item.size || "",
       category: item.category || "",
-      media: currentMedia,
+      media: getPreviewMedia(item),
       condition: item.condition || "",
     });
   };
 
   const closeEditModal = () => {
     setEditingItem(null);
+    setUploadingEditImages(false);
+    setUploadingEditVideo(false);
+
     setFormData({
       title: "",
       description: "",
@@ -105,9 +129,118 @@ function MyCloset() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleEditImagesUpload = async (files) => {
+    if (!files || files.length === 0) return;
+
+    const selectedFiles = Array.from(files);
+    const currentImages = formData.media.filter((item) => item.type === "image");
+
+    if (currentImages.length + selectedFiles.length > 5) {
+      alert("Você pode manter no máximo 5 imagens por peça.");
+      return;
+    }
+
+    try {
+      setUploadingEditImages(true);
+
+      const uploadedMedia = [];
+
+      for (const file of selectedFiles) {
+        const formDataCloud = new FormData();
+        formDataCloud.append("file", file);
+        formDataCloud.append("upload_preset", "reveste_kids_upload");
+
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/djgu3sdab/image/upload",
+          {
+            method: "POST",
+            body: formDataCloud,
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error("Erro ao fazer upload das imagens");
+        }
+
+        uploadedMedia.push({
+          type: "image",
+          url: data.secure_url,
+        });
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        media: [...prev.media, ...uploadedMedia],
+      }));
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao enviar imagens");
+    } finally {
+      setUploadingEditImages(false);
+    }
+  };
+
+  const handleEditVideoUpload = async (file) => {
+    if (!file) return;
+
+    try {
+      setUploadingEditVideo(true);
+
+      const formDataCloud = new FormData();
+      formDataCloud.append("file", file);
+      formDataCloud.append("upload_preset", "reveste_kids_upload");
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/djgu3sdab/video/upload",
+        {
+          method: "POST",
+          body: formDataCloud,
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error("Erro ao fazer upload do vídeo");
+      }
+
+      setFormData((prev) => {
+        const withoutOldVideo = prev.media.filter(
+          (item) => item.type !== "video"
+        );
+
+        return {
+          ...prev,
+          media: [
+            {
+              type: "video",
+              url: data.secure_url,
+            },
+            ...withoutOldVideo,
+          ],
+        };
+      });
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao enviar vídeo");
+    } finally {
+      setUploadingEditVideo(false);
+    }
+  };
+
+  const removeEditMedia = (indexToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      media: prev.media.filter((_, index) => index !== indexToRemove),
     }));
   };
 
@@ -156,33 +289,60 @@ function MyCloset() {
     }
   };
 
-  if (loading) {
-    return <div className="closet-loading">Carregando seu closet...</div>;
-  }
+  const imageCount = formData.media.filter((item) => item.type === "image").length;
+  const hasVideo = formData.media.some((item) => item.type === "video");
 
   return (
-    <>
+    <div className="closet-layout">
+      <aside className="closet-sidebar">
+        <h1>Reveste Kids</h1>
+
+        <nav className="closet-menu">
+          <button onClick={() => navigate("/feed")}>🏠 Para você</button>
+          <button onClick={() => navigate("/feed-antigo")}>🧭 Feed antigo</button>
+          <button onClick={() => navigate("/closet")}>👕 Meu Closet</button>
+          <button onClick={() => navigate("/add-clothing")}>
+            ➕ Cadastrar Peça
+          </button>
+          <button onClick={() => navigate("/matches")}>💬 Matches</button>
+        </nav>
+
+        <div className="closet-user-card">
+          <span>Logado como</span>
+          <strong>{user?.email || "Usuário"}</strong>
+        </div>
+      </aside>
+
       <main className="closet-container">
         <div className="closet-header">
-          <h1>Meu Closet</h1>
-          <p>Veja as peças cadastradas no seu perfil.</p>
+          <div>
+            <h1>Meu Closet</h1>
+            <p>Gerencie as peças cadastradas no seu perfil.</p>
+          </div>
+
+          <button
+            type="button"
+            className="closet-add-btn"
+            onClick={() => navigate("/add-clothing")}
+          >
+            + Nova peça
+          </button>
         </div>
 
-        {clothes.length === 0 ? (
+        {loading ? (
+          <div className="closet-loading">Carregando seu closet...</div>
+        ) : clothes.length === 0 ? (
           <div className="closet-empty">
-            <p>Você ainda não cadastrou nenhuma peça.</p>
+            <h2>Seu closet ainda está vazio</h2>
+            <p>Cadastre sua primeira peça para começar as trocas.</p>
+            <button onClick={() => navigate("/add-clothing")}>
+              Cadastrar peça
+            </button>
           </div>
         ) : (
-          <div className="closet-grid">
+          <section className="closet-grid">
             {clothes.map((item) => {
-              const previewMedia =
-                item.media && item.media.length > 0
-                  ? item.media
-                  : item.images && item.images.length > 0
-                  ? item.images.map((url) => ({ type: "image", url }))
-                  : item.image
-                  ? [{ type: "image", url: item.image }]
-                  : [];
+              const previewMedia = getPreviewMedia(item);
 
               return (
                 <article key={item._id} className="closet-card">
@@ -195,15 +355,9 @@ function MyCloset() {
                     <p>{item.description || "Sem descrição"}</p>
 
                     <div className="closet-meta">
-                      <span>
-                        <strong>Tamanho:</strong> {item.size}
-                      </span>
-                      <span>
-                        <strong>Categoria:</strong> {item.category}
-                      </span>
-                      <span>
-                        <strong>Condição:</strong> {item.condition}
-                      </span>
+                      <span>{item.size || "Sem tamanho"}</span>
+                      <span>{item.category || "Sem categoria"}</span>
+                      <span>{item.condition || "Sem condição"}</span>
                     </div>
 
                     <div className="closet-actions">
@@ -228,15 +382,19 @@ function MyCloset() {
                 </article>
               );
             })}
-          </div>
+          </section>
         )}
       </main>
 
       {editingItem && (
         <div className="modal-overlay" onClick={closeEditModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="modal-content modal-content-large"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="modal-header">
               <h2>Editar peça</h2>
+
               <button
                 type="button"
                 className="modal-close-btn"
@@ -264,14 +422,24 @@ function MyCloset() {
                 rows="4"
               />
 
-              <input
-                type="text"
-                name="size"
-                placeholder="Tamanho"
-                value={formData.size}
-                onChange={handleChange}
-                required
-              />
+              <div className="modal-form-row">
+                <input
+                  type="text"
+                  name="size"
+                  placeholder="Tamanho"
+                  value={formData.size}
+                  onChange={handleChange}
+                  required
+                />
+
+                <input
+                  type="text"
+                  name="condition"
+                  placeholder="Condição"
+                  value={formData.condition}
+                  onChange={handleChange}
+                />
+              </div>
 
               <input
                 type="text"
@@ -282,13 +450,87 @@ function MyCloset() {
                 required
               />
 
-              <input
-                type="text"
-                name="condition"
-                placeholder="Condição"
-                value={formData.condition}
-                onChange={handleChange}
-              />
+              <div className="modal-media-section">
+                <div className="modal-media-header">
+                  <div>
+                    <h3>Mídias da peça</h3>
+                    <p>Adicione, substitua ou remova fotos e vídeo.</p>
+                  </div>
+                </div>
+
+                <div className="modal-upload-actions">
+                  <label className="modal-upload-label">
+                    📸 Adicionar fotos
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(e) => handleEditImagesUpload(e.target.files)}
+                    />
+                  </label>
+
+                  <label className="modal-upload-label secondary">
+                    🎥 Trocar vídeo
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={(e) =>
+                        handleEditVideoUpload(e.target.files[0])
+                      }
+                    />
+                  </label>
+                </div>
+
+                <div className="modal-upload-helper">
+                  <span>{imageCount}/5 fotos</span>
+                  <span>{hasVideo ? "Vídeo selecionado" : "Sem vídeo"}</span>
+                </div>
+
+                {uploadingEditImages && (
+                  <p className="modal-upload-status">Enviando imagens...</p>
+                )}
+
+                {uploadingEditVideo && (
+                  <p className="modal-upload-status">Enviando vídeo...</p>
+                )}
+
+                {formData.media.length > 0 ? (
+                  <div className="modal-preview-grid">
+                    {formData.media.map((item, index) => (
+                      <div
+                        key={`${item.url}-${index}`}
+                        className="modal-preview-item"
+                      >
+                        <button
+                          type="button"
+                          className="modal-remove-media-btn"
+                          onClick={() => removeEditMedia(index)}
+                        >
+                          ×
+                        </button>
+
+                        {item.type === "video" ? (
+                          <video
+                            src={item.url}
+                            controls
+                            className="modal-preview-video"
+                          />
+                        ) : (
+                          <img src={item.url} alt={`Mídia ${index + 1}`} />
+                        )}
+
+                        <span className="modal-media-type-label">
+                          {item.type === "video" ? "Vídeo" : "Foto"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="modal-empty-media">
+                    Nenhuma mídia cadastrada.
+                  </div>
+                )}
+              </div>
 
               <div className="modal-actions">
                 <button
@@ -304,14 +546,14 @@ function MyCloset() {
                   className="modal-save-btn"
                   disabled={savingEdit}
                 >
-                  {savingEdit ? "Salvando..." : "Salvar"}
+                  {savingEdit ? "Salvando..." : "Salvar alterações"}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

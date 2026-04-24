@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddClothing.css";
 
@@ -19,6 +19,14 @@ function AddClothing() {
   const [error, setError] = useState("");
   const [uploadingImages, setUploadingImages] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
+
+  const user = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,7 +74,7 @@ function AddClothing() {
 
       setTimeout(() => {
         navigate("/closet");
-      }, 1000);
+      }, 900);
     } catch (err) {
       console.log(err);
       setError(err.message || "Não foi possível cadastrar a peça.");
@@ -100,7 +108,7 @@ function AddClothing() {
           {
             method: "POST",
             body: formDataCloud,
-          },
+          }
         );
 
         const data = await response.json();
@@ -117,7 +125,7 @@ function AddClothing() {
 
       setFormData((prev) => {
         const existingVideos = prev.media.filter(
-          (item) => item.type === "video",
+          (item) => item.type === "video"
         );
 
         return {
@@ -148,7 +156,7 @@ function AddClothing() {
         {
           method: "POST",
           body: formDataCloud,
-        },
+        }
       );
 
       const data = await response.json();
@@ -159,7 +167,7 @@ function AddClothing() {
 
       setFormData((prev) => {
         const existingImages = prev.media.filter(
-          (item) => item.type === "image",
+          (item) => item.type === "image"
         );
 
         return {
@@ -181,102 +189,233 @@ function AddClothing() {
     }
   };
 
+  const removeMedia = (indexToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      media: prev.media.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
+  const firstMedia = formData.media[0];
+  const imageCount = formData.media.filter((item) => item.type === "image").length;
+  const hasVideo = formData.media.some((item) => item.type === "video");
+
   return (
-    <main className="add-clothing-container">
-      <div className="add-clothing-card">
-        <div className="add-clothing-header">
-          <h1>Cadastrar Peça</h1>
-          <p>Adicione uma nova peça ao seu closet.</p>
+    <div className="add-layout">
+      <aside className="add-sidebar">
+        <h1>Reveste Kids</h1>
+
+        <nav className="add-menu">
+          <button onClick={() => navigate("/feed")}>🏠 Para você</button>
+          <button onClick={() => navigate("/feed-antigo")}>🧭 Feed antigo</button>
+          <button onClick={() => navigate("/closet")}>👕 Meu Closet</button>
+          <button onClick={() => navigate("/add-clothing")}>➕ Cadastrar Peça</button>
+          <button onClick={() => navigate("/matches")}>💬 Matches</button>
+        </nav>
+
+        <div className="add-user-card">
+          <span>Logado como</span>
+          <strong>{user?.email || "Usuário"}</strong>
         </div>
+      </aside>
 
-        <form className="add-clothing-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="title"
-            placeholder="Título da peça"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-
-          <textarea
-            name="description"
-            placeholder="Descrição"
-            value={formData.description}
-            onChange={handleChange}
-            rows="4"
-          />
-
-          <input
-            type="text"
-            name="size"
-            placeholder="Tamanho"
-            value={formData.size}
-            onChange={handleChange}
-            required
-          />
-
-          <input
-            type="text"
-            name="category"
-            placeholder="Categoria"
-            value={formData.category}
-            onChange={handleChange}
-            required
-          />
-
-          <input
-            type="text"
-            name="condition"
-            placeholder="Condição"
-            value={formData.condition}
-            onChange={handleChange}
-          />
-
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => handleImagesUpload(e.target.files)}
-          />
-
-          {uploadingImages && <p>Enviando imagens...</p>}
-
-          <input
-            type="file"
-            accept="video/*"
-            onChange={(e) => handleVideoUpload(e.target.files[0])}
-          />
-
-          {uploadingVideo && <p>Enviando vídeo...</p>}
-
-          {formData.media.length > 0 && (
-            <div className="add-clothing-preview-grid">
-              {formData.media.map((item, index) => (
-                <div key={index} className="add-clothing-preview-item">
-                  {item.type === "video" ? (
-                    <video
-                      src={item.url}
-                      controls
-                      className="add-preview-video"
-                    />
-                  ) : (
-                    <img src={item.url} alt={`Prévia ${index + 1}`} />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <button type="submit" disabled={loading}>
-            {loading ? "Salvando..." : "Cadastrar peça"}
+      <main className="add-page">
+        <header className="add-page-header">
+          <button
+            type="button"
+            className="add-back-btn"
+            onClick={() => navigate("/closet")}
+          >
+            ← Voltar para o Closet
           </button>
-        </form>
 
-        {message && <p className="add-message success">{message}</p>}
-        {error && <p className="add-message error">{error}</p>}
-      </div>
-    </main>
+          <div>
+            <h1>Studio de Cadastro</h1>
+            <p>Publique uma peça com fotos, vídeo e detalhes para troca.</p>
+          </div>
+        </header>
+
+        <section className="add-content">
+          <form className="add-form-card" onSubmit={handleSubmit}>
+            <div className="form-section-title">
+              <h2>Dados da peça</h2>
+              <p>Preencha as informações principais do item.</p>
+            </div>
+
+            <input
+              type="text"
+              name="title"
+              placeholder="Título da peça"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+
+            <textarea
+              name="description"
+              placeholder="Descrição"
+              value={formData.description}
+              onChange={handleChange}
+              rows="4"
+            />
+
+            <div className="form-row">
+              <input
+                type="text"
+                name="size"
+                placeholder="Tamanho"
+                value={formData.size}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="text"
+                name="condition"
+                placeholder="Condição"
+                value={formData.condition}
+                onChange={handleChange}
+              />
+            </div>
+
+            <input
+              type="text"
+              name="category"
+              placeholder="Categoria"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            />
+
+            <div className="upload-panel">
+              <div className="form-section-title">
+                <h2>Mídias da peça</h2>
+                <p>Envie até 5 fotos e 1 vídeo para valorizar o anúncio.</p>
+              </div>
+
+              <div className="upload-actions">
+                <label className="upload-label">
+                  📸 Selecionar fotos
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => handleImagesUpload(e.target.files)}
+                  />
+                </label>
+
+                <label className="upload-label secondary">
+                  🎥 Selecionar vídeo
+                  <input
+                    type="file"
+                    accept="video/*"
+                    onChange={(e) => handleVideoUpload(e.target.files[0])}
+                  />
+                </label>
+              </div>
+
+              <div className="upload-helper">
+                <span>{imageCount}/5 fotos selecionadas</span>
+                <span>{hasVideo ? "Vídeo selecionado" : "Nenhum vídeo"}</span>
+              </div>
+
+              {uploadingImages && (
+                <p className="upload-status">Enviando imagens...</p>
+              )}
+
+              {uploadingVideo && (
+                <p className="upload-status">Enviando vídeo...</p>
+              )}
+
+              {formData.media.length > 0 && (
+                <div className="add-preview-grid">
+                  {formData.media.map((item, index) => (
+                    <div key={`${item.url}-${index}`} className="add-preview-item">
+                      <button
+                        type="button"
+                        className="remove-media-btn"
+                        onClick={() => removeMedia(index)}
+                      >
+                        ×
+                      </button>
+
+                      {item.type === "video" ? (
+                        <video
+                          src={item.url}
+                          controls
+                          className="add-preview-video"
+                        />
+                      ) : (
+                        <img src={item.url} alt={`Prévia ${index + 1}`} />
+                      )}
+
+                      <span className="media-type-label">
+                        {item.type === "video" ? "Vídeo" : "Foto"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="add-form-actions">
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => navigate("/closet")}
+              >
+                Cancelar
+              </button>
+
+              <button type="submit" className="submit-btn" disabled={loading}>
+                {loading ? "Salvando..." : "Cadastrar peça"}
+              </button>
+            </div>
+
+            {message && <p className="add-message success">{message}</p>}
+            {error && <p className="add-message error">{error}</p>}
+          </form>
+
+          <aside className="add-preview-card">
+            <div className="preview-phone">
+              <div className="preview-media">
+                {firstMedia?.type === "video" ? (
+                  <video src={firstMedia.url} autoPlay muted loop playsInline />
+                ) : firstMedia?.url ? (
+                  <img src={firstMedia.url} alt="Prévia da peça" />
+                ) : (
+                  <div className="preview-placeholder">
+                    <span>👕</span>
+                    <p>Prévia da peça</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="preview-info">
+                <h2>{formData.title || "Título da peça"}</h2>
+                <p>
+                  {formData.description ||
+                    "A descrição aparecerá aqui conforme você preencher."}
+                </p>
+
+                <div className="preview-tags">
+                  <span>{formData.size || "Tamanho"}</span>
+                  <span>{formData.category || "Categoria"}</span>
+                  <span>{formData.condition || "Condição"}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="preview-note">
+              <strong>Dica:</strong>
+              <p>
+                Fotos claras e descrição objetiva aumentam as chances de match.
+              </p>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
   );
 }
 
