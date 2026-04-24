@@ -1,5 +1,6 @@
 import Interest from "../models/Interest.js";
 import Clothing from "../models/Clothing.js";
+import Match from "../models/Match.js";
 
 class InterestService {
   async like(userId, clothingId) {
@@ -9,7 +10,60 @@ class InterestService {
       return existing;
     }
 
-    return await Interest.create({ userId, clothingId });
+    const newInterest = await Interest.create({ userId, clothingId });
+
+    const likedClothing = await Clothing.findById(clothingId);
+
+    if (!likedClothing) {
+      return newInterest;
+    }
+
+    const likedClothingOwnerId = likedClothing.userId;
+
+    if (String(likedClothingOwnerId) === String(userId)) {
+      return newInterest;
+    }
+
+    const currentUserClothes = await Clothing.find({ userId });
+    const currentUserClothingIds = currentUserClothes.map((item) => item._id);
+
+    const reciprocalInterest = await Interest.findOne({
+      userId: likedClothingOwnerId,
+      clothingId: { $in: currentUserClothingIds },
+    });
+
+    if (reciprocalInterest) {
+      const existingMatch = await Match.findOne({
+        $or: [
+          {
+            ownerId: likedClothingOwnerId,
+            interestedUserId: userId,
+            ownerClothingId: clothingId,
+            interestedClothingId: reciprocalInterest.clothingId,
+          },
+          {
+            ownerId: userId,
+            interestedUserId: likedClothingOwnerId,
+            ownerClothingId: reciprocalInterest.clothingId,
+            interestedClothingId: clothingId,
+          },
+        ],
+      });
+
+      if (!existingMatch) {
+        await Match.create({
+          ownerId: likedClothingOwnerId,
+          interestedUserId: userId,
+          ownerClothingId: clothingId,
+          interestedClothingId: reciprocalInterest.clothingId,
+          status: "MATCHED",
+        });
+
+        console.log("🔥 Match criado automaticamente");
+      }
+    }
+
+    return newInterest;
   }
 
   async unlike(userId, clothingId) {

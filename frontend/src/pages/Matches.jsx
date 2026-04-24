@@ -57,7 +57,9 @@ function Matches() {
         const alreadyExists = prev.some(
           (msg) => String(msg._id) === String(message._id)
         );
+
         if (alreadyExists) return prev;
+
         return [...prev, message];
       });
     });
@@ -110,6 +112,12 @@ function Matches() {
     if (!clothing) return [];
 
     if (clothing.media && clothing.media.length > 0) {
+      const imageMedia = clothing.media.filter((item) => item.type === "image");
+
+      if (imageMedia.length > 0) {
+        return imageMedia;
+      }
+
       return clothing.media;
     }
 
@@ -142,6 +150,28 @@ function Matches() {
     }
 
     return match.interestedClothingId;
+  };
+
+  const renderClothingMedia = (clothing, altText) => {
+    const media = getPreviewMedia(clothing);
+    const firstMedia = media[0];
+
+    if (!firstMedia?.url) {
+      return <div className="chat-item-placeholder">Sem imagem</div>;
+    }
+
+    if (firstMedia.type === "video") {
+      return (
+        <video
+          src={firstMedia.url}
+          muted
+          playsInline
+          className="chat-item-video"
+        />
+      );
+    }
+
+    return <img src={firstMedia.url} alt={altText} />;
   };
 
   const handleSendMessage = async () => {
@@ -216,16 +246,10 @@ function Matches() {
               {getOtherUserClothing(selectedMatch) && (
                 <div className="chat-item-preview">
                   <div className="chat-item-media">
-                    {getPreviewMedia(getOtherUserClothing(selectedMatch)).length > 0 ? (
-                      <img
-                        src={getPreviewMedia(getOtherUserClothing(selectedMatch))[0].url}
-                        alt={
-                          getOtherUserClothing(selectedMatch)?.title ||
-                          "Peça do outro usuário"
-                        }
-                      />
-                    ) : (
-                      <div className="chat-item-placeholder">Sem imagem</div>
+                    {renderClothingMedia(
+                      getOtherUserClothing(selectedMatch),
+                      getOtherUserClothing(selectedMatch)?.title ||
+                        "Peça do outro usuário"
                     )}
                   </div>
 
@@ -242,18 +266,16 @@ function Matches() {
               {getMyClothing(selectedMatch) && (
                 <div className="chat-item-preview">
                   <div className="chat-item-media">
-                    {getPreviewMedia(getMyClothing(selectedMatch)).length > 0 ? (
-                      <img
-                        src={getPreviewMedia(getMyClothing(selectedMatch))[0].url}
-                        alt={getMyClothing(selectedMatch)?.title || "Sua peça"}
-                      />
-                    ) : (
-                      <div className="chat-item-placeholder">Sem imagem</div>
+                    {renderClothingMedia(
+                      getMyClothing(selectedMatch),
+                      getMyClothing(selectedMatch)?.title || "Sua peça"
                     )}
                   </div>
 
                   <div className="chat-item-info">
-                    <h3>{getMyClothing(selectedMatch)?.title || "Peça sem título"}</h3>
+                    <h3>
+                      {getMyClothing(selectedMatch)?.title || "Peça sem título"}
+                    </h3>
                     <p>Sua peça no match</p>
                   </div>
                 </div>
@@ -268,7 +290,8 @@ function Matches() {
               ) : (
                 messages.map((msg) => {
                   const isMine =
-                    String(msg.senderId?._id || msg.senderId) === String(user?._id);
+                    String(msg.senderId?._id || msg.senderId) ===
+                    String(user?._id);
 
                   return (
                     <div
