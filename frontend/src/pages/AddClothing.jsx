@@ -207,7 +207,7 @@ function AddClothing() {
 
         <nav className="add-menu">
           <button onClick={() => navigate("/feed")}>🏠 Para você</button>
-          <button onClick={() => navigate("/feed-antigo")}>🧭 Feed antigo</button>
+          {/* <button onClick={() => navigate("/feed-antigo")}>🧭 Feed antigo</button> */}
           <button onClick={() => navigate("/closet")}>👕 Meu Closet</button>
           <button onClick={() => navigate("/add-clothing")}>➕ Cadastrar Peça</button>
           <button onClick={() => navigate("/matches")}>💬 Matches</button>
