@@ -17,11 +17,6 @@
   padding: 48px 24px 60px;
 }
 
-.features-hero {
-  text-align: center;
-  margin-bottom: 42px;
-}
-
 .features-badge {
   display: inline-block;
   margin-bottom: 14px;
@@ -33,14 +28,6 @@
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-}
-
-.features-hero h1 {
-  margin: 0 0 14px;
-  font-size: clamp(2rem, 4vw, 3.4rem);
-  color: #ffe81f;
-  line-height: 1.1;
-  text-shadow: 0 0 18px rgba(255, 232, 31, 0.12);
 }
 
 .features-subtitle {
