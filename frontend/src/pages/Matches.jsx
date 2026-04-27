@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { socket } from "../services/socket";
 import "./Matches.css";
 
 function Matches() {
+  const navigate = useNavigate();
+
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMatch, setSelectedMatch] = useState(null);
@@ -55,7 +58,7 @@ function Matches() {
     socket.on("new-message", (message) => {
       setMessages((prev) => {
         const alreadyExists = prev.some(
-          (msg) => String(msg._id) === String(message._id)
+          (msg) => String(msg._id) === String(message._id),
         );
 
         if (alreadyExists) return prev;
@@ -79,7 +82,7 @@ function Matches() {
     setMessageLoading(true);
 
     fetch(
-      `http://localhost:4000/api/chat/matches/${selectedMatch._id}/messages?userId=${user._id}`
+      `http://localhost:4000/api/chat/matches/${selectedMatch._id}/messages?userId=${user._id}`,
     )
       .then((res) => {
         if (!res.ok) {
@@ -206,123 +209,151 @@ function Matches() {
   }
 
   return (
-    <main className="matches-container">
-      <div className="matches-header">
-        <h1>Matches</h1>
-        <p>Converse com usuários com interesse mútuo em troca de peças.</p>
-      </div>
+    <div className="matches-page-layout">
+      <aside className="matches-page-sidebar compact-brand">
+        <img src="/logo_sem_fundo.png" alt="logo" className="matches-page-logo" />
 
-      {matches.length === 0 ? (
-        <div className="matches-empty">
-          <p>Ainda não há matches.</p>
+        <div className="matches-page-actions-menu">
+          <button
+            type="button"
+            className="matches-home-btn"
+            onClick={() => navigate("/feed")}
+          >
+            <img
+              src="/home_sem_fundo.png"
+              alt="Home"
+              className="matches-home-icon"
+            />
+            <span className="matches-home-label">Home</span>
+          </button>
         </div>
-      ) : (
-        <div className="matches-layout">
-          <aside className="matches-sidebar">
-            {matches.map((match) => {
-              const otherUser = getOtherUser(match);
-              const isActive = String(selectedMatch?._id) === String(match._id);
 
-              return (
-                <button
-                  key={match._id}
-                  className={`match-list-item ${isActive ? "active" : ""}`}
-                  onClick={() => setSelectedMatch(match)}
-                >
-                  <strong>{otherUser?.name || "Usuário"}</strong>
-                  <span>{otherUser?.email || "Email não disponível"}</span>
-                </button>
-              );
-            })}
-          </aside>
+        <div className="matches-user-card">
+          <span>Logado por</span>
+          <strong>{user?.name || user?.email?.split("@")[0]}</strong>
+        </div>
+      </aside>
 
-          <section className="chat-panel">
-            <div className="chat-panel-header">
-              <h2>{getOtherUser(selectedMatch)?.name || "Conversa"}</h2>
-              <p>{getOtherUser(selectedMatch)?.email || ""}</p>
-            </div>
+      <main className="matches-container">
+        <div className="matches-header">
+          <h1>Matches</h1>
+          <p>Converse com usuários com interesse mútuo em troca de peças.</p>
+        </div>
 
-            <div className="chat-items-preview">
-              {getOtherUserClothing(selectedMatch) && (
-                <div className="chat-item-preview">
-                  <div className="chat-item-media">
-                    {renderClothingMedia(
-                      getOtherUserClothing(selectedMatch),
-                      getOtherUserClothing(selectedMatch)?.title ||
-                        "Peça do outro usuário"
-                    )}
-                  </div>
+        {matches.length === 0 ? (
+          <div className="matches-empty">
+            <p>Ainda não há matches.</p>
+          </div>
+        ) : (
+          <div className="matches-layout">
+            <aside className="matches-sidebar">
+              {matches.map((match) => {
+                const otherUser = getOtherUser(match);
+                const isActive =
+                  String(selectedMatch?._id) === String(match._id);
 
-                  <div className="chat-item-info">
-                    <h3>
-                      {getOtherUserClothing(selectedMatch)?.title ||
-                        "Peça sem título"}
-                    </h3>
-                    <p>Peça do outro usuário</p>
-                  </div>
-                </div>
-              )}
+                return (
+                  <button
+                    key={match._id}
+                    className={`match-list-item ${isActive ? "active" : ""}`}
+                    onClick={() => setSelectedMatch(match)}
+                  >
+                    <strong>{otherUser?.name || "Usuário"}</strong>
+                    <span>{otherUser?.email || "Email não disponível"}</span>
+                  </button>
+                );
+              })}
+            </aside>
 
-              {getMyClothing(selectedMatch) && (
-                <div className="chat-item-preview">
-                  <div className="chat-item-media">
-                    {renderClothingMedia(
-                      getMyClothing(selectedMatch),
-                      getMyClothing(selectedMatch)?.title || "Sua peça"
-                    )}
-                  </div>
+            <section className="chat-panel">
+              <div className="chat-panel-header">
+                <h2>{getOtherUser(selectedMatch)?.name || "Conversa"}</h2>
+                <p>{getOtherUser(selectedMatch)?.email || ""}</p>
+              </div>
 
-                  <div className="chat-item-info">
-                    <h3>
-                      {getMyClothing(selectedMatch)?.title || "Peça sem título"}
-                    </h3>
-                    <p>Sua peça no match</p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="chat-messages">
-              {messageLoading ? (
-                <div className="chat-empty">Carregando mensagens...</div>
-              ) : messages.length === 0 ? (
-                <div className="chat-empty">Nenhuma mensagem ainda.</div>
-              ) : (
-                messages.map((msg) => {
-                  const isMine =
-                    String(msg.senderId?._id || msg.senderId) ===
-                    String(user?._id);
-
-                  return (
-                    <div
-                      key={msg._id}
-                      className={`chat-bubble ${isMine ? "mine" : "theirs"}`}
-                    >
-                      <p>{msg.content}</p>
+              <div className="chat-items-preview">
+                {getOtherUserClothing(selectedMatch) && (
+                  <div className="chat-item-preview">
+                    <div className="chat-item-media">
+                      {renderClothingMedia(
+                        getOtherUserClothing(selectedMatch),
+                        getOtherUserClothing(selectedMatch)?.title ||
+                          "Peça do outro usuário",
+                      )}
                     </div>
-                  );
-                })
-              )}
-            </div>
 
-            <div className="chat-input-area">
-              <input
-                type="text"
-                placeholder="Digite sua mensagem"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleSendMessage();
-                  }
-                }}
-              />
-              <button onClick={handleSendMessage}>Enviar</button>
-            </div>
-          </section>
-        </div>
-      )}
-    </main>
+                    <div className="chat-item-info">
+                      <h3>
+                        {getOtherUserClothing(selectedMatch)?.title ||
+                          "Peça sem título"}
+                      </h3>
+                      <p>Peça do outro usuário</p>
+                    </div>
+                  </div>
+                )}
+
+                {getMyClothing(selectedMatch) && (
+                  <div className="chat-item-preview">
+                    <div className="chat-item-media">
+                      {renderClothingMedia(
+                        getMyClothing(selectedMatch),
+                        getMyClothing(selectedMatch)?.title || "Sua peça",
+                      )}
+                    </div>
+
+                    <div className="chat-item-info">
+                      <h3>
+                        {getMyClothing(selectedMatch)?.title ||
+                          "Peça sem título"}
+                      </h3>
+                      <p>Sua peça no match</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="chat-messages">
+                {messageLoading ? (
+                  <div className="chat-empty">Carregando mensagens...</div>
+                ) : messages.length === 0 ? (
+                  <div className="chat-empty">Nenhuma mensagem ainda.</div>
+                ) : (
+                  messages.map((msg) => {
+                    const isMine =
+                      String(msg.senderId?._id || msg.senderId) ===
+                      String(user?._id);
+
+                    return (
+                      <div
+                        key={msg._id}
+                        className={`chat-bubble ${isMine ? "mine" : "theirs"}`}
+                      >
+                        <p>{msg.content}</p>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              <div className="chat-input-area">
+                <input
+                  type="text"
+                  placeholder="Digite sua mensagem"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSendMessage();
+                    }
+                  }}
+                />
+                <button onClick={handleSendMessage}>Enviar</button>
+              </div>
+            </section>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
 

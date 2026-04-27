@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FeedTikTok.css";
+import Footer from "../components/Footer";
 
 function FeedTikTok() {
   const [clothes, setClothes] = useState([]);
@@ -123,7 +124,7 @@ function FeedTikTok() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       const data = await response.json();
@@ -137,7 +138,7 @@ function FeedTikTok() {
 
         showToast(
           "Like removido",
-          "A peça foi removida da sua lista de curtidas."
+          "A peça foi removida da sua lista de curtidas.",
         );
 
         return;
@@ -148,12 +149,12 @@ function FeedTikTok() {
       if (data.matchCreated) {
         showToast(
           "Deu match! 🎉",
-          "Vocês demonstraram interesse em trocar peças. A conversa já está disponível em Matches."
+          "Vocês demonstraram interesse em trocar peças. A conversa já está disponível em Matches.",
         );
       } else {
         showToast(
           "Like enviado!",
-          "Se houver interesse mútuo, o match aparecerá na área de Matches."
+          "Se houver interesse mútuo, o match aparecerá na área de Matches.",
         );
       }
     } catch (error) {
@@ -163,26 +164,14 @@ function FeedTikTok() {
   };
 
   return (
+    <>
     <div className="tiktok-layout">
-      <aside className="tiktok-sidebar">
-        <h1>Reveste Kids</h1>
-
-        <nav className="tiktok-menu">
-          <button onClick={() => navigate("/feed")}>🏠 Para você</button>
-          <button onClick={() => navigate("/closet")}>👕 Meu Closet</button>
-          <button onClick={() => navigate("/add-clothing")}>
-            ➕ Cadastrar Peça
-          </button>
-          <button onClick={() => navigate("/matches")}>💬 Matches</button>
-
-          <button className="logout-btn" onClick={handleLogout}>
-            🚪 Sair
-          </button>
-        </nav>
+      <aside className="tiktok-sidebar compact-brand">
+       <img src="/logo_sem_fundo.png" alt="logo" className="tiktok-logo" />
 
         <div className="tiktok-user-card">
-          <span>Logado como</span>
-          <strong>{user?.email || "Usuário"}</strong>
+          <span>Logado por</span>
+          <strong>{user?.name || user?.email?.split("@")[0]}</strong>
         </div>
       </aside>
 
@@ -273,6 +262,19 @@ function FeedTikTok() {
 
                 <div className="tiktok-actions">
                   <button
+                    type="button"
+                    className="tiktok-action-btn"
+                    onClick={() => navigate("/feed")}
+                  >
+                    <img
+                      src="/home_sem_fundo.png"
+                      alt="Home"
+                      className="action-icon-img"
+                    />
+                  </button>
+                  <span>Home</span>
+
+                  <button
                     className={`tiktok-action-btn ${isLiked ? "liked" : ""}`}
                     onClick={() => handleLike(item._id)}
                     disabled={isOwnClothing}
@@ -282,15 +284,30 @@ function FeedTikTok() {
                         : ""
                     }
                   >
-                    {isOwnClothing ? "🚫" : "❤️"}
+                    {isOwnClothing ? (
+                      <img
+                        src="/notLike_sem_fundo.png"
+                        alt="Not Like"
+                        className="action-icon-img"
+                      />
+                    ) : (
+                      <img
+                        src={
+                          isLiked
+                            ? "/like_coracao_sem_fundo.png"
+                            : "/like_sem_fundo.png"
+                        }
+                        alt={isLiked ? "Curtido" : "Curtir"}
+                        className="action-icon-img"
+                      />
+                    )}
                   </button>
-
                   <span>
                     {isOwnClothing
                       ? "Sua peça"
                       : isLiked
-                      ? "Curtido"
-                      : "Curtir"}
+                        ? "Curtido"
+                        : "Curtir"}
                   </span>
 
                   <button
@@ -298,7 +315,11 @@ function FeedTikTok() {
                     className="tiktok-action-btn"
                     onClick={() => navigate("/closet")}
                   >
-                    👕
+                    <img
+                      src="/closet_sem_fundo.png"
+                      alt="Closet"
+                      className="action-icon-img"
+                    />
                   </button>
                   <span>Closet</span>
 
@@ -307,15 +328,33 @@ function FeedTikTok() {
                     className="tiktok-action-btn"
                     onClick={() => navigate("/matches")}
                   >
-                    💬
+                    <img
+                      src="/match_sem_fundo.png"
+                      alt="Match"
+                      className="action-icon-img"
+                    />
                   </button>
                   <span>Match</span>
+
+                  <button
+                    type="button"
+                    className="tiktok-action-btn logout-action-btn"
+                    onClick={handleLogout}
+                  >
+                    <img
+                      src="/logout_sem_fundo.png"
+                      alt="Sair"
+                      className="action-icon-img"
+                    />
+                  </button>
+                  <span>Sair</span>
                 </div>
               </section>
             );
           })
         )}
       </main>
+
 
       {matchAlert && (
         <div className="match-toast">
@@ -324,6 +363,8 @@ function FeedTikTok() {
         </div>
       )}
     </div>
+  <Footer />
+  </>
   );
 }
 

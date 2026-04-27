@@ -36,6 +36,7 @@ function AppContent() {
     "/feed-tiktok",
     "/closet",
     "/add-clothing",
+    "/matches",
   ];
 
   const hideGlobalLayout = pagesWithoutGlobalLayout.includes(location.pathname);

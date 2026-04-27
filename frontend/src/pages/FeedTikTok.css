@@ -1,10 +1,28 @@
-.tiktok-layout {
+/* .tiktok-layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 180px 1fr;
   height: 100vh;
   background: #050505;
   color: #ffffff;
   overflow: hidden;
+} */
+
+.tiktok-layout {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  min-height: 100vh;
+  background: #050505;
+  color: #ffffff;
+}
+
+
+
+.tiktok-logo {
+  width: 140px; /* controla o tamanho */
+  height: auto; /* mantém proporção */
+  object-fit: contain;
+  display: block;
+  margin-bottom: 30px; /* espaço abaixo do logo */
 }
 
 /* SIDEBAR */
@@ -79,6 +97,72 @@
 .tiktok-user-card strong {
   font-size: 0.9rem;
   word-break: break-word;
+}
+
+/* SIDEBAR COM ÍCONES (NOVO) */
+
+.tiktok-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* ÍCONE */
+.icon-btn .icon {
+  font-size: 1.6rem;
+}
+
+/* LABEL OCULTO */
+.icon-btn .label {
+  position: absolute;
+  left: 80px;
+  background: #111;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: 0.2s ease;
+  pointer-events: none;
+}
+
+/* HOVER */
+.icon-btn:hover {
+  background: #111;
+  transform: scale(1.05);
+}
+
+.icon-btn:hover .label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* BOTÃO SAIR */
+.logout-btn {
+  margin-top: 12px;
+  background: linear-gradient(135deg, #c084fc, #8b5cf6);
+  color: #111;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #fff;
 }
 
 /* FEED */
@@ -245,7 +329,7 @@
   color: #ffffff;
 }
 
-.tiktok-action-btn {
+/* .tiktok-action-btn {
   width: 62px;
   height: 62px;
   border-radius: 50%;
@@ -253,6 +337,22 @@
   background: rgba(10, 10, 10, 0.72);
   color: #ffffff;
   font-size: 1.55rem;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: 0.2s ease;
+} */
+
+.tiktok-action-btn {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(10, 10, 10, 0.72);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   cursor: pointer;
   backdrop-filter: blur(10px);
   transition: 0.2s ease;
@@ -269,11 +369,24 @@
 }
 
 .tiktok-action-btn.liked {
-  background: #c084fc;
-  color: #111111;
-  border-color: #c084fc;
+  background: rgba(10, 10, 10, 0.72);
+  border-color: rgba(192, 132, 252, 0.9);
   animation: likePulse 0.35s ease;
 }
+
+.tiktok-action-btn.liked .action-icon-img {
+  filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.9));
+}
+
+/* .tiktok-actions span {
+  position: absolute;
+  right: 70px;
+  background: #111;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+} */
 
 .tiktok-actions span {
   font-size: 0.76rem;
@@ -384,8 +497,8 @@
 
 @media (max-width: 900px) {
   .tiktok-layout {
-    display: block;
-    height: 100vh;
+    min-height: 100vh;
+    overflow: visible;
   }
 
   .tiktok-sidebar {
@@ -468,4 +581,63 @@
     top: 16px;
     right: 16px;
   }
+}
+
+/* =========================
+   ESCONDER LABELS DOS ÍCONES (AÇÕES)
+========================= */
+
+.tiktok-actions span {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: 0.2s ease;
+  pointer-events: none;
+}
+
+/* MOSTRAR NO HOVER */
+.tiktok-actions:hover span {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* MELHOR: mostrar só quando hover no botão */
+.tiktok-action-btn:hover + span {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* .action-icon-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+} */
+
+.action-icon-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+/* .tiktok-action-btn:hover .action-icon-img {
+  transform: scale(1.08);
+}
+
+.tiktok-action-btn.liked .action-icon-img {
+  filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.7));
+} */
+
+.tiktok-action-btn:hover {
+  transform: scale(1.08);
+  border-color: rgba(192, 132, 252, 0.7);
+}
+
+.tiktok-action-btn img {
+  transition: 0.2s ease;
+}
+
+.tiktok-action-btn:hover img {
+  transform: scale(1.1);
 }

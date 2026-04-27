@@ -89,7 +89,7 @@ function MyCloset() {
       }
 
       setClothes((prevClothes) =>
-        prevClothes.filter((item) => item._id !== id)
+        prevClothes.filter((item) => item._id !== id),
       );
     } catch (error) {
       console.log(error);
@@ -140,7 +140,9 @@ function MyCloset() {
     if (!files || files.length === 0) return;
 
     const selectedFiles = Array.from(files);
-    const currentImages = formData.media.filter((item) => item.type === "image");
+    const currentImages = formData.media.filter(
+      (item) => item.type === "image",
+    );
 
     if (currentImages.length + selectedFiles.length > 5) {
       alert("Você pode manter no máximo 5 imagens por peça.");
@@ -162,7 +164,7 @@ function MyCloset() {
           {
             method: "POST",
             body: formDataCloud,
-          }
+          },
         );
 
         const data = await response.json();
@@ -204,7 +206,7 @@ function MyCloset() {
         {
           method: "POST",
           body: formDataCloud,
-        }
+        },
       );
 
       const data = await response.json();
@@ -215,7 +217,7 @@ function MyCloset() {
 
       setFormData((prev) => {
         const withoutOldVideo = prev.media.filter(
-          (item) => item.type !== "video"
+          (item) => item.type !== "video",
         );
 
         return {
@@ -263,7 +265,7 @@ function MyCloset() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(formData),
-        }
+        },
       );
 
       const data = await response.json();
@@ -276,8 +278,8 @@ function MyCloset() {
 
       setClothes((prevClothes) =>
         prevClothes.map((item) =>
-          item._id === updatedItem._id ? updatedItem : item
-        )
+          item._id === updatedItem._id ? updatedItem : item,
+        ),
       );
 
       closeEditModal();
@@ -289,27 +291,35 @@ function MyCloset() {
     }
   };
 
-  const imageCount = formData.media.filter((item) => item.type === "image").length;
+  const imageCount = formData.media.filter(
+    (item) => item.type === "image",
+  ).length;
+
   const hasVideo = formData.media.some((item) => item.type === "video");
 
   return (
     <div className="closet-layout">
-      <aside className="closet-sidebar">
-        <h1>Reveste Kids</h1>
+      <aside className="closet-sidebar compact-brand">
+        <img src="/logo_sem_fundo.png" alt="logo" className="closet-logo" />
 
-        <nav className="closet-menu">
-          <button onClick={() => navigate("/feed")}>🏠 Para você</button>
-          <button onClick={() => navigate("/feed-antigo")}>🧭 Feed antigo</button>
-          <button onClick={() => navigate("/closet")}>👕 Meu Closet</button>
-          <button onClick={() => navigate("/add-clothing")}>
-            ➕ Cadastrar Peça
+        <div className="closet-actions-menu">
+          <button
+            type="button"
+            className="closet-home-btn"
+            onClick={() => navigate("/feed")}
+          >
+            <img
+              src="/home_sem_fundo.png"
+              alt="Home"
+              className="closet-home-icon"
+            />
+            <span className="closet-home-label">Home</span>
           </button>
-          <button onClick={() => navigate("/matches")}>💬 Matches</button>
-        </nav>
+        </div>
 
         <div className="closet-user-card">
-          <span>Logado como</span>
-          <strong>{user?.email || "Usuário"}</strong>
+          <span>Logado por</span>
+          <strong>{user?.name || user?.email?.split("@")[0]}</strong>
         </div>
       </aside>
 
@@ -474,9 +484,7 @@ function MyCloset() {
                     <input
                       type="file"
                       accept="video/*"
-                      onChange={(e) =>
-                        handleEditVideoUpload(e.target.files[0])
-                      }
+                      onChange={(e) => handleEditVideoUpload(e.target.files[0])}
                     />
                   </label>
                 </div>

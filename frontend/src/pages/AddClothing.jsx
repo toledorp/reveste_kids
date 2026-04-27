@@ -108,7 +108,7 @@ function AddClothing() {
           {
             method: "POST",
             body: formDataCloud,
-          }
+          },
         );
 
         const data = await response.json();
@@ -125,7 +125,7 @@ function AddClothing() {
 
       setFormData((prev) => {
         const existingVideos = prev.media.filter(
-          (item) => item.type === "video"
+          (item) => item.type === "video",
         );
 
         return {
@@ -156,7 +156,7 @@ function AddClothing() {
         {
           method: "POST",
           body: formDataCloud,
-        }
+        },
       );
 
       const data = await response.json();
@@ -167,7 +167,7 @@ function AddClothing() {
 
       setFormData((prev) => {
         const existingImages = prev.media.filter(
-          (item) => item.type === "image"
+          (item) => item.type === "image",
         );
 
         return {
@@ -197,25 +197,36 @@ function AddClothing() {
   };
 
   const firstMedia = formData.media[0];
-  const imageCount = formData.media.filter((item) => item.type === "image").length;
+  const imageCount = formData.media.filter(
+    (item) => item.type === "image",
+  ).length;
   const hasVideo = formData.media.some((item) => item.type === "video");
 
   return (
     <div className="add-layout">
-      <aside className="add-sidebar">
-        <h1>Reveste Kids</h1>
+      <aside className="add-sidebar compact-brand">
+        <img src="/logo_sem_fundo.png" alt="logo" className="add-logo" />
 
-        <nav className="add-menu">
-          <button onClick={() => navigate("/feed")}>🏠 Para você</button>
-          {/* <button onClick={() => navigate("/feed-antigo")}>🧭 Feed antigo</button> */}
-          <button onClick={() => navigate("/closet")}>👕 Meu Closet</button>
-          <button onClick={() => navigate("/add-clothing")}>➕ Cadastrar Peça</button>
-          <button onClick={() => navigate("/matches")}>💬 Matches</button>
-        </nav>
+        <div className="add-actions-menu">
+          <button
+            type="button"
+            className="add-home-btn"
+            onClick={() => navigate("/feed")}
+          >
+            <img
+              src="/home_sem_fundo.png"
+              alt="Home"
+              className="add-home-icon"
+            />
+            <span className="add-home-label">Home</span>
+          </button>
+        </div>
 
         <div className="add-user-card">
-          <span>Logado como</span>
-          <strong>{user?.email || "Usuário"}</strong>
+          <span>Logado por</span>
+          <strong>
+            {user?.name || user?.email?.split("@")[0] || "Usuário"}
+          </strong>
         </div>
       </aside>
 
@@ -253,37 +264,10 @@ function AddClothing() {
 
             <textarea
               name="description"
-              placeholder="Descrição"
+              placeholder="Descrição detalhada da peça. Inclua aqui informações como cor, tamanho, condição da peça, categoria, detalhes de uso, observações e tudo que ajude na troca."
               value={formData.description}
               onChange={handleChange}
-              rows="4"
-            />
-
-            <div className="form-row">
-              <input
-                type="text"
-                name="size"
-                placeholder="Tamanho"
-                value={formData.size}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="text"
-                name="condition"
-                placeholder="Condição"
-                value={formData.condition}
-                onChange={handleChange}
-              />
-            </div>
-
-            <input
-              type="text"
-              name="category"
-              placeholder="Categoria"
-              value={formData.category}
-              onChange={handleChange}
+              rows="6"
               required
             />
 
@@ -330,7 +314,10 @@ function AddClothing() {
               {formData.media.length > 0 && (
                 <div className="add-preview-grid">
                   {formData.media.map((item, index) => (
-                    <div key={`${item.url}-${index}`} className="add-preview-item">
+                    <div
+                      key={`${item.url}-${index}`}
+                      className="add-preview-item"
+                    >
                       <button
                         type="button"
                         className="remove-media-btn"
@@ -385,7 +372,11 @@ function AddClothing() {
                   <img src={firstMedia.url} alt="Prévia da peça" />
                 ) : (
                   <div className="preview-placeholder">
-                    <span>👕</span>
+                    <img
+                      src="/closet_sem_fundo.png"
+                      alt="Preview"
+                      className="preview-icon"
+                    />
                     <p>Prévia da peça</p>
                   </div>
                 )}
@@ -397,19 +388,13 @@ function AddClothing() {
                   {formData.description ||
                     "A descrição aparecerá aqui conforme você preencher."}
                 </p>
-
-                <div className="preview-tags">
-                  <span>{formData.size || "Tamanho"}</span>
-                  <span>{formData.category || "Categoria"}</span>
-                  <span>{formData.condition || "Condição"}</span>
-                </div>
               </div>
             </div>
 
             <div className="preview-note">
               <strong>Dica:</strong>
               <p>
-                Fotos claras e descrição objetiva aumentam as chances de match.
+                Fotos claras e descrição detalhada aumentam as chances de match.
               </p>
             </div>
           </aside>
