@@ -1,150 +1,137 @@
-# 🚀 Reveste Kids - Plataforma de Troca de Roupas
+# Reveste Kids - Plataforma de Troca de Roupas
 
-Sistema fullstack desenvolvido com **Node.js, Express, MongoDB Atlas, React e Cloudinary**, permitindo que usuários cadastrem roupas, interajam via likes e realizem trocas através de matches em uma experiência inspirada no TikTok.
-
----
-
-## 📌 Objetivo
-
-Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco na construção de uma aplicação moderna estilo **rede social de troca de roupas**, incluindo:
-
-✔ Cadastro de peças
-✔ Upload de imagens e vídeos
-✔ Feed interativo estilo TikTok
-✔ Sistema de likes
-✔ Matches automáticos entre usuários
-✔ CRUD completo via interface
-✔ API documentada com Swagger
+Aplicação **fullstack moderna** desenvolvida com **Node.js, Express, MongoDB Atlas, React e Cloudinary**, que permite a troca de roupas entre usuários através de uma experiência interativa inspirada em redes sociais como o TikTok.
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+## Sobre o projeto
 
-### 🔧 Backend
+O **Reveste Kids** é uma plataforma onde usuários podem:
 
-* Node.js
-* Express
-* MongoDB Atlas
-* Mongoose
-* JWT (Autenticação)
-* Dotenv
-* Swagger UI Express
+- Cadastrar roupas
+- Curtir peças de outros usuários
+- Criar matches automáticos
+- Conversar e negociar trocas
 
-### 🎨 Frontend
-
-* React
-* Vite
-* Fetch API
-* CSS moderno (UI estilo app)
-
-### ☁️ Upload de mídia
-
-* Cloudinary
-
-### 🧪 Ferramentas
-
-* Insomnia
-* Swagger UI
-* Git e GitHub
+Tudo isso com uma interface moderna, fluida e responsiva.
 
 ---
 
-## 📸 Funcionalidades principais
+## Objetivo
 
-### 👕 Roupas
+Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco em:
 
-* Cadastro de peças via frontend
-* Upload múltiplo de imagens
-* Upload de vídeos
-* Edição completa (incluindo mídias)
-* Exclusão de peças
-
----
-
-### 📰 Feed estilo TikTok (OFICIAL)
-
-* Exibição vertical estilo swipe
-* Suporte a imagens e vídeos no mesmo post
-* Carousel de mídia (foto + vídeo)
-* Layout responsivo:
-
-  * 🖥️ Web → informações ao lado
-  * 📱 Mobile → informações abaixo
-* Interações rápidas (curtir, match)
+✔ Construção de aplicação fullstack real  
+✔ Integração com serviços externos (Cloudinary)  
+✔ Interface moderna estilo app mobile  
+✔ Boas práticas de arquitetura e organização  
 
 ---
 
-### ❤️ Likes
+## Tecnologias utilizadas
 
-* Curtir peças de outros usuários
-* Remover curtida
-* Bloqueio de curtida em peças próprias
+### Backend
+- Node.js
+- Express
+- MongoDB Atlas
+- Mongoose
+- JWT (Autenticação)
+- Dotenv
+- Swagger UI
 
----
+### Frontend
+- React
+- Vite
+- CSS moderno (UI estilo TikTok)
+- Fetch API
 
-### 🔥 Matches
+### Upload de mídia
+- Cloudinary
 
-* Match automático quando há interesse mútuo
-* Tela dedicada com:
-
-  * Peças envolvidas
-  * Usuários relacionados
-
----
-
-### 👤 Meu Closet
-
-* Visualização das próprias peças
-* Edição via modal moderno
-* Upload/remoção de imagens e vídeos
-* Exclusão de peças
-
----
-
-### ➕ Cadastro de Peças
-
-* Interface moderna estilo app
-* Upload separado de:
-
-  * 📸 Imagens
-  * 🎥 Vídeos
-* Preview antes do envio
-* Integração com Cloudinary
+### Ferramentas
+- Insomnia
+- Swagger
+- Git & GitHub
 
 ---
 
-## ☁️ Cloudinary (Upload de mídia)
+## Funcionalidades
 
-O sistema utiliza o **Cloudinary** para armazenamento de mídia:
+### Gestão de roupas
+- Cadastro de peças
+- Upload de múltiplas imagens
+- Upload de vídeo
+- Edição completa
+- Exclusão de peças
 
-* Upload direto do frontend
-* Suporte a múltiplas imagens
-* Suporte a vídeos
-* URLs otimizadas automaticamente
-* CDN global (alta performance)
+---
 
-### Estrutura de mídia
+### Feed estilo TikTok
+- Scroll vertical fluido
+- Suporte a imagens e vídeos
+- Carousel de mídia
+- Layout responsivo:
+  - 🖥️ Desktop → informações laterais  
+  - 📱 Mobile → informações abaixo  
+- Interações rápidas (like e match)
 
-```json
+---
+
+### Likes
+- Curtir peças
+- Remover curtidas
+- Bloqueio de auto-like
+
+---
+
+### Matches
+- Match automático por interesse mútuo
+- Interface de chat em tempo real
+- Visualização das peças envolvidas
+
+---
+
+### Meu Closet
+- Visualização das próprias peças
+- Edição via modal
+- Upload e remoção de mídias
+- Exclusão de itens
+
+---
+
+### Cadastro de Peças
+- Interface moderna
+- Upload separado:
+  - 📸 Imagens
+  - 🎥 Vídeos
+- Preview em tempo real
+- Integração com Cloudinary
+
+---
+
+## Upload com Cloudinary
+
+- Upload direto pelo frontend
+- Suporte a imagens e vídeos
+- CDN global
+- Otimização automática
+
+### Estrutura:
+
+\`\`\`json
 {
   "media": [
-    {
-      "type": "image",
-      "url": "https://..."
-    },
-    {
-      "type": "video",
-      "url": "https://..."
-    }
+    { "type": "image", "url": "https://..." },
+    { "type": "video", "url": "https://..." }
   ]
 }
-```
+\`\`\`
 
 ---
 
-## 📂 Estrutura do projeto
+## Estrutura do projeto
 
-```text
+\`\`\`bash
 reveste_kids/
 │
 ├── backend/
@@ -167,17 +154,17 @@ reveste_kids/
 │   └── index.html
 │
 └── README.md
-```
+\`\`\`
 
 ---
 
-## ⚙️ Como executar o projeto
+## Como executar
 
-### 1. Clonar repositório
+### 1. Clonar o projeto
 
-```bash
+\`\`\`bash
 git clone https://github.com/toledorp/reveste_kids.git
-```
+\`\`\`
 
 ---
 
@@ -185,141 +172,133 @@ git clone https://github.com/toledorp/reveste_kids.git
 
 #### Backend
 
-```bash
+\`\`\`bash
 cd backend
 npm install
-```
+\`\`\`
 
 #### Frontend
 
-```bash
+\`\`\`bash
 cd ../frontend
 npm install
-```
+\`\`\`
 
 ---
 
 ### 3. Configurar variáveis de ambiente
 
-Crie um arquivo `.env` dentro da pasta **backend**:
+Crie um \`.env\` no backend:
 
-```env
+\`\`\`env
 MONGO_URI=sua_string_mongodb
 JWT_SECRET=sua_chave_secreta
 PORT=4000
-```
+\`\`\`
 
 ---
 
-### 4. Executar aplicação
+### 4. Rodar o projeto
 
-Na raiz do projeto:
-
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 ---
 
-## 🌐 Acessos
+## Acessos
 
-* Frontend: http://localhost:5173
-* Backend: http://localhost:4000
-* Swagger: http://localhost:4000/api-docs
-
----
-
-## 🔐 Autenticação
-
-Sistema baseado em JWT:
-
-* Cadastro de usuário
-* Login
-* Proteção de rotas
-* Persistência de sessão no frontend
+- Frontend → http://localhost:5173  
+- Backend → http://localhost:4000  
+- Swagger → http://localhost:4000/api-docs  
 
 ---
 
-## 🔗 Endpoints principais
+## Autenticação
+
+- JWT
+- Login e cadastro
+- Proteção de rotas
+- Persistência de sessão
+
+---
+
+## API (principais rotas)
 
 ### Auth
-
-```
+\`\`\`
 POST /user
 POST /auth
-```
+\`\`\`
 
 ### Roupas
-
-```
+\`\`\`
 GET /clothes
 POST /clothes
 PUT /clothes/:id
 DELETE /clothes/:id
 GET /clothes/user
-```
+\`\`\`
 
 ### Likes
-
-```
+\`\`\`
 POST /like/:id
 DELETE /like/:id
-```
+\`\`\`
 
 ### Matches
-
-```
+\`\`\`
 GET /matches
-```
+\`\`\`
 
 ---
 
-## 📘 Swagger
+## Swagger
 
-Documentação interativa disponível em:
+Documentação disponível em:
 
-```
+\`\`\`
 http://localhost:4000/api-docs
-```
+\`\`\`
 
 ---
 
-## 🧠 Diferenciais do projeto
+## Diferenciais
 
-* Feed estilo TikTok totalmente funcional
-* Upload de imagens e vídeos com Cloudinary
-* Interface moderna e responsiva (mobile first)
-* Sistema de match automático
-* Arquitetura fullstack bem definida
-* Experiência de usuário inspirada em apps reais
-* Pronto para evolução (mobile app / deploy)
+✨ Interface estilo TikTok  
+✨ Upload de imagens e vídeos  
+✨ Match automático entre usuários  
+✨ UX moderna e responsiva  
+✨ Arquitetura fullstack completa  
+✨ Pronto para evolução (mobile / deploy)  
 
 ---
 
-## 🧪 Testes
+## Testes
 
-* Insomnia
-* Swagger
-* Testes manuais via frontend
+- Insomnia
+- Swagger
+- Testes manuais
 
 ---
 
 ## ☁️ Banco de dados
 
-* MongoDB Atlas (cloud)
+- MongoDB Atlas (Cloud)
 
 ---
 
-## 👨‍💻 Autor(es)
+## Autores
 
-* Camila Machado de Souza
-* Felipe Guedes
-* Kaio Sumikawa
-* Ricardo Sugano
-* Rogerio Pupo Toledo
+- Camila Machado de Souza  
+- Felipe Guedes  
+- Kaio Sumikawa  
+- Ricardo Sugano  
+- Rogerio Pupo Toledo  
 
 ---
 
-## 📄 Licença
+## Licença
 
 Projeto acadêmico sem fins comerciais.
+EOF
