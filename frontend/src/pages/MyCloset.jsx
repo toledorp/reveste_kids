@@ -364,12 +364,6 @@ function MyCloset() {
                     <h2>{item.title}</h2>
                     <p>{item.description || "Sem descrição"}</p>
 
-                    <div className="closet-meta">
-                      <span>{item.size || "Sem tamanho"}</span>
-                      <span>{item.category || "Sem categoria"}</span>
-                      <span>{item.condition || "Sem condição"}</span>
-                    </div>
-
                     <div className="closet-actions">
                       <button
                         type="button"
@@ -432,7 +426,7 @@ function MyCloset() {
                 rows="4"
               />
 
-              <div className="modal-form-row">
+              {/* <div className="modal-form-row">
                 <input
                   type="text"
                   name="size"
@@ -458,7 +452,7 @@ function MyCloset() {
                 value={formData.category}
                 onChange={handleChange}
                 required
-              />
+              /> */}
 
               <div className="modal-media-section">
                 <div className="modal-media-header">
@@ -470,7 +464,7 @@ function MyCloset() {
 
                 <div className="modal-upload-actions">
                   <label className="modal-upload-label">
-                    📸 Adicionar fotos
+                    Adicionar fotos
                     <input
                       type="file"
                       accept="image/*"
@@ -480,7 +474,7 @@ function MyCloset() {
                   </label>
 
                   <label className="modal-upload-label secondary">
-                    🎥 Trocar vídeo
+                    Trocar vídeo
                     <input
                       type="file"
                       accept="video/*"

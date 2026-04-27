@@ -8,14 +8,6 @@ const clothingSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      default: "",
-    },
-    size: {
-      type: String,
-      required: true,
-    },
-    category: {
-      type: String,
       required: true,
     },
     media: {
@@ -34,10 +26,6 @@ const clothingSchema = new mongoose.Schema(
       ],
       default: [],
     },
-    condition: {
-      type: String,
-      default: "Usada",
-    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
@@ -46,7 +34,7 @@ const clothingSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 export default mongoose.model("Clothing", clothingSchema);
