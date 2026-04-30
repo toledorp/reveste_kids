@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MyCloset.css";
 import MediaCarousel from "../components/MediaCarousel";
@@ -22,14 +22,6 @@ function MyCloset() {
     media: [],
     condition: "",
   });
-
-  const user = useMemo(() => {
-    try {
-      return JSON.parse(localStorage.getItem("user"));
-    } catch {
-      return null;
-    }
-  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -317,17 +309,12 @@ function MyCloset() {
           </button>
         </div>
 
-        <div className="closet-user-card">
-          <span>Logado por</span>
-          <strong>{user?.name || user?.email?.split("@")[0]}</strong>
-        </div>
-      </aside>
+              </aside>
 
       <main className="closet-container">
         <div className="closet-header">
           <div>
-            <h1>Meu Closet</h1>
-            <p>Gerencie as peças cadastradas no seu perfil.</p>
+            <h1>Closet</h1>
           </div>
 
           <button
@@ -370,7 +357,7 @@ function MyCloset() {
                         className="closet-edit-btn"
                         onClick={() => openEditModal(item)}
                       >
-                        Editar
+                        <img src="/file-edit.png" alt="Editar" />
                       </button>
 
                       <button
@@ -379,7 +366,7 @@ function MyCloset() {
                         onClick={() => handleDelete(item._id)}
                         disabled={deletingId === item._id}
                       >
-                        {deletingId === item._id ? "Excluindo..." : "Excluir"}
+                        <img src="/trash.png" alt="Excluir" />
                       </button>
                     </div>
                   </div>
@@ -425,34 +412,6 @@ function MyCloset() {
                 onChange={handleChange}
                 rows="4"
               />
-
-              {/* <div className="modal-form-row">
-                <input
-                  type="text"
-                  name="size"
-                  placeholder="Tamanho"
-                  value={formData.size}
-                  onChange={handleChange}
-                  required
-                />
-
-                <input
-                  type="text"
-                  name="condition"
-                  placeholder="Condição"
-                  value={formData.condition}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <input
-                type="text"
-                name="category"
-                placeholder="Categoria"
-                value={formData.category}
-                onChange={handleChange}
-                required
-              /> */}
 
               <div className="modal-media-section">
                 <div className="modal-media-header">

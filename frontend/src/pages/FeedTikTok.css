@@ -7,11 +7,12 @@
 }
 
 .tiktok-logo {
-  width: 140px;
+  width: 50px;
   height: auto;
   object-fit: contain;
   display: block;
   margin-bottom: 10px;
+  margin: auto;
 }
 
 /* SIDEBAR */
@@ -69,7 +70,7 @@
   background: rgba(192, 132, 252, 0.28);
 }
 
-.tiktok-user-card {
+/* .tiktok-user-card {
   margin-top: auto;
   padding: 14px;
   border-radius: 14px;
@@ -88,7 +89,7 @@
 .tiktok-user-card strong {
   font-size: 0.9rem;
   word-break: break-word;
-}
+} */
 
 /* AÇÕES NO ASIDE */
 
