@@ -227,17 +227,11 @@ function Matches() {
             <span className="matches-home-label">Home</span>
           </button>
         </div>
-
-        <div className="matches-user-card">
-          <span>Logado por</span>
-          <strong>{user?.name || user?.email?.split("@")[0]}</strong>
-        </div>
       </aside>
 
       <main className="matches-container">
         <div className="matches-header">
           <h1>Matches</h1>
-          <p>Converse com usuários com interesse mútuo em troca de peças.</p>
         </div>
 
         {matches.length === 0 ? (

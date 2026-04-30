@@ -393,10 +393,10 @@ function FeedTikTok() {
             "sidebar-actions",
           )}
 
-          <div className="tiktok-user-card">
+          {/* <div className="tiktok-user-card">
             <span>Logado por</span>
             <strong>{user?.name || user?.email?.split("@")[0]}</strong>
-          </div>
+          </div> */}
         </aside>
 
         <main className="tiktok-feed">
