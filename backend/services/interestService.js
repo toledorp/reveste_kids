@@ -1,6 +1,9 @@
 import Interest from "../models/Interest.js";
 import Clothing from "../models/Clothing.js";
 import Match from "../models/Match.js";
+import User from "../models/Users.js";
+
+import emailService from "./emailService.js";
 
 class InterestService {
   async like(userId, clothingId) {
@@ -16,7 +19,10 @@ class InterestService {
 
     const newInterest = await Interest.create({ userId, clothingId });
 
-    const likedClothing = await Clothing.findById(clothingId);
+    const likedClothing = await Clothing.findById(clothingId).populate(
+      "userId",
+      "name email",
+    );
 
     if (!likedClothing) {
       return {
@@ -28,12 +34,27 @@ class InterestService {
 
     const likedClothingOwnerId = likedClothing.userId;
 
-    if (String(likedClothingOwnerId) === String(userId)) {
-      return {
-        interest: newInterest,
-        matchCreated: false,
-        message: "Usuário curtiu a própria peça",
-      };
+    const interestedUser = await User.findById(userId).select("name email");
+
+    if (
+      String(likedClothingOwnerId._id || likedClothingOwnerId) !==
+      String(userId)
+    ) {
+      try {
+        await emailService.sendLikeNotificationEmail({
+          ownerEmail: likedClothing.userId?.email,
+          ownerName: likedClothing.userId?.name,
+          interestedUserName:
+            interestedUser?.name ||
+            interestedUser?.email ||
+            "Usuário interessado",
+          clothingTitle: likedClothing.title,
+        });
+
+        console.log("E-mail de notificação enviado para:", likedClothing.userId?.email);
+      } catch (emailError) {
+        console.log("Erro ao enviar e-mail de notificação:", emailError);
+      }
     }
 
     const currentUserClothes = await Clothing.find({ userId });
