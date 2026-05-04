@@ -120,19 +120,19 @@ Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco em:
 
 ### Estrutura:
 
-\`\`\`json
+```json
 {
   "media": [
     { "type": "image", "url": "https://..." },
     { "type": "video", "url": "https://..." }
   ]
 }
-\`\`\`
+```
 
 
 ## Estrutura do projeto
 
-\`\`\`bash
+```bash
 reveste_kids/
 │
 ├── backend/
@@ -155,51 +155,54 @@ reveste_kids/
 │   └── index.html
 │
 └── README.md
-\`\`\`
+```
 
 
 ## Como executar
 
 ### 1. Clonar o projeto
 
-\`\`\`bash
+```bash
 git clone https://github.com/toledorp/reveste_kids.git
-\`\`\`
-
+```
+---
 
 ### 2. Instalar dependências
 
 #### Backend
 
-\`\`\`bash
+```bash
 cd backend
 npm install
-\`\`\`
+```
+---
 
 #### Frontend
 
-\`\`\`bash
+```bash
 cd ../frontend
 npm install
-\`\`\`
-
+```
+---
 
 ### 3. Configurar variáveis de ambiente
 
 Crie um \`.env\` no backend:
 
-\`\`\`env
+```env
 MONGO_URI=sua_string_mongodb
 JWT_SECRET=sua_chave_secreta
 PORT=4000
-\`\`\`
+```
+
+---
 
 
 ### 4. Rodar o projeto
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 
 ## Acessos
@@ -220,39 +223,41 @@ npm run dev
 ## API (principais rotas)
 
 ### Auth
-\`\`\`
+```
 POST /user
 POST /auth
-\`\`\`
+```
+---
 
 ### Roupas
-\`\`\`
+```
 GET /clothes
 POST /clothes
 PUT /clothes/:id
 DELETE /clothes/:id
 GET /clothes/user
-\`\`\`
+```
+---
 
 ### Likes
-\`\`\`
+```
 POST /like/:id
 DELETE /like/:id
-\`\`\`
+```
+---
 
 ### Matches
-\`\`\`
+```
 GET /matches
-\`\`\`
-
+```
 
 ## Swagger
 
 Documentação disponível em:
 
-\`\`\`
+```
 http://localhost:4000/api-docs
-\`\`\`
+```
 
 
 ## Diferenciais
@@ -272,7 +277,7 @@ http://localhost:4000/api-docs
 - Testes manuais
 
 
-## ☁️ Banco de dados
+## Banco de dados
 
 - MongoDB Atlas (Cloud)
 
