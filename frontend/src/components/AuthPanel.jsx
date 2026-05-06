@@ -32,14 +32,13 @@ function AuthPanel({ onAuthSuccess }) {
 
         localStorage.setItem("role", payload.role);
 
-        // NOVO
         localStorage.setItem(
           "user",
           JSON.stringify({
             _id: payload.id,
             email: payload.email,
             role: payload.role,
-          }),
+          })
         );
 
         setMessage("Login realizado com sucesso.");
@@ -71,65 +70,106 @@ function AuthPanel({ onAuthSuccess }) {
 
   return (
     <section className="auth-panel">
-      <div className="auth-card">
-        <h2 className="auth-title">{isLoginMode ? "Login" : "Cadastro"}</h2>
+      <div className="auth-left">
+        <img
+          src="/logo_sem_fundo.png"
+          alt="ReVeste Kids"
+          className="auth-logo"
+        />
 
-        <p className="auth-subtitle">
-          {isLoginMode
-            ? "Entre para acessar seu perfil e começar a trocar roupas."
-            : "Crie sua conta para publicar peças e encontrar novas trocas."}
-        </p>
+        <div className="auth-left-content">
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          {!isLoginMode && (
+          {/* CARDS */}
+          <div className="auth-preview-grid">
+            <div className="preview-card large"></div>
+            <div className="preview-card small"></div>
+            <div className="preview-card medium"></div>
+          </div>
+
+          {/* TEXTO */}
+          <h1 className="auth-title-big">
+            <span className="line">Novas</span>
+            <span className="line">fases da</span>
+
+            <span className="line highlight">infância</span>
+
+            <span className="line">
+              <span className="highlight">circulando</span>
+              <span className="dot">.</span>
+            </span>
+          </h1>
+
+        </div>
+      </div>
+
+      <div className="auth-right">
+        <div className="auth-card">
+          <h2 className="auth-title">
+            {isLoginMode ? "Entrar no ReVeste Kids" : "Criar conta"}
+          </h2>
+
+          <form className="auth-form" onSubmit={handleSubmit}>
+            {!isLoginMode && (
+              <input
+                type="text"
+                placeholder="Nome completo"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            )}
+
             <input
-              type="text"
-              placeholder="Digite seu nome"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              type="email"
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
+
+            <input
+              type="password"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button type="submit" disabled={loading}>
+              {loading ? "Processando..." : isLoginMode ? "Entrar" : "Cadastrar"}
+            </button>
+          </form>
+
+          {isLoginMode && (
+            <button type="button" className="forgot-password">
+              Esqueceu a senha?
+            </button>
           )}
 
-          <input
-            type="email"
-            placeholder="Digite seu e-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          {message && <p className="auth-message success">{message}</p>}
+          {error && <p className="auth-message error">{error}</p>}
 
-          <input
-            type="password"
-            placeholder="Digite sua senha"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="auth-toggle">
+            <button
+              type="button"
+              className="toggle-btn"
+              onClick={() => {
+                resetMessages();
+                setIsLoginMode(!isLoginMode);
+              }}
+            >
+              {isLoginMode ? "Criar nova conta" : "Já tenho uma conta"}
+            </button>
+          </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Processando..." : isLoginMode ? "Entrar" : "Cadastrar"}
-          </button>
-        </form>
-
-        {message && <p className="auth-message success">{message}</p>}
-        {error && <p className="auth-message error">{error}</p>}
-
-        <div className="auth-toggle">
-          <span>
-            {isLoginMode ? "Ainda não tem conta?" : "Já possui uma conta?"}
-          </span>
-
-          <button
-            type="button"
-            className="toggle-btn"
-            onClick={() => {
-              resetMessages();
-              setIsLoginMode(!isLoginMode);
-            }}
-          >
-            {isLoginMode ? "Cadastre-se" : "Fazer login"}
-          </button>
+          <div className="auth-brand">
+            <img
+              src="/ralky-white.png"
+              alt="Ralky"
+              className="brand-logo"
+            />
+            <span>Ralky</span>
+          </div>
         </div>
       </div>
     </section>
