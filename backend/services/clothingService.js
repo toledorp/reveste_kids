@@ -1,4 +1,5 @@
 import Clothing from "../models/Clothing.js";
+import mongoose from "mongoose";
 
 class ClothingService {
   async create(data) {
@@ -33,19 +34,18 @@ class ClothingService {
   }
 
   async update(id, data) {
-  try {
-    const clothing = await Clothing.findByIdAndUpdate(
-      id,
-      data,
-      { new: true }
-    );
-
-    return clothing;
-  } catch (error) {
-    console.log(error);
-    throw error;
+    try {
+      const clothing = await Clothing.findByIdAndUpdate(
+        id,
+        data,
+        { new: true }
+      );
+      return clothing;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
-}
 
   async delete(id) {
     try {
@@ -60,6 +60,28 @@ class ClothingService {
   async getByUserId(userId) {
     try {
       const clothes = await Clothing.find({ userId }).populate("userId", "name email");
+      return clothes;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Closet com busca
+  async getUserCloset(userId, search) {
+    try {
+      const filter = {
+        userId: new mongoose.Types.ObjectId(userId)
+      };
+
+      if (search) {
+        filter.title = {
+          $regex: search,
+          $options: "i"
+        };
+      }
+
+      const clothes = await Clothing.find(filter).populate("userId", "name email");
       return clothes;
     } catch (error) {
       console.log(error);
