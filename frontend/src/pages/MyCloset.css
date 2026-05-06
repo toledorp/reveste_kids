@@ -21,7 +21,7 @@
 }
 
 .closet-logo {
-  width: 140px;
+  width: 50px;
   height: auto;
   object-fit: contain;
   display: block;
@@ -69,7 +69,7 @@
 .closet-home-btn:hover .closet-home-icon {
   transform: scale(1.1);
 }
-
+/* 
 .closet-home-label {
   position: absolute;
   left: 50%;
@@ -81,7 +81,7 @@
   transition: 0.2s ease;
   pointer-events: none;
   white-space: nowrap;
-}
+} */
 
 .closet-home-btn:hover .closet-home-label {
   opacity: 1;
@@ -238,28 +238,36 @@
 .closet-edit-btn,
 .closet-delete-btn {
   border: none;
-  color: #ffffff;
-  padding: 10px 16px;
+  padding: 10px;
   border-radius: 12px;
-  font-weight: 800;
   cursor: pointer;
   transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TAMANHO DO ÍCONE */
+.closet-edit-btn img,
+.closet-delete-btn img {
+  width: 18px;
+  height: 18px;
 }
 
 .closet-edit-btn {
-  background: #8b5cf6;
+  background: #ffffff;
 }
 
 .closet-edit-btn:hover {
-  background: #7c3aed;
+  background: #ffffff;
 }
 
 .closet-delete-btn {
-  background: #ef4444;
+  background: #ffffff;
 }
 
 .closet-delete-btn:hover {
-  background: #dc2626;
+  background: #ffffff;
 }
 
 .closet-delete-btn:disabled {
@@ -627,4 +635,197 @@
   .modal-form-row {
     grid-template-columns: 1fr;
   }
+}
+
+/* ============================= */
+/* THEME OVERRIDES - CLARO/ESCURO */
+/* ============================= */
+
+.closet-layout {
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+.closet-sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-soft);
+}
+
+.closet-container {
+  background:
+    radial-gradient(
+      circle at top center,
+      rgba(192, 132, 252, 0.08),
+      transparent 32%
+    ),
+    var(--bg-page);
+}
+
+.closet-card {
+  background: linear-gradient(
+    180deg,
+    var(--bg-card-soft) 0%,
+    var(--bg-card) 100%
+  );
+  border: 1px solid rgba(192, 132, 252, 0.18);
+}
+
+.closet-image-wrapper {
+  background: var(--bg-card);
+}
+
+.closet-info h2,
+.modal-media-header h3 {
+  color: var(--text-main);
+}
+
+.closet-info p,
+.closet-header p,
+.modal-media-header p,
+.modal-upload-helper,
+.modal-empty-media {
+  color: var(--text-muted);
+}
+
+.modal-content,
+.modal-media-section,
+.modal-preview-item,
+.modal-form input,
+.modal-form textarea,
+.modal-empty-media {
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+
+/* BOTÃO HOME - contraste invertido por tema */
+
+/* Tema claro: fundo preto para destacar o ícone roxo */
+body.light .closet-home-btn,
+.light .closet-home-btn,
+[data-theme="light"] .closet-home-btn {
+  background: #111111;
+  border: 1px solid rgba(192, 132, 252, 0.55);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+/* Tema escuro: fundo branco */
+body.dark .closet-home-btn,
+.dark .closet-home-btn,
+[data-theme="dark"] .closet-home-btn {
+  background: #ffffff;
+  border: 1px solid rgba(192, 132, 252, 0.45);
+  box-shadow: 0 8px 22px rgba(255, 255, 255, 0.08);
+}
+
+.closet-home-btn:hover {
+  transform: scale(1.08);
+  border-color: #c084fc;
+}
+
+.closet-home-icon {
+  filter: drop-shadow(0 0 4px rgba(192, 132, 252, 0.45));
+}
+
+.modal-content {
+  background: linear-gradient(
+    180deg,
+    var(--bg-card-soft) 0%,
+    var(--bg-card) 100%
+  );
+}
+
+.modal-form input,
+.modal-form textarea {
+  border: 1px solid rgba(192, 132, 252, 0.16);
+}
+
+.modal-close-btn {
+  color: var(--text-main);
+}
+
+.closet-home-label {
+  color: var(--text-main);
+}
+
+.modal-upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.modal-upload-btn input {
+  display: none;
+}
+
+/* NOVO */
+.modal-upload-icon {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.modal-upload-btn:hover {
+  transform: scale(1.05);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-cancel-btn,
+.modal-save-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* CANCELAR */
+.modal-cancel-btn {
+  background: #ffffff;
+}
+
+.modal-cancel-btn:hover {
+  background: #ffffff;
+  transform: scale(1.08);
+}
+
+/* SALVAR */
+.modal-save-btn {
+  background: #ffffff;
+}
+
+.modal-save-btn:hover {
+  transform: scale(1.08);
+}
+
+.modal-save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ÍCONES */
+.modal-action-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* loading */
+.modal-saving-text {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
 }

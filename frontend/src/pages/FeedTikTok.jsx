@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./FeedTikTok.css";
 import Footer from "../components/Footer";
 
-function FeedTikTok() {
+function FeedTikTok({ theme, toggleTheme }) {
   const [clothes, setClothes] = useState([]);
   const [likedIds, setLikedIds] = useState([]);
   const [currentMediaIndex, setCurrentMediaIndex] = useState({});
@@ -59,7 +59,9 @@ function FeedTikTok() {
 
   const activeItem = useMemo(() => {
     return (
-      filteredClothes.find((item) => String(item._id) === String(activeClothingId)) ||
+      filteredClothes.find(
+        (item) => String(item._id) === String(activeClothingId),
+      ) ||
       filteredClothes[0] ||
       null
     );
@@ -287,6 +289,20 @@ function FeedTikTok() {
       <div className={`tiktok-actions ${variant}`}>
         <button
           type="button"
+          className="tiktok-action-btn theme-toggle-btn"
+          onClick={toggleTheme}
+          title={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
+        >
+          <img
+            src={theme === "dark" ? "./sun.png" : "./moon.png"}
+            alt="Alternar tema"
+            className="action-icon-img theme-icon-img"
+          />
+        </button>
+        <span>{theme === "dark" ? "Claro" : "Escuro"}</span>
+
+        <button
+          type="button"
           className="tiktok-action-btn"
           onClick={() => navigate("/feed")}
           title="Home"
@@ -317,16 +333,16 @@ function FeedTikTok() {
           ) : (
             <img
               src={
-                isLiked
-                  ? "/like_coracao_sem_fundo.png"
-                  : "/like_sem_fundo.png"
+                isLiked ? "/like_coracao_sem_fundo.png" : "/like_sem_fundo.png"
               }
               alt={isLiked ? "Curtido" : "Curtir"}
               className="action-icon-img"
             />
           )}
         </button>
-        <span>{isOwnClothing ? "Sua peça" : isLiked ? "Curtido" : "Curtir"}</span>
+        <span>
+          {isOwnClothing ? "Sua peça" : isLiked ? "Curtido" : "Curtir"}
+        </span>
 
         <button
           type="button"
@@ -382,7 +398,9 @@ function FeedTikTok() {
     <>
       <div className="tiktok-layout">
         <aside className="tiktok-sidebar compact-brand">
-          <img src="/logo_sem_fundo.png" alt="logo" className="tiktok-logo" />
+          <img src={theme === "dark" ? "/logo_sem_fundo.png" : "/logo-dark-sem-fundo.png"}
+            alt="logo" 
+            className="tiktok-logo" />
 
           {renderSearchBox()}
 
@@ -392,11 +410,6 @@ function FeedTikTok() {
             isActiveOwnClothing,
             "sidebar-actions",
           )}
-
-          <div className="tiktok-user-card">
-            <span>Logado por</span>
-            <strong>{user?.name || user?.email?.split("@")[0]}</strong>
-          </div>
         </aside>
 
         <main className="tiktok-feed">
@@ -476,9 +489,9 @@ function FeedTikTok() {
                         src={activeMedia.url}
                         className="tiktok-media"
                         autoPlay
-                        muted
                         loop
                         playsInline
+                        controls
                       />
                     ) : activeMedia?.url ? (
                       <img

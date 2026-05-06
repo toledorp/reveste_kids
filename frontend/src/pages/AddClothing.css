@@ -68,7 +68,7 @@
   transform: scale(1.1);
 }
 
-.add-home-label {
+/* .add-home-label {
   position: absolute;
   left: 50%;
   bottom: -24px;
@@ -79,7 +79,7 @@
   transition: 0.2s ease;
   pointer-events: none;
   white-space: nowrap;
-}
+} */
 
 .add-home-btn:hover .add-home-label {
   opacity: 1;
