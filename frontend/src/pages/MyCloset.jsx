@@ -9,9 +9,19 @@ function MyCloset() {
   const [clothes, setClothes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
+  const [savingEdit, setSavingEdit] = useState(false);
+  const [uploadingEditImages, setUploadingEditImages] = useState(false);
+  const [uploadingEditVideo, setUploadingEditVideo] = useState(false);
 
-  const [userSearch, setUserSearch] = useState("");
-  const [users, setUsers] = useState([]);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    size: "",
+    category: "",
+    media: [],
+    condition: "",
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,39 +42,19 @@ function MyCloset() {
       });
   }, []);
 
-  // 🔥 BUSCA CORRIGIDA
-  const searchUsers = async (name) => {
-    if (!name || name.trim() === "") {
-      setUsers([]);
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        `http://localhost:4000/users/search?name=${encodeURIComponent(name)}`
-      );
-
-      const data = await res.json();
-      setUsers(data || []);
-    } catch (err) {
-      console.log("Erro ao buscar usuários:", err);
-    }
-  };
-
-  // 🔥 debounce simples (evita travar e requests demais)
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      searchUsers(userSearch);
-    }, 300);
-
-    return () => clearTimeout(delay);
-  }, [userSearch]);
-
   const getPreviewMedia = (item) => {
-    if (item?.media && item.media.length > 0) return item.media;
-    if (item?.images && item.images.length > 0)
+    if (item?.media && item.media.length > 0) {
+      return item.media;
+    }
+
+    if (item?.images && item.images.length > 0) {
       return item.images.map((url) => ({ type: "image", url }));
-    if (item?.image) return [{ type: "image", url: item.image }];
+    }
+
+    if (item?.image) {
+      return [{ type: "image", url: item.image }];
+    }
+
     return [];
   };
 
@@ -90,7 +80,9 @@ function MyCloset() {
         throw new Error(data.error || "Erro ao excluir peça");
       }
 
-      setClothes((prev) => prev.filter((item) => item._id !== id));
+      setClothes((prevClothes) =>
+        prevClothes.filter((item) => item._id !== id),
+      );
     } catch (error) {
       console.log(error);
       alert("Não foi possível excluir a peça.");
@@ -98,6 +90,204 @@ function MyCloset() {
       setDeletingId(null);
     }
   };
+
+  const openEditModal = (item) => {
+    setEditingItem(item);
+
+    setFormData({
+      title: item.title || "",
+      description: item.description || "",
+      size: item.size || "",
+      category: item.category || "",
+      media: getPreviewMedia(item),
+      condition: item.condition || "",
+    });
+  };
+
+  const closeEditModal = () => {
+    setEditingItem(null);
+    setUploadingEditImages(false);
+    setUploadingEditVideo(false);
+
+    setFormData({
+      title: "",
+      description: "",
+      size: "",
+      category: "",
+      media: [],
+      condition: "",
+    });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleEditImagesUpload = async (files) => {
+    if (!files || files.length === 0) return;
+
+    const selectedFiles = Array.from(files);
+    const currentImages = formData.media.filter(
+      (item) => item.type === "image",
+    );
+
+    if (currentImages.length + selectedFiles.length > 5) {
+      alert("Você pode manter no máximo 5 imagens por peça.");
+      return;
+    }
+
+    try {
+      setUploadingEditImages(true);
+
+      const uploadedMedia = [];
+
+      for (const file of selectedFiles) {
+        const formDataCloud = new FormData();
+        formDataCloud.append("file", file);
+        formDataCloud.append("upload_preset", "reveste_kids_upload");
+
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/djgu3sdab/image/upload",
+          {
+            method: "POST",
+            body: formDataCloud,
+          },
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error("Erro ao fazer upload das imagens");
+        }
+
+        uploadedMedia.push({
+          type: "image",
+          url: data.secure_url,
+        });
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        media: [...prev.media, ...uploadedMedia],
+      }));
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao enviar imagens");
+    } finally {
+      setUploadingEditImages(false);
+    }
+  };
+
+  const handleEditVideoUpload = async (file) => {
+    if (!file) return;
+
+    try {
+      setUploadingEditVideo(true);
+
+      const formDataCloud = new FormData();
+      formDataCloud.append("file", file);
+      formDataCloud.append("upload_preset", "reveste_kids_upload");
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/djgu3sdab/video/upload",
+        {
+          method: "POST",
+          body: formDataCloud,
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error("Erro ao fazer upload do vídeo");
+      }
+
+      setFormData((prev) => {
+        const withoutOldVideo = prev.media.filter(
+          (item) => item.type !== "video",
+        );
+
+        return {
+          ...prev,
+          media: [
+            {
+              type: "video",
+              url: data.secure_url,
+            },
+            ...withoutOldVideo,
+          ],
+        };
+      });
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao enviar vídeo");
+    } finally {
+      setUploadingEditVideo(false);
+    }
+  };
+
+  const removeEditMedia = (indexToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      media: prev.media.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!editingItem) return;
+
+    try {
+      setSavingEdit(true);
+
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `http://localhost:4000/clothes/${editingItem._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erro ao editar peça");
+      }
+
+      const updatedItem = data.clothing;
+
+      setClothes((prevClothes) =>
+        prevClothes.map((item) =>
+          item._id === updatedItem._id ? updatedItem : item,
+        ),
+      );
+
+      closeEditModal();
+    } catch (error) {
+      console.log(error);
+      alert("Não foi possível atualizar a peça.");
+    } finally {
+      setSavingEdit(false);
+    }
+  };
+
+  const imageCount = formData.media.filter(
+    (item) => item.type === "image",
+  ).length;
+
+  const hasVideo = formData.media.some((item) => item.type === "video");
 
   return (
     <div className="closet-layout">
@@ -110,56 +300,21 @@ function MyCloset() {
             className="closet-home-btn"
             onClick={() => navigate("/feed")}
           >
-            <img src="/home_sem_fundo.png" alt="Home" className="closet-home-icon" />
+            <img
+              src="/home_sem_fundo.png"
+              alt="Home"
+              className="closet-home-icon"
+            />
             <span className="closet-home-label">Home</span>
           </button>
         </div>
-      </aside>
+
+              </aside>
 
       <main className="closet-container">
         <div className="closet-header">
           <div>
             <h1>Closet</h1>
-
-            {/* 🔥 BUSCA USUÁRIO */}
-            <input
-              type="text"
-              placeholder="Buscar usuário..."
-              value={userSearch}
-              onChange={(e) => setUserSearch(e.target.value)}
-              style={{
-                marginTop: "10px",
-                padding: "8px",
-                borderRadius: "8px",
-                border: "1px solid #333",
-                width: "100%",
-                maxWidth: "300px",
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  searchUsers(userSearch);
-                }
-              }}
-            />
-
-            {/* 🔥 RESULTADOS */}
-            {users.length > 0 && (
-              <div style={{ marginTop: "10px" }}>
-                {users.map((user) => (
-                  <div
-                    key={user._id}
-                    onClick={() => navigate(`/user/${user._id}/closet`)}
-                    style={{
-                      cursor: "pointer",
-                      padding: "6px",
-                      borderBottom: "1px solid #333",
-                    }}
-                  >
-                    {user.name}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           <button
@@ -221,6 +376,144 @@ function MyCloset() {
           </section>
         )}
       </main>
+
+      {editingItem && (
+        <div className="modal-overlay" onClick={closeEditModal}>
+          <div
+            className="modal-content modal-content-large"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header">
+              <h2>Editar peça</h2>
+
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={closeEditModal}
+              >
+                ×
+              </button>
+            </div>
+
+            <form className="modal-form" onSubmit={handleEditSubmit}>
+              <input
+                type="text"
+                name="title"
+                placeholder="Título"
+                value={formData.title}
+                onChange={handleChange}
+                required
+              />
+
+              <textarea
+                name="description"
+                placeholder="Descrição"
+                value={formData.description}
+                onChange={handleChange}
+                rows="4"
+              />
+
+              <div className="modal-media-section">
+                <div className="modal-media-header">
+                  <div>
+                    <h3>Mídias da peça</h3>
+                    <p>Adicione, substitua ou remova fotos e vídeo.</p>
+                  </div>
+                </div>
+
+                <div className="modal-upload-actions">
+                  <label className="modal-upload-label">
+                    Adicionar fotos
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(e) => handleEditImagesUpload(e.target.files)}
+                    />
+                  </label>
+
+                  <label className="modal-upload-label secondary">
+                    Trocar vídeo
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={(e) => handleEditVideoUpload(e.target.files[0])}
+                    />
+                  </label>
+                </div>
+
+                <div className="modal-upload-helper">
+                  <span>{imageCount}/5 fotos</span>
+                  <span>{hasVideo ? "Vídeo selecionado" : "Sem vídeo"}</span>
+                </div>
+
+                {uploadingEditImages && (
+                  <p className="modal-upload-status">Enviando imagens...</p>
+                )}
+
+                {uploadingEditVideo && (
+                  <p className="modal-upload-status">Enviando vídeo...</p>
+                )}
+
+                {formData.media.length > 0 ? (
+                  <div className="modal-preview-grid">
+                    {formData.media.map((item, index) => (
+                      <div
+                        key={`${item.url}-${index}`}
+                        className="modal-preview-item"
+                      >
+                        <button
+                          type="button"
+                          className="modal-remove-media-btn"
+                          onClick={() => removeEditMedia(index)}
+                        >
+                          ×
+                        </button>
+
+                        {item.type === "video" ? (
+                          <video
+                            src={item.url}
+                            controls
+                            className="modal-preview-video"
+                          />
+                        ) : (
+                          <img src={item.url} alt={`Mídia ${index + 1}`} />
+                        )}
+
+                        <span className="modal-media-type-label">
+                          {item.type === "video" ? "Vídeo" : "Foto"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="modal-empty-media">
+                    Nenhuma mídia cadastrada.
+                  </div>
+                )}
+              </div>
+
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  className="modal-cancel-btn"
+                  onClick={closeEditModal}
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  type="submit"
+                  className="modal-save-btn"
+                  disabled={savingEdit}
+                >
+                  {savingEdit ? "Salvando..." : "Salvar alterações"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

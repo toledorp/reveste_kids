@@ -99,20 +99,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-const searchUsers = async (req, res) => {
-  try {
-    const { name } = req.query;
-
-    if (!name) {
-      return res.json([]);
-    }
-
-    const users = await userService.searchByName(name);
-
-    res.json(users);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Erro ao buscar usuários" });
-  }
-};
-export default { createUser, loginUser, searchUsers ,JWTSecret };
+export default { createUser, loginUser, JWTSecret };
