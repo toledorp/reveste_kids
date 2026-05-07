@@ -11,6 +11,4 @@ userRoutes.post("/user", userController.createUser)
 //Endpoint para logar um usuario
 userRoutes.post("/auth", userController.loginUser )
 
-userRoutes.get("/users/search", userController.searchUsers);
-
 export default userRoutes;

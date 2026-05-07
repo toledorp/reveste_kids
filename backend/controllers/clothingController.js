@@ -130,23 +130,6 @@ const getMyClothes = async (req, res) => {
     });
   }
 };
-
-const getUserCloset = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const { search } = req.query;
-
-    const roupas = await clothingService.getUserCloset(userId, search);
-
-    return res.status(200).json(roupas);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      error: "Erro ao buscar closet",
-    });
-  }
-};
-
 export default {
   createClothing,
   getAllClothes,
@@ -154,5 +137,4 @@ export default {
   getMyClothes,
   updateClothing,
   deleteClothing,
-  getUserCloset, 
 };
