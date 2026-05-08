@@ -136,46 +136,15 @@ function AuthPanel({ onAuthSuccess }) {
             onSubmit={handleSubmit}
           >
             {!isLoginMode && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Nome completo"
-                  value={name}
-                  onChange={(e) =>
-                    setName(e.target.value)
-                  }
-                  required
-                />
-
-                <div className="auth-row">
-                  <input
-                    type="date"
-                    placeholder="Nascimento"
-                  />
-
-                  <input
-                    type="text"
-                    placeholder="CEP"
-                  />
-                </div>
-
-                <input
-                  type="text"
-                  placeholder="Endereço"
-                />
-
-                <div className="auth-row">
-                  <input
-                    type="text"
-                    placeholder="Cidade"
-                  />
-
-                  <input
-                    type="text"
-                    placeholder="Estado"
-                  />
-                </div>
-              </>
+              <input
+                type="text"
+                placeholder="Nome completo"
+                value={name}
+                onChange={(e) =>
+                  setName(e.target.value)
+                }
+                required
+              />
             )}
 
             <input
@@ -197,13 +166,6 @@ function AuthPanel({ onAuthSuccess }) {
               }
               required
             />
-
-            {!isLoginMode && (
-              <input
-                type="password"
-                placeholder="Confirmar senha"
-              />
-            )}
 
             <button
               type="submit"
