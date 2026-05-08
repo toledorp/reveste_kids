@@ -4,6 +4,7 @@ import "./AuthPanel.css";
 
 function AuthPanel({ onAuthSuccess }) {
   const [isLoginMode, setIsLoginMode] = useState(true);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,6 +20,7 @@ function AuthPanel({ onAuthSuccess }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     resetMessages();
     setLoading(true);
 
@@ -28,7 +30,9 @@ function AuthPanel({ onAuthSuccess }) {
 
         localStorage.setItem("token", data.token);
 
-        const payload = JSON.parse(atob(data.token.split(".")[1]));
+        const payload = JSON.parse(
+          atob(data.token.split(".")[1])
+        );
 
         localStorage.setItem("role", payload.role);
 
@@ -56,13 +60,21 @@ function AuthPanel({ onAuthSuccess }) {
           }),
         });
 
-        setMessage("Usuário cadastrado com sucesso. Agora faça login.");
+        setMessage(
+          "Usuário cadastrado com sucesso. Agora faça login."
+        );
+
         setIsLoginMode(true);
+
         setName("");
+        setEmail("");
         setPassword("");
       }
     } catch (err) {
-      setError(err.message || "Ocorreu um erro na autenticação.");
+      setError(
+        err.message ||
+          "Ocorreu um erro na autenticação."
+      );
     } finally {
       setLoading(false);
     }
@@ -70,6 +82,7 @@ function AuthPanel({ onAuthSuccess }) {
 
   return (
     <section className="auth-panel">
+      {/* ESQUERDA */}
       <div className="auth-left">
         <img
           src="/logo_sem_fundo.png"
@@ -78,52 +91,100 @@ function AuthPanel({ onAuthSuccess }) {
         />
 
         <div className="auth-left-content">
-
-          {/* CARDS */}
-          <div className="auth-preview-grid">
-            <div className="preview-card large"></div>
-            <div className="preview-card small"></div>
-            <div className="preview-card medium"></div>
+          {/* IMAGEM */}
+          <div className="auth-preview-image">
+            <img
+              src="/card-login.png"
+              alt="Preview ReVeste Kids"
+            />
           </div>
 
           {/* TEXTO */}
           <h1 className="auth-title-big">
             <span className="line">Novas</span>
-            <span className="line">fases da</span>
-
-            <span className="line highlight">infância</span>
 
             <span className="line">
-              <span className="highlight">circulando</span>
+              fases da
+            </span>
+
+            <span className="line highlight">
+              infância
+            </span>
+
+            <span className="line">
+              <span className="highlight">
+                circulando
+              </span>
+
               <span className="dot">.</span>
             </span>
           </h1>
-
         </div>
       </div>
 
+      {/* DIREITA */}
       <div className="auth-right">
         <div className="auth-card">
           <h2 className="auth-title">
-            {isLoginMode ? "Entrar no ReVeste Kids" : "Criar conta"}
+            {isLoginMode
+              ? "Entrar no ReVeste Kids"
+              : "Criar conta"}
           </h2>
 
-          <form className="auth-form" onSubmit={handleSubmit}>
+          <form
+            className="auth-form"
+            onSubmit={handleSubmit}
+          >
             {!isLoginMode && (
-              <input
-                type="text"
-                placeholder="Nome completo"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <>
+                <input
+                  type="text"
+                  placeholder="Nome completo"
+                  value={name}
+                  onChange={(e) =>
+                    setName(e.target.value)
+                  }
+                  required
+                />
+
+                <div className="auth-row">
+                  <input
+                    type="date"
+                    placeholder="Nascimento"
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="CEP"
+                  />
+                </div>
+
+                <input
+                  type="text"
+                  placeholder="Endereço"
+                />
+
+                <div className="auth-row">
+                  <input
+                    type="text"
+                    placeholder="Cidade"
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Estado"
+                  />
+                </div>
+              </>
             )}
 
             <input
               type="email"
               placeholder="E-mail"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
               required
             />
 
@@ -131,23 +192,51 @@ function AuthPanel({ onAuthSuccess }) {
               type="password"
               placeholder="Senha"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
               required
             />
 
-            <button type="submit" disabled={loading}>
-              {loading ? "Processando..." : isLoginMode ? "Entrar" : "Cadastrar"}
+            {!isLoginMode && (
+              <input
+                type="password"
+                placeholder="Confirmar senha"
+              />
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+            >
+              {loading
+                ? "Processando..."
+                : isLoginMode
+                ? "Entrar"
+                : "Cadastrar"}
             </button>
           </form>
 
           {isLoginMode && (
-            <button type="button" className="forgot-password">
+            <button
+              type="button"
+              className="forgot-password"
+            >
               Esqueceu a senha?
             </button>
           )}
 
-          {message && <p className="auth-message success">{message}</p>}
-          {error && <p className="auth-message error">{error}</p>}
+          {message && (
+            <p className="auth-message success">
+              {message}
+            </p>
+          )}
+
+          {error && (
+            <p className="auth-message error">
+              {error}
+            </p>
+          )}
 
           <div className="auth-toggle">
             <button
@@ -158,7 +247,9 @@ function AuthPanel({ onAuthSuccess }) {
                 setIsLoginMode(!isLoginMode);
               }}
             >
-              {isLoginMode ? "Criar nova conta" : "Já tenho uma conta"}
+              {isLoginMode
+                ? "Criar nova conta"
+                : "Já tenho uma conta"}
             </button>
           </div>
 
@@ -168,6 +259,7 @@ function AuthPanel({ onAuthSuccess }) {
               alt="Ralky"
               className="brand-logo"
             />
+
             <span>Ralky</span>
           </div>
         </div>

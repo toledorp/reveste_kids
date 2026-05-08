@@ -5,33 +5,83 @@
   background: #050505;
 }
 
+/* ========================= */
 /* ESQUERDA */
+/* ========================= */
 
 .auth-left {
   padding: 24px 72px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background: #050505;
+
+  /* FUNDO SÓLIDO */
+  background: #0c1014;
+
   border-right: 1px solid #4a4d53;
+
+  /* 🔥 IMPORTANTE */
+  overflow: hidden;
 }
 
 .auth-logo {
   width: 74px;
   margin-bottom: 24px;
   object-fit: contain;
+  z-index: 2;
+  flex-shrink: 0;
 }
 
+/* ========================= */
 /* BLOCO PRINCIPAL */
-.auth-left-content {
-  max-width: 720px;
+/* ========================= */
 
-  margin-top: auto;
-  margin-bottom: 60px;
+.auth-left-content {
+  flex: 1;
+
+  max-width: 1000px;
 
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  justify-content: center;
+
+  /* 🔥 AJUSTE PRINCIPAL */
+  gap: 0;
+
+  min-height: 0;
+}
+
+/* ========================= */
+/* IMAGEM LOGIN */
+/* ========================= */
+
+.auth-preview-image {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  /* 🔥 REMOVE ESPAÇO EXTRA */
+  line-height: 0;
+}
+
+.auth-preview-image img {
+  width: 100%;
+  max-width: 640px;
+
+  object-fit: contain;
+  display: block;
+
+  user-select: none;
+  pointer-events: none;
+
+  /* BRILHO REMOVIDO */
+  filter: none;
+
+  /* AJUSTADO PARA ESQUERDA */
+  transform: translateX(150px);
+
+  /* 🔥 REMOVE ÁREA FANTASMA */
+  margin-bottom: -40px;
 }
 
 /* ========================= */
@@ -40,14 +90,19 @@
 
 .auth-title-big {
   font-size: 4rem;
-  line-height: 1.05;
+  line-height: 1.02;
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: -2px;
   color: #ffffff;
 
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+
+  /* 🔥 SOBE O TEXTO */
+  transform: translateY(-140px);
+
+  margin: 0;
 }
 
 .auth-title-big .line {
@@ -58,36 +113,13 @@
   color: #c084fc;
 }
 
+.auth-title-big .dot {
+  color: #c084fc;
+}
+
 /* ========================= */
-/* CARDS */
-/* ========================= */
-
-.auth-preview-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  max-width: 520px;
-
-  margin-left: auto; /* 🔥 AQUI É O QUE JOGA PRO MEIO/DIREITA */
-}
-
-.preview-card {
-  border-radius: 24px;
-  background: linear-gradient(135deg, #7c3aed, #c084fc);
-  border: 1px solid rgba(192, 132, 252, 0.22);
-}
-
-.preview-card.large {
-  height: 250px;
-  grid-row: span 2;
-}
-
-.preview-card.small,
-.preview-card.medium {
-  height: 116px;
-}
-
 /* DIREITA */
+/* ========================= */
 
 .auth-right {
   background: #1f1f22;
@@ -110,6 +142,10 @@
   font-weight: 700;
 }
 
+/* ========================= */
+/* FORM */
+/* ========================= */
+
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -119,14 +155,21 @@
 .auth-form input {
   width: 100%;
   height: 52px;
+
   border: 1px solid #4a4d53;
   border-radius: 10px;
+
   padding: 0 16px;
+
   font-size: 1rem;
+
   outline: none;
   box-sizing: border-box;
+
   background: #121214;
   color: #ffffff;
+
+  transition: 0.2s ease;
 }
 
 .auth-form input::placeholder {
@@ -140,40 +183,61 @@
 
 .auth-form button {
   height: 50px;
+
   border: none;
   border-radius: 10px;
+
   background: #8b5cf6;
   color: #ffffff;
+
   font-size: 1.02rem;
   font-weight: 700;
+
   cursor: pointer;
+
   transition: 0.2s ease;
 }
 
 .auth-form button:hover {
   background: #7c3aed;
+  transform: translateY(-1px);
 }
 
 .auth-form button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+  transform: none;
 }
+
+/* ========================= */
+/* FORGOT */
+/* ========================= */
 
 .forgot-password {
   margin-top: 14px;
+
   background: transparent;
   border: none;
+
   color: #ffffff;
+
   font-size: 0.95rem;
+
   cursor: pointer;
+
   display: block;
   margin-inline: auto;
+
   transition: 0.2s ease;
 }
 
 .forgot-password:hover {
   color: #c084fc;
 }
+
+/* ========================= */
+/* TOGGLE */
+/* ========================= */
 
 .auth-toggle {
   display: flex;
@@ -184,12 +248,17 @@
 .toggle-btn {
   width: 100%;
   height: 48px;
+
   border-radius: 10px;
   border: 1px solid #4a4d53;
+
   background: transparent;
   color: #ffffff;
+
   font-weight: 700;
+
   cursor: pointer;
+
   transition: 0.2s ease;
 }
 
@@ -198,33 +267,42 @@
   color: #c084fc;
 }
 
+/* ========================= */
 /* BRAND */
+/* ========================= */
 
 .auth-brand {
   margin-top: 18px;
+
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+
   opacity: 0.9;
 }
 
 .brand-logo {
   width: 18px;
   height: 18px;
+
   object-fit: contain;
   display: block;
 }
 
 .auth-brand span {
   color: #ffffff;
+
   font-size: 18px;
   line-height: 18px;
+
   font-weight: 600;
   letter-spacing: 0.3px;
 }
 
+/* ========================= */
 /* MENSAGENS */
+/* ========================= */
 
 .auth-message {
   margin-top: 14px;
@@ -240,7 +318,9 @@
   color: #f87171;
 }
 
+/* ========================= */
 /* RESPONSIVO */
+/* ========================= */
 
 @media (max-width: 1100px) {
   .auth-panel {
@@ -250,26 +330,45 @@
   .auth-left {
     border-right: none;
     border-bottom: 1px solid #4a4d53;
+
     padding: 30px 24px;
+
     text-align: center;
     align-items: center;
   }
 
   .auth-left-content {
-    margin-top: 0;
-    margin-bottom: 0;
+    justify-content: center;
     align-items: center;
   }
 
   .auth-title-big {
     font-size: 2.5rem;
+
+    /* RESET MOBILE */
+    transform: translateY(0);
   }
 
-  .auth-preview-grid {
+  .auth-preview-image {
     display: none;
   }
 
   .auth-right {
     padding: 28px 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .auth-title-big {
+    font-size: 2rem;
+    line-height: 1.08;
+  }
+
+  .auth-left {
+    padding: 24px 18px;
+  }
+
+  .auth-right {
+    padding: 24px 16px;
   }
 }
