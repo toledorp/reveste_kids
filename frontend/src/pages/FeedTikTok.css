@@ -283,7 +283,7 @@ body.light .tiktok-action-btn,
 .light .tiktok-action-btn,
 [data-theme="light"] .tiktok-action-btn {
   background: #ffffff;
-  border-color: #c084fc;
+  border-color: #111;
 }
 
 body.dark .tiktok-action-btn,

@@ -308,7 +308,7 @@ function FeedTikTok({ theme, toggleTheme }) {
           title="Home"
         >
           <img
-            src="/home_sem_fundo.png"
+            src={theme === "dark" ? "/home_sem_fundo.png" : "/home_sem_fundo_dark.png"}
             alt="Home"
             className="action-icon-img"
           />
@@ -326,14 +326,16 @@ function FeedTikTok({ theme, toggleTheme }) {
         >
           {isOwnClothing ? (
             <img
-              src="/notLike_sem_fundo.png"
+              src={theme === "dark" ? "/notLike_sem_fundo.png" : "/notLike_sem_fundo_dark.png"}
               alt="Not Like"
               className="action-icon-img"
             />
           ) : (
             <img
               src={
-                isLiked ? "/like_coracao_sem_fundo.png" : "/like_sem_fundo.png"
+                theme === "dark" 
+                  ? (isLiked ? "/like_coracao_sem_fundo.png" : "/like_sem_fundo.png")
+                  : (isLiked ? "/like_coracao_sem_fundo_dark.png" : "/like_sem_fundo_dark.png")
               }
               alt={isLiked ? "Curtido" : "Curtir"}
               className="action-icon-img"
@@ -351,7 +353,7 @@ function FeedTikTok({ theme, toggleTheme }) {
           title="Closet"
         >
           <img
-            src="/closet_sem_fundo.png"
+            src={theme === "dark" ? "/closet_sem_fundo.png" : "/closet_sem_fundo_dark.png"}
             alt="Closet"
             className="action-icon-img"
           />
@@ -365,7 +367,7 @@ function FeedTikTok({ theme, toggleTheme }) {
           title="Match"
         >
           <img
-            src="/match_sem_fundo.png"
+            src={theme === "dark" ? "/match_sem_fundo.png" : "/match_sem_fundo_dark.png"}
             alt="Match"
             className="action-icon-img"
           />
@@ -379,7 +381,7 @@ function FeedTikTok({ theme, toggleTheme }) {
           title="Sair"
         >
           <img
-            src="/logout_sem_fundo.png"
+            src={theme === "dark" ? "/logout_sem_fundo.png" : "/logout_sem_fundo_dark.png"}
             alt="Sair"
             className="action-icon-img"
           />
