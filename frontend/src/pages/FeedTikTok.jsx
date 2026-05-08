@@ -4,7 +4,7 @@ import "./FeedTikTok.css";
 import Footer from "../components/Footer";
 import NotificationBell from "../components/NotificationBell";
 
-function FeedTikTok() {
+function FeedTikTok({ theme, toggleTheme }) {
   const [clothes, setClothes] = useState([]);
   const [likedIds, setLikedIds] = useState([]);
   const [currentMediaIndex, setCurrentMediaIndex] = useState({});
@@ -61,7 +61,9 @@ function FeedTikTok() {
 
   const activeItem = useMemo(() => {
     return (
-      filteredClothes.find((item) => String(item._id) === String(activeClothingId)) ||
+      filteredClothes.find(
+        (item) => String(item._id) === String(activeClothingId),
+      ) ||
       filteredClothes[0] ||
       null
     );
@@ -287,8 +289,6 @@ function FeedTikTok() {
 
     return (
       <div className={`tiktok-actions ${variant}`}>
-        <NotificationBell />
-        
         <button
           type="button"
           className="tiktok-action-btn"
@@ -296,7 +296,7 @@ function FeedTikTok() {
           title="Home"
         >
           <img
-            src="/home_sem_fundo.png"
+            src={theme === "dark" ? "/home_sem_fundo.png" : "/home_sem_fundo_dark.png"}
             alt="Home"
             className="action-icon-img"
           />
@@ -314,23 +314,25 @@ function FeedTikTok() {
         >
           {isOwnClothing ? (
             <img
-              src="/notLike_sem_fundo.png"
+              src={theme === "dark" ? "/notLike_sem_fundo.png" : "/notLike_sem_fundo_dark.png"}
               alt="Not Like"
               className="action-icon-img"
             />
           ) : (
             <img
               src={
-                isLiked
-                  ? "/like_coracao_sem_fundo.png"
-                  : "/like_sem_fundo.png"
+                theme === "dark" 
+                  ? (isLiked ? "/like_coracao_sem_fundo.png" : "/like_sem_fundo.png")
+                  : (isLiked ? "/like_coracao_sem_fundo_dark.png" : "/like_sem_fundo_dark.png")
               }
               alt={isLiked ? "Curtido" : "Curtir"}
               className="action-icon-img"
             />
           )}
         </button>
-        <span>{isOwnClothing ? "Sua peça" : isLiked ? "Curtido" : "Curtir"}</span>
+        <span>
+          {isOwnClothing ? "Sua peça" : isLiked ? "Curtido" : "Curtir"}
+        </span>
 
         <button
           type="button"
@@ -339,7 +341,7 @@ function FeedTikTok() {
           title="Closet"
         >
           <img
-            src="/closet_sem_fundo.png"
+            src={theme === "dark" ? "/closet_sem_fundo.png" : "/closet_sem_fundo_dark.png"}
             alt="Closet"
             className="action-icon-img"
           />
@@ -353,7 +355,7 @@ function FeedTikTok() {
           title="Match"
         >
           <img
-            src="/match_sem_fundo.png"
+            src={theme === "dark" ? "/match_sem_fundo.png" : "/match_sem_fundo_dark.png"}
             alt="Match"
             className="action-icon-img"
           />
@@ -372,7 +374,7 @@ function FeedTikTok() {
           title="Sair"
         >
           <img
-            src="/logout_sem_fundo.png"
+            src={theme === "dark" ? "/logout_sem_fundo.png" : "/logout_sem_fundo_dark.png"}
             alt="Sair"
             className="action-icon-img"
           />
@@ -391,7 +393,9 @@ function FeedTikTok() {
     <>
       <div className="tiktok-layout">
         <aside className="tiktok-sidebar compact-brand">
-          <img src="/logo_sem_fundo.png" alt="logo" className="tiktok-logo" />
+          <img src={theme === "dark" ? "/logo_sem_fundo.png" : "/logo-dark-sem-fundo.png"}
+            alt="logo" 
+            className="tiktok-logo" />
 
           {renderSearchBox()}
 
@@ -402,10 +406,10 @@ function FeedTikTok() {
             "sidebar-actions",
           )}
 
-          {/* <div className="tiktok-user-card">
+          <div className="tiktok-user-card">
             <span>Logado por</span>
             <strong>{user?.name || user?.email?.split("@")[0]}</strong>
-          </div> */}
+          </div>
         </aside>
 
         <main className="tiktok-feed">
@@ -485,10 +489,9 @@ function FeedTikTok() {
                         src={activeMedia.url}
                         className="tiktok-media"
                         autoPlay
-                        muted={isMuted}
+                        muted
                         loop
                         playsInline
-                        onClick={() => setIsMuted((prev) => !prev)}
                       />
                     ) : activeMedia?.url ? (
                       <img
