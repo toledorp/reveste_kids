@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FeedTikTok.css";
 import Footer from "../components/Footer";
+import NotificationBell from "../components/NotificationBell";
 
 function FeedTikTok() {
   const [clothes, setClothes] = useState([]);
@@ -286,6 +287,8 @@ function FeedTikTok() {
 
     return (
       <div className={`tiktok-actions ${variant}`}>
+        <NotificationBell />
+        
         <button
           type="button"
           className="tiktok-action-btn"

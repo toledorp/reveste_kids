@@ -4,6 +4,7 @@ import Match from "../models/Match.js";
 import User from "../models/Users.js";
 
 import emailService from "./emailService.js";
+import notificationService from "./notificationService.js";
 
 class InterestService {
   async like(userId, clothingId) {
@@ -21,7 +22,7 @@ class InterestService {
 
     const likedClothing = await Clothing.findById(clothingId).populate(
       "userId",
-      "name email",
+      "name email"
     );
 
     if (!likedClothing) {
@@ -33,7 +34,6 @@ class InterestService {
     }
 
     const likedClothingOwnerId = likedClothing.userId;
-
     const interestedUser = await User.findById(userId).select("name email");
 
     if (
@@ -51,9 +51,31 @@ class InterestService {
           clothingTitle: likedClothing.title,
         });
 
-        console.log("E-mail de notificação enviado para:", likedClothing.userId?.email);
+        console.log(
+          "E-mail de notificação enviado para:",
+          likedClothing.userId?.email
+        );
       } catch (emailError) {
         console.log("Erro ao enviar e-mail de notificação:", emailError);
+      }
+
+      try {
+        await notificationService.createNotification({
+          userId: likedClothing.userId._id,
+          senderId: userId,
+          clothingId,
+          type: "LIKE",
+          message: `${
+            interestedUser?.name || interestedUser?.email || "Alguém"
+          } curtiu sua peça "${likedClothing.title}"`,
+        });
+
+        console.log(
+          "Notificação de like criada para:",
+          likedClothing.userId?.email
+        );
+      } catch (notificationError) {
+        console.log("Erro ao criar notificação de like:", notificationError);
       }
     }
 
@@ -107,6 +129,36 @@ class InterestService {
       status: "MATCHED",
     });
 
+    try {
+      await notificationService.createNotification({
+        userId: likedClothingOwnerId._id || likedClothingOwnerId,
+        senderId: userId,
+        clothingId,
+        matchId: match._id,
+        type: "MATCH",
+        message: `Você deu match com ${
+          interestedUser?.name || interestedUser?.email || "outro usuário"
+        }`,
+      });
+
+      await notificationService.createNotification({
+        userId,
+        senderId: likedClothingOwnerId._id || likedClothingOwnerId,
+        clothingId: reciprocalInterest.clothingId,
+        matchId: match._id,
+        type: "MATCH",
+        message: `Você deu match com ${
+          likedClothing.userId?.name ||
+          likedClothing.userId?.email ||
+          "outro usuário"
+        }`,
+      });
+
+      console.log("Notificações de match criadas");
+    } catch (notificationError) {
+      console.log("Erro ao criar notificações de match:", notificationError);
+    }
+
     return {
       interest: newInterest,
       matchCreated: true,
@@ -146,7 +198,7 @@ class InterestService {
         const mutualLike = receivedLikes.find(
           (receivedLike) =>
             receivedLike.userId &&
-            receivedLike.userId._id.toString() === otherUserId,
+            receivedLike.userId._id.toString() === otherUserId
         );
 
         if (mutualLike) {
@@ -162,8 +214,8 @@ class InterestService {
         (match, index, self) =>
           index ===
           self.findIndex(
-            (item) => item.user._id.toString() === match.user._id.toString(),
-          ),
+            (item) => item.user._id.toString() === match.user._id.toString()
+          )
       );
 
       return uniqueMatches;
