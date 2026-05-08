@@ -12,6 +12,7 @@ import userRoutes from "./routes/userRoutes.js";
 import clothingRoutes from "./routes/clothingRoutes.js";
 import interestRoutes from "./routes/interestRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/", userRoutes);
 app.use("/", clothingRoutes);
 app.use("/api", interestRoutes);
+app.use("/api", notificationRoutes);
 app.use("/api/chat", chatRoutes);
 
 mongoose

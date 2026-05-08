@@ -217,14 +217,6 @@ function SearchClosets() {
             <button type="button" onClick={() => navigate("/feed")}>
               <img src="/home_sem_fundo.png" alt="Home" />
             </button>
-
-            <button type="button" onClick={() => navigate("/closet")}>
-              <img src="/closet_sem_fundo.png" alt="Closet" />
-            </button>
-
-            <button type="button" onClick={() => navigate("/matches")}>
-              <img src="/match_sem_fundo.png" alt="Matches" />
-            </button>
           </div>
         </aside>
 
@@ -232,19 +224,7 @@ function SearchClosets() {
           <header className="search-closets-header">
             <div>
               <h1>Buscar Closets</h1>
-              <p>
-                Encontre outros usuários, veja todas as peças disponíveis e curta
-                aquelas que você gostaria de trocar.
-              </p>
             </div>
-
-            <button
-              type="button"
-              className="search-closets-back-btn"
-              onClick={() => navigate("/feed")}
-            >
-              Voltar ao Feed
-            </button>
           </header>
 
           <section className="search-closets-content">

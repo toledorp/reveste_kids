@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FeedTikTok.css";
 import Footer from "../components/Footer";
+import NotificationBell from "../components/NotificationBell";
 
 function FeedTikTok() {
   const [clothes, setClothes] = useState([]);
@@ -10,6 +11,7 @@ function FeedTikTok() {
   const [matchAlert, setMatchAlert] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeClothingId, setActiveClothingId] = useState(null);
+  const [isMuted, setIsMuted] = useState(true);
 
   const cardRefs = useRef({});
   const navigate = useNavigate();
@@ -285,6 +287,8 @@ function FeedTikTok() {
 
     return (
       <div className={`tiktok-actions ${variant}`}>
+        <NotificationBell />
+        
         <button
           type="button"
           className="tiktok-action-btn"
@@ -481,9 +485,10 @@ function FeedTikTok() {
                         src={activeMedia.url}
                         className="tiktok-media"
                         autoPlay
-                        muted
+                        muted={isMuted}
                         loop
                         playsInline
+                        onClick={() => setIsMuted((prev) => !prev)}
                       />
                     ) : activeMedia?.url ? (
                       <img
