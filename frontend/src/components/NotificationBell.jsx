@@ -1,10 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./NotificationBell.css";
 
 function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
+
+  const previousUnreadCountRef = useRef(0);
+  const firstLoadRef = useRef(true);
+
+  const playNotificationSound = () => {
+    const audio = new Audio("/notification-beep.mp3");
+    audio.volume = 0.5;
+
+    audio.play().catch(() => {
+      console.log("Som bloqueado pelo navegador até interação do usuário.");
+    });
+  };
 
   const loadNotifications = async () => {
     try {
@@ -18,8 +30,18 @@ function NotificationBell() {
 
       const data = await response.json();
 
+      const newUnreadCount = data.unreadCount || 0;
+      const previousUnreadCount = previousUnreadCountRef.current;
+
+      if (!firstLoadRef.current && newUnreadCount > previousUnreadCount) {
+        playNotificationSound();
+      }
+
+      firstLoadRef.current = false;
+      previousUnreadCountRef.current = newUnreadCount;
+
       setNotifications(data.notifications || []);
-      setUnreadCount(data.unreadCount || 0);
+      setUnreadCount(newUnreadCount);
     } catch (error) {
       console.log("Erro ao carregar notificações:", error);
     }
@@ -44,7 +66,11 @@ function NotificationBell() {
         )
       );
 
-      setUnreadCount((prev) => Math.max(prev - 1, 0));
+      setUnreadCount((prev) => {
+        const updatedCount = Math.max(prev - 1, 0);
+        previousUnreadCountRef.current = updatedCount;
+        return updatedCount;
+      });
     } catch (error) {
       console.log(error);
     }
@@ -68,6 +94,7 @@ function NotificationBell() {
         }))
       );
 
+      previousUnreadCountRef.current = 0;
       setUnreadCount(0);
     } catch (error) {
       console.log(error);
@@ -111,8 +138,9 @@ function NotificationBell() {
   return (
     <div className="notification-container">
       <button
-        className={`tiktok-action-btn notification-btn ${unreadCount > 0 ? "has-notifications" : ""
-          }`}
+        className={`tiktok-action-btn notification-btn ${
+          unreadCount > 0 ? "has-notifications" : ""
+        }`}
         onClick={() => setOpen(!open)}
         title="Notificações"
       >
@@ -151,8 +179,9 @@ function NotificationBell() {
             notifications.map((notification) => (
               <div
                 key={notification._id}
-                className={`notification-card ${notification.read ? "read" : "unread"
-                  }`}
+                className={`notification-card ${
+                  notification.read ? "read" : "unread"
+                }`}
                 onClick={() => markAsRead(notification._id)}
               >
                 <p>{notification.message}</p>
