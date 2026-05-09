@@ -2,8 +2,8 @@
   display: grid;
   grid-template-columns: 180px 1fr;
   min-height: 100vh;
-  background: #050505;
-  color: #ffffff;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
 /* SIDEBAR */
@@ -13,8 +13,8 @@
   position: sticky;
   top: 0;
   padding: 28px 22px;
-  background: #050505;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-soft);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,7 +55,7 @@
 
 .closet-home-btn:hover {
   transform: scale(1.08);
-  border-color: rgba(192, 132, 252, 0.7);
+  border-color: #c084fc;
 }
 
 .closet-home-icon {
@@ -64,28 +64,15 @@
   object-fit: contain;
   display: block;
   transition: 0.2s ease;
+  filter: drop-shadow(0 0 4px rgba(192, 132, 252, 0.45));
 }
 
 .closet-home-btn:hover .closet-home-icon {
   transform: scale(1.1);
 }
-/* 
-.closet-home-label {
-  position: absolute;
-  left: 50%;
-  bottom: -24px;
-  transform: translateX(-50%) translateY(-6px);
-  font-size: 0.76rem;
-  color: #ffffff;
-  opacity: 0;
-  transition: 0.2s ease;
-  pointer-events: none;
-  white-space: nowrap;
-} */
 
-.closet-home-btn:hover .closet-home-label {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+.closet-home-label {
+  color: var(--text-main);
 }
 
 /* CARD USUÁRIO */
@@ -123,7 +110,7 @@
       rgba(192, 132, 252, 0.08),
       transparent 32%
     ),
-    #050505;
+    var(--bg-page);
 }
 
 .closet-header {
@@ -143,7 +130,7 @@
 
 .closet-header p {
   margin: 0;
-  color: #d4d4d4;
+  color: var(--text-muted);
   font-size: 1rem;
 }
 
@@ -174,7 +161,15 @@
 }
 
 .closet-card {
-  background: linear-gradient(180deg, #181818 0%, #101010 100%);
+  display: flex;
+  flex-direction: column;
+
+  background: linear-gradient(
+    180deg,
+    var(--bg-card-soft) 0%,
+    var(--bg-card) 100%
+  );
+
   border: 1px solid rgba(192, 132, 252, 0.18);
   border-radius: 24px;
   overflow: hidden;
@@ -190,23 +185,27 @@
 .closet-image-wrapper {
   width: 100%;
   aspect-ratio: 4 / 5;
-  background: #111111;
+  background: var(--bg-card);
   overflow: hidden;
 }
 
 .closet-info {
   padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .closet-info h2 {
   margin: 0 0 8px;
   font-size: 1.35rem;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .closet-info p {
   margin: 0 0 14px;
-  color: #d4d4d4;
+  color: var(--text-muted);
   line-height: 1.4;
 }
 
@@ -221,7 +220,7 @@
   border-radius: 999px;
   background: rgba(192, 132, 252, 0.18);
   border: 1px solid rgba(192, 132, 252, 0.26);
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -229,7 +228,9 @@
 /* ACTIONS */
 
 .closet-actions {
-  margin-top: 18px;
+  margin-top: auto;
+  padding-top: 18px;
+
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -247,32 +248,28 @@
   justify-content: center;
 }
 
-/* TAMANHO DO ÍCONE */
 .closet-edit-btn img,
 .closet-delete-btn img {
   width: 18px;
   height: 18px;
+  object-fit: contain;
 }
 
-.closet-edit-btn {
-  background: #ffffff;
-}
-
-.closet-edit-btn:hover {
-  background: #ffffff;
-}
-
+.closet-edit-btn,
 .closet-delete-btn {
   background: #ffffff;
 }
 
+.closet-edit-btn:hover,
 .closet-delete-btn:hover {
   background: #ffffff;
+  transform: scale(1.08);
 }
 
 .closet-delete-btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+  transform: none;
 }
 
 /* EMPTY / LOADING */
@@ -284,7 +281,7 @@
   place-content: center;
   text-align: center;
   padding: 24px;
-  color: #d4d4d4;
+  color: var(--text-muted);
 }
 
 .closet-empty h2 {
@@ -325,11 +322,16 @@
 .modal-content {
   width: 100%;
   max-width: 520px;
-  background: linear-gradient(180deg, #181818 0%, #111111 100%);
+  background: linear-gradient(
+    180deg,
+    var(--bg-card-soft) 0%,
+    var(--bg-card) 100%
+  );
   border: 1px solid rgba(192, 132, 252, 0.2);
   border-radius: 22px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
   padding: 22px;
+  color: var(--text-main);
 }
 
 .modal-content-large {
@@ -354,7 +356,7 @@
 .modal-close-btn {
   border: none;
   background: transparent;
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 28px;
   cursor: pointer;
 }
@@ -377,8 +379,8 @@
   padding: 14px 16px;
   border-radius: 12px;
   border: 1px solid rgba(192, 132, 252, 0.16);
-  background: #0f0f0f;
-  color: #ffffff;
+  background: var(--bg-card);
+  color: var(--text-main);
   outline: none;
   box-sizing: border-box;
 }
@@ -397,19 +399,19 @@
 .modal-media-section {
   padding: 16px;
   border-radius: 16px;
-  background: #0f0f0f;
+  background: var(--bg-card);
   border: 1px solid rgba(192, 132, 252, 0.16);
 }
 
 .modal-media-header h3 {
   margin: 0 0 6px;
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 1.1rem;
 }
 
 .modal-media-header p {
   margin: 0 0 14px;
-  color: #aaaaaa;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -419,41 +421,35 @@
   gap: 10px;
 }
 
-.modal-upload-label {
-  display: inline-flex;
+.modal-upload-btn {
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 11px 14px;
-  border-radius: 12px;
-  background: #8b5cf6;
-  color: #ffffff;
-  font-size: 0.9rem;
-  font-weight: 800;
+  min-height: 52px;
+  border-radius: 14px;
   cursor: pointer;
   transition: 0.2s ease;
 }
 
-.modal-upload-label:hover {
-  background: #7c3aed;
-}
-
-.modal-upload-label.secondary {
-  background: #2b2b2b;
-}
-
-.modal-upload-label.secondary:hover {
-  background: #3a3a3a;
-}
-
-.modal-upload-label input {
+.modal-upload-btn input {
   display: none;
+}
+
+.modal-upload-icon {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.modal-upload-btn:hover {
+  transform: scale(1.05);
 }
 
 .modal-upload-helper {
   display: flex;
   gap: 12px;
   margin-top: 12px;
-  color: #aaaaaa;
+  color: var(--text-muted);
   font-size: 0.82rem;
 }
 
@@ -474,7 +470,7 @@
   position: relative;
   border-radius: 14px;
   overflow: hidden;
-  background: #111111;
+  background: var(--bg-card);
   border: 1px solid rgba(192, 132, 252, 0.16);
   aspect-ratio: 1 / 1;
 }
@@ -517,8 +513,8 @@
   margin-top: 14px;
   padding: 16px;
   border-radius: 12px;
-  background: #111111;
-  color: #aaaaaa;
+  background: var(--bg-card);
+  color: var(--text-muted);
   text-align: center;
   font-size: 0.9rem;
 }
@@ -526,35 +522,68 @@
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .modal-cancel-btn,
 .modal-save-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   border: none;
-  color: #ffffff;
-  padding: 12px 18px;
-  border-radius: 10px;
-  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.modal-cancel-btn {
-  background: #2b2b2b;
-}
-
+.modal-cancel-btn,
 .modal-save-btn {
-  background: #8b5cf6;
+  background: #ffffff;
 }
 
+.modal-cancel-btn:hover,
 .modal-save-btn:hover {
-  background: #7c3aed;
+  background: #ffffff;
+  transform: scale(1.08);
 }
 
 .modal-save-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+}
+
+.modal-action-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.modal-saving-text {
+  color: #111111;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* BOTÃO HOME - contraste invertido por tema */
+
+body.light .closet-home-btn,
+.light .closet-home-btn,
+[data-theme="light"] .closet-home-btn {
+  background: #111111;
+  border: 1px solid rgba(192, 132, 252, 0.55);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+body.dark .closet-home-btn,
+.dark .closet-home-btn,
+[data-theme="dark"] .closet-home-btn {
+  background: #ffffff;
+  border: 1px solid rgba(192, 132, 252, 0.45);
+  box-shadow: 0 8px 22px rgba(255, 255, 255, 0.08);
 }
 
 /* RESPONSIVE */
@@ -569,7 +598,7 @@
     height: auto;
     padding: 20px 16px;
     border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--border-soft);
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -635,197 +664,4 @@
   .modal-form-row {
     grid-template-columns: 1fr;
   }
-}
-
-/* ============================= */
-/* THEME OVERRIDES - CLARO/ESCURO */
-/* ============================= */
-
-.closet-layout {
-  background: var(--bg-main);
-  color: var(--text-main);
-}
-
-.closet-sidebar {
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border-soft);
-}
-
-.closet-container {
-  background:
-    radial-gradient(
-      circle at top center,
-      rgba(192, 132, 252, 0.08),
-      transparent 32%
-    ),
-    var(--bg-page);
-}
-
-.closet-card {
-  background: linear-gradient(
-    180deg,
-    var(--bg-card-soft) 0%,
-    var(--bg-card) 100%
-  );
-  border: 1px solid rgba(192, 132, 252, 0.18);
-}
-
-.closet-image-wrapper {
-  background: var(--bg-card);
-}
-
-.closet-info h2,
-.modal-media-header h3 {
-  color: var(--text-main);
-}
-
-.closet-info p,
-.closet-header p,
-.modal-media-header p,
-.modal-upload-helper,
-.modal-empty-media {
-  color: var(--text-muted);
-}
-
-.modal-content,
-.modal-media-section,
-.modal-preview-item,
-.modal-form input,
-.modal-form textarea,
-.modal-empty-media {
-  background: var(--bg-card);
-  color: var(--text-main);
-}
-
-/* BOTÃO HOME - contraste invertido por tema */
-
-/* Tema claro: fundo preto para destacar o ícone roxo */
-body.light .closet-home-btn,
-.light .closet-home-btn,
-[data-theme="light"] .closet-home-btn {
-  background: #111111;
-  border: 1px solid rgba(192, 132, 252, 0.55);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-}
-
-/* Tema escuro: fundo branco */
-body.dark .closet-home-btn,
-.dark .closet-home-btn,
-[data-theme="dark"] .closet-home-btn {
-  background: #ffffff;
-  border: 1px solid rgba(192, 132, 252, 0.45);
-  box-shadow: 0 8px 22px rgba(255, 255, 255, 0.08);
-}
-
-.closet-home-btn:hover {
-  transform: scale(1.08);
-  border-color: #c084fc;
-}
-
-.closet-home-icon {
-  filter: drop-shadow(0 0 4px rgba(192, 132, 252, 0.45));
-}
-
-.modal-content {
-  background: linear-gradient(
-    180deg,
-    var(--bg-card-soft) 0%,
-    var(--bg-card) 100%
-  );
-}
-
-.modal-form input,
-.modal-form textarea {
-  border: 1px solid rgba(192, 132, 252, 0.16);
-}
-
-.modal-close-btn {
-  color: var(--text-main);
-}
-
-.closet-home-label {
-  color: var(--text-main);
-}
-
-.modal-upload-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.modal-upload-btn input {
-  display: none;
-}
-
-/* NOVO */
-.modal-upload-icon {
-  width: 58px;
-  height: 58px;
-  object-fit: contain;
-}
-
-.modal-upload-btn:hover {
-  transform: scale(1.05);
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.modal-cancel-btn,
-.modal-save-btn {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-/* CANCELAR */
-.modal-cancel-btn {
-  background: #ffffff;
-}
-
-.modal-cancel-btn:hover {
-  background: #ffffff;
-  transform: scale(1.08);
-}
-
-/* SALVAR */
-.modal-save-btn {
-  background: #ffffff;
-}
-
-.modal-save-btn:hover {
-  transform: scale(1.08);
-}
-
-.modal-save-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* ÍCONES */
-.modal-action-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-/* loading */
-.modal-saving-text {
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
 }

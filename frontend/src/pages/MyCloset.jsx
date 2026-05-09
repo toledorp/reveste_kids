@@ -6,6 +6,9 @@ import MediaCarousel from "../components/MediaCarousel";
 function MyCloset() {
   const navigate = useNavigate();
 
+  const currentTheme =
+  document.documentElement.getAttribute("data-theme") || "dark";
+
   const [clothes, setClothes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
@@ -332,7 +335,7 @@ function MyCloset() {
             <p>Cadastre sua primeira peça para começar as trocas.</p>
             <button
               onClick={() => navigate("/add-clothing")}
-              //src={theme === "dark" ? "/addClothes_sem_fundo.png" : "/addClothes_sem_fundo_dark.png"} 
+              //src={theme === "dark" ? "/addClothes_sem_fundo.png" : "/addClothes_sem_fundo_dark.png"}
               src="/addClothes_sem_fundo.png"
             >
               Cadastrar peça
@@ -359,7 +362,14 @@ function MyCloset() {
                         className="closet-edit-btn"
                         onClick={() => openEditModal(item)}
                       >
-                        <img src="/file-edit.png" alt="Editar" />
+                        <img
+                          src={
+                            currentTheme === "dark"
+                              ? "/file-edit_sem_fundo.png"
+                              : "/file-edit_sem_fundo_dark.png"
+                          }
+                          alt="Editar"
+                        />
                       </button>
 
                       <button
@@ -368,7 +378,14 @@ function MyCloset() {
                         onClick={() => handleDelete(item._id)}
                         disabled={deletingId === item._id}
                       >
-                        <img src="/trash.png" alt="Excluir" />
+                        <img
+                          src={
+                            currentTheme === "dark"
+                              ? "/trash_sem_fundo.png"
+                              : "/trash_sem_fundo_dark.png"
+                          }
+                          alt="Excluir"
+                        />
                       </button>
                     </div>
                   </div>

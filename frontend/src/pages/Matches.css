@@ -354,7 +354,7 @@
 
 .chat-input-area button,
 .chat-send-btn {
-  background: var(--purple-main);
+  /* background: var(--purple-main); */
   color: #111111;
   border: none;
   padding: 0;
@@ -369,10 +369,9 @@
 }
 
 .chat-send-icon {
-  width: 22px;
-  height: 22px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
 }
 
 /* RESPONSIVE */
