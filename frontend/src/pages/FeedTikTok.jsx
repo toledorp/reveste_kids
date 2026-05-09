@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FeedTikTok.css";
 import Footer from "../components/Footer";
+import NotificationBell from "../components/NotificationBell";
 
 function FeedTikTok({ theme, toggleTheme }) {
   const [clothes, setClothes] = useState([]);
@@ -10,6 +11,7 @@ function FeedTikTok({ theme, toggleTheme }) {
   const [matchAlert, setMatchAlert] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeClothingId, setActiveClothingId] = useState(null);
+  const [isMuted, setIsMuted] = useState(true);
 
   const cardRefs = useRef({});
   const navigate = useNavigate();
@@ -287,6 +289,8 @@ function FeedTikTok({ theme, toggleTheme }) {
 
     return (
       <div className={`tiktok-actions ${variant}`}>
+        <NotificationBell />
+        
         <button
           type="button"
           className="tiktok-action-btn theme-toggle-btn"
@@ -373,6 +377,11 @@ function FeedTikTok({ theme, toggleTheme }) {
           />
         </button>
         <span>Match</span>
+
+        <button type="button" className="tiktok-action-btn" onClick={() => navigate("/search-closets")} title="Buscar Closets" >
+          <img src="/closet_sem_fundo.png" alt="Buscar Closets" className="action-icon-img" />
+        </button>
+        <span>Buscar</span>
 
         <button
           type="button"

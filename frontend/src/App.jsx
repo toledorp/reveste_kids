@@ -15,6 +15,7 @@ import FeedTikTok from "./pages/FeedTikTok";
 import MyCloset from "./pages/MyCloset";
 import AddClothing from "./pages/AddClothing";
 import Matches from "./pages/Matches";
+import SearchClosets from "./pages/SearchClosets";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ function AppContent() {
     "/closet",
     "/add-clothing",
     "/matches",
+    "/search-closets"
   ];
 
   const hideGlobalLayout = pagesWithoutGlobalLayout.includes(location.pathname);
@@ -76,6 +78,8 @@ function AppContent() {
         <Route path="/matches" element={<Matches />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
+
+        <Route path="/search-closets" element={<SearchClosets />} />
       </Routes>
 
       {!hideGlobalLayout && <Footer />}
