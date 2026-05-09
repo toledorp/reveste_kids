@@ -6,6 +6,9 @@ import "./Matches.css";
 function Matches() {
   const navigate = useNavigate();
 
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme") || "dark";
+
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMatch, setSelectedMatch] = useState(null);
@@ -41,7 +44,7 @@ function Matches() {
         }
       })
       .catch((error) => {
-        console.log(error);f
+        console.log(error);
         setLoading(false);
       });
   }, [user?._id]);
@@ -348,7 +351,11 @@ function Matches() {
                   onClick={handleSendMessage}
                 >
                   <img
-                    src="/send.png"
+                    src={
+                      currentTheme === "dark"
+                        ? "/send_sem_fundo.png"
+                        : "/send_sem_fundo_dark.png"
+                    }
                     alt="Enviar"
                     className="chat-send-icon"
                   />

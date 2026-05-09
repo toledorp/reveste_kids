@@ -379,7 +379,9 @@ function FeedTikTok({ theme, toggleTheme }) {
         <span>Match</span>
 
         <button type="button" className="tiktok-action-btn" onClick={() => navigate("/search-closets")} title="Buscar Closets" >
-          <img src="/closet_sem_fundo.png" alt="Buscar Closets" className="action-icon-img" />
+          <img src={theme === "dark" ? "/addClothes_sem_fundo.png" : "/addClothes_sem_fundo_dark.png"}
+           alt="Buscar Closets" 
+           className="action-icon-img" />
         </button>
         <span>Buscar</span>
 
