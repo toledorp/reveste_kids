@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { fetchData, loginUser } from "../services/api";
+import { Link } from "react-router-dom";
+import { loginUser } from "../services/api";
 import "./AuthPanel.css";
 
 function AuthPanel({ onAuthSuccess }) {
-  const [isLoginMode, setIsLoginMode] = useState(true);
-
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,51 +23,30 @@ function AuthPanel({ onAuthSuccess }) {
     setLoading(true);
 
     try {
-      if (isLoginMode) {
-        const data = await loginUser(email, password);
+      const data = await loginUser(email, password);
 
-        localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token);
 
-        const payload = JSON.parse(
-          atob(data.token.split(".")[1])
-        );
+      const payload = JSON.parse(
+        atob(data.token.split(".")[1])
+      );
 
-        localStorage.setItem("role", payload.role);
+      localStorage.setItem("role", payload.role);
 
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            _id: payload.id,
-            email: payload.email,
-            role: payload.role,
-          })
-        );
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          _id: payload.id,
+          email: payload.email,
+          role: payload.role,
+        })
+      );
 
-        setMessage("Login realizado com sucesso.");
+      setMessage("Login realizado com sucesso.");
 
-        setTimeout(() => {
-          onAuthSuccess();
-        }, 700);
-      } else {
-        await fetchData("/user", {
-          method: "POST",
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-          }),
-        });
-
-        setMessage(
-          "Usuário cadastrado com sucesso. Agora faça login."
-        );
-
-        setIsLoginMode(true);
-
-        setName("");
-        setEmail("");
-        setPassword("");
-      }
+      setTimeout(() => {
+        onAuthSuccess();
+      }, 700);
     } catch (err) {
       setError(
         err.message ||
@@ -82,7 +59,6 @@ function AuthPanel({ onAuthSuccess }) {
 
   return (
     <section className="auth-panel">
-      {/* ESQUERDA */}
       <div className="auth-left">
         <img
           src="/logo_sem_fundo.png"
@@ -91,7 +67,6 @@ function AuthPanel({ onAuthSuccess }) {
         />
 
         <div className="auth-left-content">
-          {/* IMAGEM */}
           <div className="auth-preview-image">
             <img
               src="/card-login.png"
@@ -99,7 +74,6 @@ function AuthPanel({ onAuthSuccess }) {
             />
           </div>
 
-          {/* TEXTO */}
           <h1 className="auth-title-big">
             <span className="line">Novas</span>
 
@@ -122,31 +96,16 @@ function AuthPanel({ onAuthSuccess }) {
         </div>
       </div>
 
-      {/* DIREITA */}
       <div className="auth-right">
         <div className="auth-card">
           <h2 className="auth-title">
-            {isLoginMode
-              ? "Entrar no ReVeste Kids"
-              : "Criar conta"}
+            Entrar no ReVeste Kids
           </h2>
 
           <form
             className="auth-form"
             onSubmit={handleSubmit}
           >
-            {!isLoginMode && (
-              <input
-                type="text"
-                placeholder="Nome completo"
-                value={name}
-                onChange={(e) =>
-                  setName(e.target.value)
-                }
-                required
-              />
-            )}
-
             <input
               type="email"
               placeholder="E-mail"
@@ -173,20 +132,16 @@ function AuthPanel({ onAuthSuccess }) {
             >
               {loading
                 ? "Processando..."
-                : isLoginMode
-                ? "Entrar"
-                : "Cadastrar"}
+                : "Entrar"}
             </button>
           </form>
 
-          {isLoginMode && (
-            <button
-              type="button"
-              className="forgot-password"
-            >
-              Esqueceu a senha?
-            </button>
-          )}
+          <button
+            type="button"
+            className="forgot-password"
+          >
+            Esqueceu a senha?
+          </button>
 
           {message && (
             <p className="auth-message success">
@@ -201,18 +156,12 @@ function AuthPanel({ onAuthSuccess }) {
           )}
 
           <div className="auth-toggle">
-            <button
-              type="button"
+            <Link
+              to="/register"
               className="toggle-btn"
-              onClick={() => {
-                resetMessages();
-                setIsLoginMode(!isLoginMode);
-              }}
             >
-              {isLoginMode
-                ? "Criar nova conta"
-                : "Já tenho uma conta"}
-            </button>
+              Criar nova conta
+            </Link>
           </div>
 
           <div className="auth-brand">
