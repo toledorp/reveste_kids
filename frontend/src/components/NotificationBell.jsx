@@ -1,22 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./NotificationBell.css";
 
 function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
-
-  const previousUnreadCountRef = useRef(0);
-  const firstLoadRef = useRef(true);
-
-  const playNotificationSound = () => {
-    const audio = new Audio("/notification-beep.mp3");
-    audio.volume = 0.5;
-
-    audio.play().catch(() => {
-      console.log("Som bloqueado pelo navegador até interação do usuário.");
-    });
-  };
 
   const loadNotifications = async () => {
     try {
@@ -30,18 +18,8 @@ function NotificationBell() {
 
       const data = await response.json();
 
-      const newUnreadCount = data.unreadCount || 0;
-      const previousUnreadCount = previousUnreadCountRef.current;
-
-      if (!firstLoadRef.current && newUnreadCount > previousUnreadCount) {
-        playNotificationSound();
-      }
-
-      firstLoadRef.current = false;
-      previousUnreadCountRef.current = newUnreadCount;
-
       setNotifications(data.notifications || []);
-      setUnreadCount(newUnreadCount);
+      setUnreadCount(data.unreadCount || 0);
     } catch (error) {
       console.log("Erro ao carregar notificações:", error);
     }
@@ -51,26 +29,25 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch(`http://localhost:4000/api/notifications/${notificationId}/read`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      await fetch(
+        `http://localhost:4000/api/notifications/${notificationId}/read`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       setNotifications((prev) =>
         prev.map((notification) =>
           notification._id === notificationId
             ? { ...notification, read: true }
-            : notification
-        )
+            : notification,
+        ),
       );
 
-      setUnreadCount((prev) => {
-        const updatedCount = Math.max(prev - 1, 0);
-        previousUnreadCountRef.current = updatedCount;
-        return updatedCount;
-      });
+      setUnreadCount((prev) => Math.max(prev - 1, 0));
     } catch (error) {
       console.log(error);
     }
@@ -91,10 +68,9 @@ function NotificationBell() {
         prev.map((notification) => ({
           ...notification,
           read: true,
-        }))
+        })),
       );
 
-      previousUnreadCountRef.current = 0;
       setUnreadCount(0);
     } catch (error) {
       console.log(error);
@@ -113,7 +89,7 @@ function NotificationBell() {
       });
 
       setNotifications((prev) =>
-        prev.filter((notification) => !notification.read)
+        prev.filter((notification) => !notification.read),
       );
     } catch (error) {
       console.log(error);
@@ -138,18 +114,19 @@ function NotificationBell() {
   return (
     <div className="notification-container">
       <button
+        type="button"
         className={`tiktok-action-btn notification-btn ${
           unreadCount > 0 ? "has-notifications" : ""
         }`}
-        onClick={() => setOpen(!open)}
+        onClick={() => setOpen((prev) => !prev)}
         title="Notificações"
       >
-        🔔
+        <span className="notification-icon">🔔</span>
 
         {unreadCount > 0 && (
-          <span className="notification-count">
+          <strong className="notification-count">
             {unreadCount > 9 ? "9+" : unreadCount}
-          </span>
+          </strong>
         )}
       </button>
 
@@ -186,9 +163,9 @@ function NotificationBell() {
               >
                 <p>{notification.message}</p>
 
-                <span>
+                <small>
                   {new Date(notification.createdAt).toLocaleString("pt-BR")}
-                </span>
+                </small>
               </div>
             ))
           )}

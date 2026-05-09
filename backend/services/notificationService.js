@@ -25,21 +25,21 @@ class NotificationService {
     return await Notification.findOneAndUpdate(
       { _id: notificationId, userId },
       { read: true },
-      { new: true }
+      { new: true },
     );
   }
 
   async markAllAsRead(userId) {
     return await Notification.updateMany(
       { userId, read: false },
-      { read: true }
+      { read: true },
     );
   }
 
   async clearReadNotifications(userId) {
     return await Notification.updateMany(
       { userId, read: true },
-      { active: false }
+      { active: false },
     );
   }
 }

@@ -4,7 +4,8 @@ const getMyNotifications = async (req, res) => {
   try {
     const userId = req.loggerUser.id;
 
-    const notifications = await notificationService.getUserNotifications(userId);
+    const notifications =
+      await notificationService.getUserNotifications(userId);
     const unreadCount = await notificationService.getUnreadCount(userId);
 
     return res.status(200).json({
@@ -24,7 +25,7 @@ const markAsRead = async (req, res) => {
 
     const notification = await notificationService.markAsRead(
       userId,
-      notificationId
+      notificationId,
     );
 
     if (!notification) {
@@ -34,7 +35,9 @@ const markAsRead = async (req, res) => {
     return res.status(200).json(notification);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Erro ao marcar notificação como lida" });
+    return res
+      .status(500)
+      .json({ error: "Erro ao marcar notificação como lida" });
   }
 };
 
@@ -49,7 +52,9 @@ const markAllAsRead = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Erro ao marcar notificações como lidas" });
+    return res
+      .status(500)
+      .json({ error: "Erro ao marcar notificações como lidas" });
   }
 };
 

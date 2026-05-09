@@ -16,6 +16,7 @@ import MyCloset from "./pages/MyCloset";
 import AddClothing from "./pages/AddClothing";
 import Matches from "./pages/Matches";
 import SearchClosets from "./pages/SearchClosets";
+import NotificationBell from "./components/NotificationBell";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -81,6 +82,8 @@ function AppContent() {
 
         <Route path="/search-closets" element={<SearchClosets />} />
       </Routes>
+
+      <NotificationBell />
 
       {!hideGlobalLayout && <Footer />}
     </>
