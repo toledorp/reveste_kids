@@ -330,7 +330,11 @@ function MyCloset() {
           <div className="closet-empty">
             <h2>Seu closet ainda está vazio</h2>
             <p>Cadastre sua primeira peça para começar as trocas.</p>
-            <button onClick={() => navigate("/add-clothing")}>
+            <button
+              onClick={() => navigate("/add-clothing")}
+              //src={theme === "dark" ? "/addClothes_sem_fundo.png" : "/addClothes_sem_fundo_dark.png"} 
+              src="/addClothes_sem_fundo.png"
+            >
               Cadastrar peça
             </button>
           </div>
