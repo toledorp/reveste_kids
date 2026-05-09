@@ -308,9 +308,7 @@ function MyCloset() {
             <span className="closet-home-label">Home</span>
           </button>
         </div>
-
-              </aside>
-
+      </aside>
       <main className="closet-container">
         <div className="closet-header">
           <div>
@@ -417,13 +415,16 @@ function MyCloset() {
                 <div className="modal-media-header">
                   <div>
                     <h3>Mídias da peça</h3>
-                    <p>Adicione, substitua ou remova fotos e vídeo.</p>
                   </div>
                 </div>
 
                 <div className="modal-upload-actions">
-                  <label className="modal-upload-label">
-                    Adicionar fotos
+                  <label className="modal-upload-btn">
+                    <img
+                      src="/add-image.png"
+                      alt="Adicionar fotos"
+                      className="modal-upload-icon"
+                    />
                     <input
                       type="file"
                       accept="image/*"
@@ -432,8 +433,12 @@ function MyCloset() {
                     />
                   </label>
 
-                  <label className="modal-upload-label secondary">
-                    Trocar vídeo
+                  <label className="modal-upload-btn secondary">
+                    <img
+                      src="/photo-video.png"
+                      alt="Trocar vídeo"
+                      className="modal-upload-icon"
+                    />
                     <input
                       type="file"
                       accept="video/*"
@@ -499,7 +504,11 @@ function MyCloset() {
                   className="modal-cancel-btn"
                   onClick={closeEditModal}
                 >
-                  Cancelar
+                  <img
+                    src="/cancel.png"
+                    alt="Cancelar"
+                    className="modal-action-icon"
+                  />
                 </button>
 
                 <button
@@ -507,7 +516,15 @@ function MyCloset() {
                   className="modal-save-btn"
                   disabled={savingEdit}
                 >
-                  {savingEdit ? "Salvando..." : "Salvar alterações"}
+                  {savingEdit ? (
+                    <span className="modal-saving-text">...</span>
+                  ) : (
+                    <img
+                      src="/salvar.png"
+                      alt="Salvar"
+                      className="modal-action-icon"
+                    />
+                  )}
                 </button>
               </div>
             </form>
