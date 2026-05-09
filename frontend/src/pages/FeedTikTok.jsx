@@ -289,6 +289,22 @@ function FeedTikTok({ theme, toggleTheme }) {
 
     return (
       <div className={`tiktok-actions ${variant}`}>
+        <NotificationBell />
+        
+        <button
+          type="button"
+          className="tiktok-action-btn theme-toggle-btn"
+          onClick={toggleTheme}
+          title={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
+        >
+          <img
+            src={theme === "dark" ? "./sun.png" : "./moon.png"}
+            alt="Alternar tema"
+            className="action-icon-img theme-icon-img"
+          />
+        </button>
+        <span>{theme === "dark" ? "Claro" : "Escuro"}</span>
+
         <button
           type="button"
           className="tiktok-action-btn"
@@ -405,11 +421,6 @@ function FeedTikTok({ theme, toggleTheme }) {
             isActiveOwnClothing,
             "sidebar-actions",
           )}
-
-          <div className="tiktok-user-card">
-            <span>Logado por</span>
-            <strong>{user?.name || user?.email?.split("@")[0]}</strong>
-          </div>
         </aside>
 
         <main className="tiktok-feed">
@@ -489,9 +500,9 @@ function FeedTikTok({ theme, toggleTheme }) {
                         src={activeMedia.url}
                         className="tiktok-media"
                         autoPlay
-                        muted
                         loop
                         playsInline
+                        controls
                       />
                     ) : activeMedia?.url ? (
                       <img

@@ -72,13 +72,6 @@
   background: rgba(192, 132, 252, 0.28);
 }
 
-/* .tiktok-user-card {
-  margin-top: auto;
-  padding: 14px;
-  border-radius: 14px;
-  background: #111111;
-  border: 1px solid rgba(192, 132, 252, 0.18);
-
 /* AÇÕES */
 
 .tiktok-actions,
@@ -92,13 +85,6 @@
   gap: 6px;
   color: var(--text-main);
 }
-
-.tiktok-user-card strong {
-  font-size: 0.9rem;
-  word-break: break-word;
-} */
-
-/* AÇÕES NO ASIDE */
 
 .sidebar-actions {
   width: 100%;
