@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import { socket } from "../services/socket";
 import "./Matches.css";
 
@@ -30,7 +31,7 @@ function Matches() {
       return;
     }
 
-    fetch(`http://localhost:4000/api/chat/users/${user._id}/matches`)
+    fetch(`${API_BASE_URL}/api/chat/users/${user._id}/matches`)
       .then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar matches");
         return res.json();
@@ -83,7 +84,7 @@ function Matches() {
     setMessageLoading(true);
 
     fetch(
-      `http://localhost:4000/api/chat/matches/${selectedMatch._id}/messages?userId=${user._id}`,
+      `${API_BASE_URL}/api/chat/matches/${selectedMatch._id}/messages?userId=${user._id}`,
     )
       .then((res) => {
         if (!res.ok) throw new Error("Erro ao carregar mensagens");
@@ -180,7 +181,7 @@ function Matches() {
     if (!selectedMatch?._id || !user?._id || !content.trim()) return;
 
     try {
-      const response = await fetch("http://localhost:4000/api/chat/messages", {
+      const response = await fetch(`${API_BASE_URL}/api/chat/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

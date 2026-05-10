@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import API_BASE_URL from "../services/api";
 import "./NotificationBell.css";
 
 function NotificationBell() {
@@ -10,7 +11,7 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:4000/api/notifications", {
+      const response = await fetch(`${API_BASE_URL}/api/notifications`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -29,15 +30,12 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch(
-        `http://localhost:4000/api/notifications/${notificationId}/read`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      await fetch(`${API_BASE_URL}/api/notifications/${notificationId}/read`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       setNotifications((prev) =>
         prev.map((notification) =>
@@ -57,7 +55,7 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch("http://localhost:4000/api/notifications/read-all", {
+      await fetch(`${API_BASE_URL}/api/notifications/read-all`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -81,7 +79,7 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch("http://localhost:4000/api/notifications/clear-read", {
+      await fetch(`${API_BASE_URL}/api/notifications/clear-read`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

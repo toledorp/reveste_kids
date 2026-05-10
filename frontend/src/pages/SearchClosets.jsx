@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import MediaCarousel from "../components/MediaCarousel";
 import Footer from "../components/Footer";
 import "./SearchClosets.css";
@@ -23,7 +24,7 @@ function SearchClosets() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:4000/clothes")
+    fetch(`${API_BASE_URL}/clothes`)
       .then((res) => res.json())
       .then((data) => {
         setClothes(data || []);
@@ -39,7 +40,7 @@ function SearchClosets() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    fetch("http://localhost:4000/api/my-likes", {
+    fetch(`${API_BASE_URL}/api/my-likes`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -166,15 +167,12 @@ function SearchClosets() {
     const alreadyLiked = likedIds.includes(clothingId);
 
     try {
-      const response = await fetch(
-        `http://localhost:4000/api/like/${clothingId}`,
-        {
-          method: alreadyLiked ? "DELETE" : "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_BASE_URL}/api/like/${clothingId}`, {
+        method: alreadyLiked ? "DELETE" : "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       const data = await response.json();
 
@@ -193,7 +191,9 @@ function SearchClosets() {
       if (data.matchCreated) {
         setMessage("Deu match! A conversa já está disponível em Matches.");
       } else {
-        setMessage("Like enviado! Se houver interesse mútuo, o match será criado.");
+        setMessage(
+          "Like enviado! Se houver interesse mútuo, o match será criado.",
+        );
       }
     } catch (error) {
       console.log(error);
@@ -272,7 +272,9 @@ function SearchClosets() {
                             "Usuário"}
                         </strong>
 
-                        <span>{closet.owner?.email || "Email não disponível"}</span>
+                        <span>
+                          {closet.owner?.email || "Email não disponível"}
+                        </span>
 
                         <small>
                           {closet.items.length}{" "}
@@ -320,7 +322,10 @@ function SearchClosets() {
                       return (
                         <article key={item._id} className="search-closets-card">
                           <div className="search-closets-media">
-                            <MediaCarousel media={previewMedia} alt={item.title} />
+                            <MediaCarousel
+                              media={previewMedia}
+                              alt={item.title}
+                            />
                           </div>
 
                           <div className="search-closets-info">

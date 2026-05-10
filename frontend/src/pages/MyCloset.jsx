@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import "./MyCloset.css";
 import MediaCarousel from "../components/MediaCarousel";
 
@@ -7,7 +8,7 @@ function MyCloset() {
   const navigate = useNavigate();
 
   const currentTheme =
-  document.documentElement.getAttribute("data-theme") || "dark";
+    document.documentElement.getAttribute("data-theme") || "dark";
 
   const [clothes, setClothes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,7 +30,7 @@ function MyCloset() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:4000/my-clothes", {
+    fetch(`${API_BASE_URL}/my-clothes`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -70,7 +71,7 @@ function MyCloset() {
 
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`http://localhost:4000/clothes/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/clothes/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -252,7 +253,7 @@ function MyCloset() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:4000/clothes/${editingItem._id}`,
+        `${API_BASE_URL}/clothes/${editingItem._id}`,
         {
           method: "PUT",
           headers: {
@@ -335,7 +336,6 @@ function MyCloset() {
             <p>Cadastre sua primeira peça para começar as trocas.</p>
             <button
               onClick={() => navigate("/add-clothing")}
-              //src={theme === "dark" ? "/addClothes_sem_fundo.png" : "/addClothes_sem_fundo_dark.png"}
               src="/addClothes_sem_fundo.png"
             >
               Cadastrar peça

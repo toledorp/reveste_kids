@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import "./FeedTikTok.css";
 import Footer from "../components/Footer";
 import NotificationBell from "../components/NotificationBell";
@@ -11,7 +12,6 @@ function FeedTikTok({ theme, toggleTheme }) {
   const [matchAlert, setMatchAlert] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeClothingId, setActiveClothingId] = useState(null);
-  const [isMuted, setIsMuted] = useState(true);
 
   const cardRefs = useRef({});
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ function FeedTikTok({ theme, toggleTheme }) {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:4000/clothes")
+    fetch(`${API_BASE_URL}/clothes`)
       .then((res) => res.json())
       .then((data) => setClothes(data || []))
       .catch((error) => console.log("Erro ao carregar feed:", error));
@@ -35,7 +35,7 @@ function FeedTikTok({ theme, toggleTheme }) {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    fetch("http://localhost:4000/api/my-likes", {
+    fetch(`${API_BASE_URL}/api/my-likes`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -217,15 +217,12 @@ function FeedTikTok({ theme, toggleTheme }) {
     const alreadyLiked = likedIds.includes(clothingId);
 
     try {
-      const response = await fetch(
-        `http://localhost:4000/api/like/${clothingId}`,
-        {
-          method: alreadyLiked ? "DELETE" : "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_BASE_URL}/api/like/${clothingId}`, {
+        method: alreadyLiked ? "DELETE" : "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       const data = await response.json();
 
@@ -290,7 +287,7 @@ function FeedTikTok({ theme, toggleTheme }) {
     return (
       <div className={`tiktok-actions ${variant}`}>
         <NotificationBell />
-        
+
         <button
           type="button"
           className="tiktok-action-btn theme-toggle-btn"
@@ -312,7 +309,11 @@ function FeedTikTok({ theme, toggleTheme }) {
           title="Home"
         >
           <img
-            src={theme === "dark" ? "/home_sem_fundo.png" : "/home_sem_fundo_dark.png"}
+            src={
+              theme === "dark"
+                ? "/home_sem_fundo.png"
+                : "/home_sem_fundo_dark.png"
+            }
             alt="Home"
             className="action-icon-img"
           />
@@ -330,16 +331,24 @@ function FeedTikTok({ theme, toggleTheme }) {
         >
           {isOwnClothing ? (
             <img
-              src={theme === "dark" ? "/notLike_sem_fundo.png" : "/notLike_sem_fundo_dark.png"}
+              src={
+                theme === "dark"
+                  ? "/notLike_sem_fundo.png"
+                  : "/notLike_sem_fundo_dark.png"
+              }
               alt="Not Like"
               className="action-icon-img"
             />
           ) : (
             <img
               src={
-                theme === "dark" 
-                  ? (isLiked ? "/like_coracao_sem_fundo.png" : "/like_sem_fundo.png")
-                  : (isLiked ? "/like_coracao_sem_fundo_dark.png" : "/like_sem_fundo_dark.png")
+                theme === "dark"
+                  ? isLiked
+                    ? "/like_coracao_sem_fundo.png"
+                    : "/like_sem_fundo.png"
+                  : isLiked
+                    ? "/like_coracao_sem_fundo_dark.png"
+                    : "/like_sem_fundo_dark.png"
               }
               alt={isLiked ? "Curtido" : "Curtir"}
               className="action-icon-img"
@@ -357,7 +366,11 @@ function FeedTikTok({ theme, toggleTheme }) {
           title="Closet"
         >
           <img
-            src={theme === "dark" ? "/closet_sem_fundo.png" : "/closet_sem_fundo_dark.png"}
+            src={
+              theme === "dark"
+                ? "/closet_sem_fundo.png"
+                : "/closet_sem_fundo_dark.png"
+            }
             alt="Closet"
             className="action-icon-img"
           />
@@ -371,17 +384,32 @@ function FeedTikTok({ theme, toggleTheme }) {
           title="Match"
         >
           <img
-            src={theme === "dark" ? "/match_sem_fundo.png" : "/match_sem_fundo_dark.png"}
+            src={
+              theme === "dark"
+                ? "/match_sem_fundo.png"
+                : "/match_sem_fundo_dark.png"
+            }
             alt="Match"
             className="action-icon-img"
           />
         </button>
         <span>Match</span>
 
-        <button type="button" className="tiktok-action-btn" onClick={() => navigate("/search-closets")} title="Buscar Closets" >
-          <img src={theme === "dark" ? "/addClothes_sem_fundo.png" : "/addClothes_sem_fundo_dark.png"}
-           alt="Buscar Closets" 
-           className="action-icon-img" />
+        <button
+          type="button"
+          className="tiktok-action-btn"
+          onClick={() => navigate("/search-closets")}
+          title="Buscar Closets"
+        >
+          <img
+            src={
+              theme === "dark"
+                ? "/addClothes_sem_fundo.png"
+                : "/addClothes_sem_fundo_dark.png"
+            }
+            alt="Buscar Closets"
+            className="action-icon-img"
+          />
         </button>
         <span>Buscar</span>
 
@@ -392,7 +420,11 @@ function FeedTikTok({ theme, toggleTheme }) {
           title="Sair"
         >
           <img
-            src={theme === "dark" ? "/logout_sem_fundo.png" : "/logout_sem_fundo_dark.png"}
+            src={
+              theme === "dark"
+                ? "/logout_sem_fundo.png"
+                : "/logout_sem_fundo_dark.png"
+            }
             alt="Sair"
             className="action-icon-img"
           />
@@ -411,9 +443,15 @@ function FeedTikTok({ theme, toggleTheme }) {
     <>
       <div className="tiktok-layout">
         <aside className="tiktok-sidebar compact-brand">
-          <img src={theme === "dark" ? "/logo_sem_fundo.png" : "/logo-dark-sem-fundo.png"}
-            alt="logo" 
-            className="tiktok-logo" />
+          <img
+            src={
+              theme === "dark"
+                ? "/logo_sem_fundo.png"
+                : "/logo-dark-sem-fundo.png"
+            }
+            alt="logo"
+            className="tiktok-logo"
+          />
 
           {renderSearchBox()}
 
@@ -474,13 +512,6 @@ function FeedTikTok({ theme, toggleTheme }) {
                     </div>
 
                     {renderSearchBox("mobile-search")}
-
-                    <div className="tiktok-mobile-user-card">
-                      <span>Logado por</span>
-                      <strong>
-                        {user?.name || user?.email?.split("@")[0]}
-                      </strong>
-                    </div>
                   </div>
 
                   <div className="tiktok-info-card">

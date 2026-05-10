@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import "./AddClothing.css";
 
 function AddClothing() {
@@ -23,14 +24,6 @@ function AddClothing() {
   const [uploadingImages, setUploadingImages] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
 
-  const user = useMemo(() => {
-    try {
-      return JSON.parse(localStorage.getItem("user"));
-    } catch {
-      return null;
-    }
-  }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -49,7 +42,7 @@ function AddClothing() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:4000/clothes", {
+      const response = await fetch(`${API_BASE_URL}/clothes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
