@@ -586,7 +586,7 @@ body.light .settings-dropdown,
   }
 
   .tiktok-mobile-logo {
-    width: 70px;
+    width: 50px;
     height: auto;
     display: block;
   }
@@ -638,12 +638,19 @@ body.light .settings-dropdown,
     top: 16px;
   }
 
-  .settings-dropdown {
+.settings-dropdown {
   position: absolute;
+
+  top: 50%;
+  right: 58px;
+
+  transform: translateY(-50%);
+
   left: auto;
-  right: 0;
-  bottom: 58px;
-  }
+  bottom: auto;
+
+  width: 145px;
+}
 }
 
 /* CONTRASTE */
