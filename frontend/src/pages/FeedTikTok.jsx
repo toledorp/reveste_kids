@@ -12,6 +12,7 @@ function FeedTikTok({ theme, toggleTheme }) {
   const [matchAlert, setMatchAlert] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeClothingId, setActiveClothingId] = useState(null);
+  const [settingsMenuKey, setSettingsMenuKey] = useState(null);
 
   const cardRefs = useRef({});
   const navigate = useNavigate();
@@ -281,44 +282,78 @@ function FeedTikTok({ theme, toggleTheme }) {
     </div>
   );
 
-  const renderActionButtons = (item, isLiked, isOwnClothing, variant = "") => {
-    if (!item) return null;
+  const renderSettingsMenu = (menuKey) => {
+    const isOpen = settingsMenuKey === menuKey;
 
     return (
-      <div className={`tiktok-actions ${variant}`}>
-        <NotificationBell />
-
+      <div className="settings-menu-wrapper">
         <button
           type="button"
-          className="tiktok-action-btn theme-toggle-btn"
-          onClick={toggleTheme}
-          title={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
-        >
-          <img
-            src={theme === "dark" ? "./sun.png" : "./moon.png"}
-            alt="Alternar tema"
-            className="action-icon-img theme-icon-img"
-          />
-        </button>
-        <span>{theme === "dark" ? "Claro" : "Escuro"}</span>
-
-        <button
-          type="button"
-          className="tiktok-action-btn"
-          onClick={() => navigate("/feed")}
-          title="Home"
+          className="tiktok-action-btn settings-action-btn"
+          onClick={() => setSettingsMenuKey(isOpen ? null : menuKey)}
+          title="Configurações"
         >
           <img
             src={
               theme === "dark"
-                ? "/home_sem_fundo.png"
-                : "/home_sem_fundo_dark.png"
+                ? "/setting_sem_fundo.png"
+                : "/setting_sem_fundo_dark.png"
             }
-            alt="Home"
+            alt="Configurações"
             className="action-icon-img"
           />
         </button>
-        <span>Home</span>
+        <span>Config.</span>
+
+        {isOpen && (
+          <div className="settings-dropdown">
+            <button
+              type="button"
+              className="settings-dropdown-item"
+              onClick={() => {
+                toggleTheme();
+                setSettingsMenuKey(null);
+              }}
+            >
+              <img
+                src={theme === "dark" ? "./sun.png" : "./moon.png"}
+                alt="Alternar tema"
+              />
+              <span>{theme === "dark" ? "Tema claro" : "Tema escuro"}</span>
+            </button>
+
+            <button
+              type="button"
+              className="settings-dropdown-item danger"
+              onClick={() => {
+                setSettingsMenuKey(null);
+                handleLogout();
+              }}
+            >
+              <img
+                src={
+                  theme === "dark"
+                    ? "/logout_sem_fundo.png"
+                    : "/logout_sem_fundo_dark.png"
+                }
+                alt="Sair"
+              />
+              <span>Sair</span>
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderActionButtons = (item, isLiked, isOwnClothing, variant = "") => {
+    if (!item) return null;
+
+    const menuKey = `${variant || "default"}-${item._id}`;
+
+    return (
+      <div className={`tiktok-actions ${variant}`}>
+        <NotificationBell />
 
         <button
           type="button"
@@ -413,23 +448,7 @@ function FeedTikTok({ theme, toggleTheme }) {
         </button>
         <span>Buscar</span>
 
-        <button
-          type="button"
-          className="tiktok-action-btn logout-action-btn"
-          onClick={handleLogout}
-          title="Sair"
-        >
-          <img
-            src={
-              theme === "dark"
-                ? "/logout_sem_fundo.png"
-                : "/logout_sem_fundo_dark.png"
-            }
-            alt="Sair"
-            className="action-icon-img"
-          />
-        </button>
-        <span>Sair</span>
+        {renderSettingsMenu(menuKey)}
       </div>
     );
   };
