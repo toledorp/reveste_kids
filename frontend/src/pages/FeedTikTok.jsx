@@ -551,7 +551,6 @@ function FeedTikTok({ theme, toggleTheme }) {
                       <video
                         src={activeMedia.url}
                         className="tiktok-media"
-                        autoPlay
                         loop
                         playsInline
                         controls

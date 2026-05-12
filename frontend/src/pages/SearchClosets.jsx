@@ -221,6 +221,7 @@ function SearchClosets() {
         </aside>
 
         <main className="search-closets-page">
+          {/* BOTÃO HOME MOBILE */}
           <header className="search-closets-header">
             <div>
               <h1>Buscar Closets</h1>
@@ -245,7 +246,9 @@ function SearchClosets() {
               </div>
 
               {loading ? (
-                <p className="search-closets-status">Carregando closets...</p>
+                <p className="search-closets-status">
+                  Carregando closets...
+                </p>
               ) : filteredClosets.length === 0 ? (
                 <p className="search-closets-status">
                   Nenhum closet encontrado.
@@ -261,10 +264,11 @@ function SearchClosets() {
                       <button
                         key={closet.owner._id}
                         type="button"
-                        className={`search-closets-user-card ${
-                          isActive ? "active" : ""
-                        }`}
-                        onClick={() => setSelectedOwnerId(closet.owner._id)}
+                        className={`search-closets-user-card ${isActive ? "active" : ""
+                          }`}
+                        onClick={() =>
+                          setSelectedOwnerId(closet.owner._id)
+                        }
                       >
                         <strong>
                           {closet.owner?.name ||
@@ -273,12 +277,15 @@ function SearchClosets() {
                         </strong>
 
                         <span>
-                          {closet.owner?.email || "Email não disponível"}
+                          {closet.owner?.email ||
+                            "Email não disponível"}
                         </span>
 
                         <small>
                           {closet.items.length}{" "}
-                          {closet.items.length === 1 ? "peça" : "peças"}
+                          {closet.items.length === 1
+                            ? "peça"
+                            : "peças"}
                         </small>
                       </button>
                     );
@@ -297,6 +304,7 @@ function SearchClosets() {
                   <div className="search-closets-selected-header">
                     <div>
                       <span>Closet de</span>
+
                       <h2>
                         {selectedCloset.owner?.name ||
                           selectedCloset.owner?.email?.split("@")[0] ||
@@ -315,12 +323,18 @@ function SearchClosets() {
                   <div className="search-closets-grid">
                     {selectedCloset.items.map((item) => {
                       const previewMedia = getPreviewMedia(item);
+
                       const isLiked = likedIds.includes(item._id);
+
                       const isOwnClothing =
-                        String(getOwnerId(item)) === String(user?._id);
+                        String(getOwnerId(item)) ===
+                        String(user?._id);
 
                       return (
-                        <article key={item._id} className="search-closets-card">
+                        <article
+                          key={item._id}
+                          className="search-closets-card"
+                        >
                           <div className="search-closets-media">
                             <MediaCarousel
                               media={previewMedia}
@@ -329,20 +343,33 @@ function SearchClosets() {
                           </div>
 
                           <div className="search-closets-info">
-                            <h3>{item.title || "Peça sem título"}</h3>
-                            <p>{item.description || "Sem descrição"}</p>
+                            <h3>
+                              {item.title || "Peça sem título"}
+                            </h3>
+
+                            <p>
+                              {item.description ||
+                                "Sem descrição"}
+                            </p>
 
                             <div className="search-closets-tags">
-                              {item.category && <span>{item.category}</span>}
-                              {item.size && <span>Tam. {item.size}</span>}
-                              {item.condition && <span>{item.condition}</span>}
+                              {item.category && (
+                                <span>{item.category}</span>
+                              )}
+
+                              {item.size && (
+                                <span>Tam. {item.size}</span>
+                              )}
+
+                              {item.condition && (
+                                <span>{item.condition}</span>
+                              )}
                             </div>
 
                             <button
                               type="button"
-                              className={`search-closets-like-btn ${
-                                isLiked ? "liked" : ""
-                              }`}
+                              className={`search-closets-like-btn ${isLiked ? "liked" : ""
+                                }`}
                               disabled={isOwnClothing}
                               onClick={() => handleLike(item._id)}
                             >
@@ -380,7 +407,11 @@ function SearchClosets() {
           </section>
         </main>
 
-        {message && <div className="search-closets-toast">{message}</div>}
+        {message && (
+          <div className="search-closets-toast">
+            {message}
+          </div>
+        )}
       </div>
 
       <Footer />
