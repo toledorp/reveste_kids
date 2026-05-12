@@ -68,6 +68,12 @@
     var(--bg-page, #050505);
 }
 
+/* BOTÃO HOME MOBILE */
+
+.search-closets-mobile-home {
+  display: none;
+}
+
 .search-closets-header {
   max-width: 1280px;
   margin: 0 auto 28px;
@@ -374,29 +380,122 @@
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.35);
 }
 
+/* RESPONSIVO */
+
 @media (max-width: 960px) {
   .search-closets-layout {
-    grid-template-columns: 1fr;
+    display: block;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .search-closets-sidebar {
+    position: static;
+    height: auto;
+    padding: 20px 16px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-soft, rgba(255, 255, 255, 0.08));
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .search-closets-logo {
+    width: 50px;
+    margin-bottom: 0;
+  }
+
+  .search-closets-menu {
+    margin: 0;
+  }
+
+  .search-closets-menu button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .search-closets-menu img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .search-closets-mobile-home {
     display: none;
   }
 
   .search-closets-page {
-    padding: 28px 18px;
+    width: 100%;
+    padding: 28px 16px 90px;
+    overflow-x: hidden;
   }
 
   .search-closets-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 14px;
+  }
+
+  .search-closets-header h1 {
+    font-size: 2rem;
+    line-height: 1.1;
   }
 
   .search-closets-content {
     grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .search-closets-list-panel,
+  .search-closets-items-panel {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 20px;
   }
 
   .search-closets-list-panel {
     min-height: auto;
+    padding: 14px;
+  }
+
+  .search-closets-items-panel {
+    padding: 16px;
+  }
+
+  .search-closets-selected-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .search-closets-selected-header h2 {
+    font-size: 1.9rem;
+    line-height: 1;
+  }
+
+  .search-closets-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .search-closets-user-card {
+    padding: 12px;
+  }
+
+  .search-closets-user-card strong {
+    font-size: 0.95rem;
+  }
+
+  .search-closets-user-card span {
+    font-size: 0.8rem;
+  }
+
+  .search-closets-input-box input {
+    font-size: 14px;
+  }
+
+  .search-closets-like-btn {
+    font-size: 0.92rem;
+    padding: 10px;
   }
 }
