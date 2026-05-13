@@ -1,44 +1,7 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
 
 function Register() {
-  useEffect(() => {
-    const media = window.matchMedia(
-      "(prefers-color-scheme: light)"
-    );
-
-    const applyTheme = (e) => {
-      if (e.matches) {
-        document.body.classList.add(
-          "light-mode"
-        );
-      } else {
-        document.body.classList.remove(
-          "light-mode"
-        );
-      }
-    };
-
-    applyTheme(media);
-
-    media.addEventListener(
-      "change",
-      applyTheme
-    );
-
-    return () => {
-      media.removeEventListener(
-        "change",
-        applyTheme
-      );
-
-      document.body.classList.remove(
-        "light-mode"
-      );
-    };
-  }, []);
-
   return (
     <section className="register-page">
       <div className="register-main">
@@ -104,10 +67,7 @@ function Register() {
 
               <div className="register-date">
                 <select defaultValue="">
-                  <option
-                    value=""
-                    disabled
-                  >
+                  <option value="" disabled>
                     Dia
                   </option>
 
@@ -125,26 +85,13 @@ function Register() {
                 </select>
 
                 <select defaultValue="">
-                  <option
-                    value=""
-                    disabled
-                  >
+                  <option value="" disabled>
                     Mês
                   </option>
 
                   {[
-                    "Janeiro",
-                    "Fevereiro",
-                    "Março",
-                    "Abril",
-                    "Maio",
-                    "Junho",
-                    "Julho",
-                    "Agosto",
-                    "Setembro",
-                    "Outubro",
-                    "Novembro",
-                    "Dezembro",
+                    "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+                    "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro",
                   ].map((mes, index) => (
                     <option
                       key={index}
@@ -156,10 +103,7 @@ function Register() {
                 </select>
 
                 <select defaultValue="">
-                  <option
-                    value=""
-                    disabled
-                  >
+                  <option value="" disabled>
                     Ano
                   </option>
 
@@ -209,76 +153,29 @@ function Register() {
             </div>
 
             <div className="register-address-grid">
-              <input
-                type="text"
-                placeholder="Número"
-              />
-
-              <input
-                type="text"
-                placeholder="Complemento"
-              />
+              <input type="text" placeholder="Número" />
+              <input type="text" placeholder="Complemento" />
             </div>
 
             <div className="register-address-grid">
-              <input
-                type="text"
-                placeholder="Bairro"
-              />
-
-              <input
-                type="text"
-                placeholder="CEP"
-              />
+              <input type="text" placeholder="Bairro" />
+              <input type="text" placeholder="CEP" />
             </div>
 
             <div className="register-address-grid">
-              <input
-                type="text"
-                placeholder="Cidade"
-              />
+              <input type="text" placeholder="Cidade" />
 
               <select defaultValue="">
-                <option
-                  value=""
-                  disabled
-                >
+                <option value="" disabled>
                   Estado
                 </option>
 
                 {[
-                  "AC",
-                  "AL",
-                  "AP",
-                  "AM",
-                  "BA",
-                  "CE",
-                  "DF",
-                  "ES",
-                  "GO",
-                  "MA",
-                  "MT",
-                  "MS",
-                  "MG",
-                  "PA",
-                  "PB",
-                  "PR",
-                  "PE",
-                  "PI",
-                  "RJ",
-                  "RN",
-                  "RS",
-                  "RO",
-                  "RR",
-                  "SC",
-                  "SP",
-                  "SE",
-                  "TO",
+                  "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA",
+                  "MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN",
+                  "RS","RO","RR","SC","SP","SE","TO",
                 ].map((uf) => (
-                  <option
-                    key={uf}
-                    value={uf}
-                  >
+                  <option key={uf} value={uf}>
                     {uf}
                   </option>
                 ))}
@@ -287,32 +184,14 @@ function Register() {
 
             <p className="register-policy">
               Ao criar uma conta no
-              ReVeste, você concorda com
-              nossos
-              <strong>
-                {" "}
-                Termos de Uso
-              </strong>
-              ,
-              <strong>
-                {" "}
-                Política de Privacidade
-              </strong>{" "}
-              e
-              <strong>
-                {" "}
-                Diretrizes da comunidade
-              </strong>
-              .
-              <br />
-              <br />
-              Utilizamos suas informações
-              para oferecer uma experiência
-              mais segura, personalizada e
-              eficiente dentro da
-              plataforma, incluindo
-              melhorias no serviço e
-              proteção da sua conta.
+              ReVeste, você concorda com nossos
+              <strong> Termos de Uso</strong>,
+              <strong> Política de Privacidade</strong> e
+              <strong> Diretrizes da comunidade</strong>.
+              <br /><br />
+              Utilizamos suas informações para oferecer uma experiência
+              mais segura, personalizada e eficiente dentro da
+              plataforma.
             </p>
 
             <button
@@ -334,45 +213,23 @@ function Register() {
 
       <footer className="register-footer">
         <div className="register-footer-links">
-          <button>Meta</button>
-
+          <button>Ralky</button>
           <button>Sobre</button>
-
-          <button>Blog</button>
-
-          <button>Carreiras</button>
-
           <button>Ajuda</button>
-
           <button>API</button>
-
+          <button>Comunidade</button>
+          <button>Diretrizes</button>
+          <button>Segurança</button>
           <button>Privacidade</button>
-
           <button>Termos</button>
-
-          <button>Localizações</button>
-
-          <button>
-            Instagram Lite
-          </button>
-
-          <button>
-            Upload de contatos e não usuários
-          </button>
-
-          <button>
-            Meta Verified
-          </button>
+          <button>Contato</button>
+          <button>Português (Brasil)</button>
+          <button>© 2026 ReVeste by Ralky</button>
         </div>
 
         <div className="register-footer-bottom">
-          <span>
-            Português (Brasil)
-          </span>
-
-          <span>
-            © 2026 ReVeste by Ralky
-          </span>
+          <span>Português (Brasil)</span>
+          <span>© 2026 ReVeste by Ralky</span>
         </div>
       </footer>
     </section>
