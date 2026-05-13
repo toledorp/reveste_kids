@@ -442,10 +442,15 @@ function MyCloset() {
                 <div className="modal-upload-actions">
                   <label className="modal-upload-btn">
                     <img
-                      src="/add-image.png"
+                      src={
+                        currentTheme === "dark"
+                          ? "/add-image_sem_fundo.png"
+                          : "/add-image_sem_fundo_dark.png"
+                      }
                       alt="Adicionar fotos"
                       className="modal-upload-icon"
                     />
+
                     <input
                       type="file"
                       accept="image/*"
@@ -456,10 +461,15 @@ function MyCloset() {
 
                   <label className="modal-upload-btn secondary">
                     <img
-                      src="/photo-video.png"
+                      src={
+                        currentTheme === "dark"
+                          ? "/add-video_sem_fundo.png"
+                          : "/add-video_sem_fundo_dark.png"
+                      }
                       alt="Trocar vídeo"
                       className="modal-upload-icon"
                     />
+
                     <input
                       type="file"
                       accept="video/*"
@@ -526,7 +536,11 @@ function MyCloset() {
                   onClick={closeEditModal}
                 >
                   <img
-                    src="/cancel.png"
+                    src={
+                      currentTheme === "dark"
+                        ? "/cancel_sem_fundo.png"
+                        : "/cancel_sem_fundo_dark.png"
+                    }
                     alt="Cancelar"
                     className="modal-action-icon"
                   />
@@ -541,7 +555,11 @@ function MyCloset() {
                     <span className="modal-saving-text">...</span>
                   ) : (
                     <img
-                      src="/salvar.png"
+                      src={
+                        currentTheme === "dark"
+                          ? "/send_sem_fundo.png"
+                          : "/send_sem_fundo_dark.png"
+                      }
                       alt="Salvar"
                       className="modal-action-icon"
                     />
