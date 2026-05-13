@@ -70,19 +70,6 @@
   transform: scale(1.1);
 }
 
-/* .matches-home-label {
-  position: absolute;
-  left: 50%;
-  bottom: -24px;
-  transform: translateX(-50%) translateY(-6px);
-  font-size: 0.76rem;
-  color: var(--text-main);
-  opacity: 0;
-  transition: 0.2s ease;
-  pointer-events: none;
-  white-space: nowrap;
-} */
-
 .matches-home-btn:hover .matches-home-label {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
