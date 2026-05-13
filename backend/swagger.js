@@ -4,7 +4,7 @@ const swaggerSpec = {
     title: "Reveste Kids API",
     version: "1.0.0",
     description:
-      "Documentação da API do projeto fullstack Reveste Kids com autenticação JWT e CRUD de filmes, personagens, planetas, espécies, veículos e espaçonaves.",
+      "Documentação da API do sistema Reveste Kids, incluindo autenticação, usuários, peças de roupa, curtidas, matches, notificações e chat.",
   },
   servers: [
     {
@@ -13,13 +13,13 @@ const swaggerSpec = {
     },
   ],
   tags: [
-    { name: "Auth", description: "Autenticação e cadastro de usuários" },
-    { name: "Films", description: "Operações com filmes" },
-    { name: "Persons", description: "Operações com personagens" },
-    { name: "Planets", description: "Operações com planetas" },
-    { name: "Species", description: "Operações com espécies" },
-    { name: "Vehicles", description: "Operações com veículos" },
-    { name: "Starships", description: "Operações com espaçonaves" },
+    { name: "Auth", description: "Autenticação de usuários" },
+    { name: "Users", description: "Gerenciamento de usuários" },
+    { name: "Clothes", description: "Gerenciamento de peças de roupa" },
+    { name: "Likes", description: "Curtidas em peças de roupa" },
+    { name: "Matches", description: "Matches entre usuários" },
+    { name: "Chat", description: "Mensagens e conversas entre usuários" },
+    { name: "Notifications", description: "Notificações do sistema" },
   ],
   components: {
     securitySchemes: {
@@ -39,7 +39,6 @@ const swaggerSpec = {
           },
         },
       },
-
       MessageResponse: {
         type: "object",
         properties: {
@@ -49,18 +48,42 @@ const swaggerSpec = {
           },
         },
       },
-
-      UserRegisterInput: {
+      User: {
+        type: "object",
+        properties: {
+          _id: {
+            type: "string",
+            example: "663f1b2a9b3c2d001234abcd",
+          },
+          name: {
+            type: "string",
+            example: "Maria Oliveira",
+          },
+          email: {
+            type: "string",
+            example: "maria@email.com",
+          },
+          city: {
+            type: "string",
+            example: "Registro",
+          },
+          state: {
+            type: "string",
+            example: "SP",
+          },
+        },
+      },
+      RegisterInput: {
         type: "object",
         required: ["name", "email", "password"],
         properties: {
           name: {
             type: "string",
-            example: "Luke Skywalker",
+            example: "Maria Oliveira",
           },
           email: {
             type: "string",
-            example: "luke@email.com",
+            example: "maria@email.com",
           },
           password: {
             type: "string",
@@ -68,14 +91,13 @@ const swaggerSpec = {
           },
         },
       },
-
-      AuthLoginInput: {
+      LoginInput: {
         type: "object",
         required: ["email", "password"],
         properties: {
           email: {
             type: "string",
-            example: "luke@email.com",
+            example: "maria@email.com",
           },
           password: {
             type: "string",
@@ -83,8 +105,7 @@ const swaggerSpec = {
           },
         },
       },
-
-      AuthLoginResponse: {
+      LoginResponse: {
         type: "object",
         properties: {
           message: {
@@ -93,655 +114,125 @@ const swaggerSpec = {
           },
           token: {
             type: "string",
-            example:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.exemplo.token.jwt",
+            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          },
+          user: {
+            $ref: "#/components/schemas/User",
           },
         },
       },
-
-      Film: {
+      Clothing: {
         type: "object",
         properties: {
           _id: {
             type: "string",
-            example: "67f2b8a0d6d123456789abcd",
+            example: "663f1b2a9b3c2d001234abce",
           },
           title: {
             type: "string",
-            example: "A New Hope",
+            example: "Camiseta infantil azul",
           },
-          episode_id: {
-            type: "number",
-            example: 4,
-          },
-          opening_crawl: {
+          description: {
             type: "string",
-            example: "It is a period of civil war...",
+            example: "Camiseta em bom estado, tamanho 6.",
           },
-          director: {
+          size: {
             type: "string",
-            example: "George Lucas",
+            example: "6",
           },
-          release_date: {
+          category: {
             type: "string",
-            example: "1977-05-25",
-          },
-        },
-      },
-
-      FilmInput: {
-        type: "object",
-        required: ["title", "episode_id", "opening_crawl", "director", "release_date"],
-        properties: {
-          title: {
-            type: "string",
-            example: "A New Hope",
-          },
-          episode_id: {
-            type: "number",
-            example: 4,
-          },
-          opening_crawl: {
-            type: "string",
-            example: "It is a period of civil war...",
-          },
-          director: {
-            type: "string",
-            example: "George Lucas",
-          },
-          release_date: {
-            type: "string",
-            example: "1977-05-25",
-          },
-        },
-      },
-
-      PersonDescription: {
-        type: "object",
-        properties: {
-          height: {
-            type: "number",
-            example: 172,
-          },
-          mass: {
-            type: "number",
-            example: 77,
-          },
-          hair_color: {
-            type: "string",
-            example: "blond",
-          },
-          skin_color: {
-            type: "string",
-            example: "fair",
-          },
-          eye_color: {
-            type: "string",
-            example: "blue",
+            example: "Camiseta",
           },
           gender: {
             type: "string",
-            example: "male",
+            example: "Unissex",
+          },
+          imageUrl: {
+            type: "string",
+            example: "https://res.cloudinary.com/exemplo/image/upload/camiseta.jpg",
+          },
+          userId: {
+            type: "string",
+            example: "663f1b2a9b3c2d001234abcd",
           },
         },
       },
-
-      Person: {
+      ClothingInput: {
+        type: "object",
+        properties: {
+          title: {
+            type: "string",
+            example: "Camiseta infantil azul",
+          },
+          description: {
+            type: "string",
+            example: "Camiseta em bom estado, tamanho 6.",
+          },
+          size: {
+            type: "string",
+            example: "6",
+          },
+          category: {
+            type: "string",
+            example: "Camiseta",
+          },
+          gender: {
+            type: "string",
+            example: "Unissex",
+          },
+          image: {
+            type: "string",
+            format: "binary",
+          },
+        },
+      },
+      Notification: {
         type: "object",
         properties: {
           _id: {
             type: "string",
-            example: "67f2b8a0d6d123456789abce",
+            example: "663f1b2a9b3c2d001234abcf",
           },
-          swapi_id: {
-            type: "number",
-            example: 1,
-          },
-          name: {
+          userId: {
             type: "string",
-            example: "Luke Skywalker",
+            example: "663f1b2a9b3c2d001234abcd",
           },
-          birth_year: {
+          message: {
             type: "string",
-            example: "19BBY",
+            example: "Sua peça recebeu uma nova curtida.",
           },
-          homeworld: {
+          read: {
+            type: "boolean",
+            example: false,
+          },
+          createdAt: {
             type: "string",
-            example: "67f2b8a0d6d123456789abcf",
-          },
-          species: {
-            type: "string",
-            example: "67f2b8a0d6d123456789abd0",
-          },
-          descriptions: {
-            $ref: "#/components/schemas/PersonDescription",
-          },
-        },
-      },
-
-      PersonInput: {
-        type: "object",
-        required: ["name", "birth_year", "homeworld", "species", "descriptions"],
-        properties: {
-          name: {
-            type: "string",
-            example: "Luke Skywalker",
-          },
-          birth_year: {
-            type: "string",
-            example: "19BBY",
-          },
-          homeworld: {
-            type: "string",
-            example: "67f2b8a0d6d123456789abcf",
-          },
-          species: {
-            type: "string",
-            example: "67f2b8a0d6d123456789abd0",
-          },
-          descriptions: {
-            $ref: "#/components/schemas/PersonDescription",
-          },
-        },
-      },
-
-      Planet: {
-        type: "object",
-        properties: {
-          _id: {
-            type: "string",
-            example: "67f2b8a0d6d123456789abcf",
-          },
-          swapi_id: {
-            type: "number",
-            example: 1,
-          },
-          name: {
-            type: "string",
-            example: "Tatooine",
-          },
-          rotation_period: {
-            type: "number",
-            example: 23,
-          },
-          orbital_period: {
-            type: "number",
-            example: 304,
-          },
-          diameter: {
-            type: "number",
-            example: 10465,
-          },
-          climate: {
-            type: "string",
-            example: "arid",
-          },
-          gravity: {
-            type: "string",
-            example: "1 standard",
-          },
-          terrain: {
-            type: "string",
-            example: "desert",
-          },
-          surface_water: {
-            type: "number",
-            example: 1,
-          },
-          population: {
-            type: "number",
-            example: 200000,
-          },
-        },
-      },
-
-      PlanetInput: {
-        type: "object",
-        required: [
-          "name",
-          "rotation_period",
-          "orbital_period",
-          "diameter",
-          "climate",
-          "gravity",
-          "terrain",
-          "surface_water",
-          "population",
-        ],
-        properties: {
-          name: {
-            type: "string",
-            example: "Tatooine",
-          },
-          rotation_period: {
-            type: "number",
-            example: 23,
-          },
-          orbital_period: {
-            type: "number",
-            example: 304,
-          },
-          diameter: {
-            type: "number",
-            example: 10465,
-          },
-          climate: {
-            type: "string",
-            example: "arid",
-          },
-          gravity: {
-            type: "string",
-            example: "1 standard",
-          },
-          terrain: {
-            type: "string",
-            example: "desert",
-          },
-          surface_water: {
-            type: "number",
-            example: 1,
-          },
-          population: {
-            type: "number",
-            example: 200000,
-          },
-        },
-      },
-
-      Specie: {
-        type: "object",
-        properties: {
-          _id: {
-            type: "string",
-            example: "67f2b8a0d6d123456789abd0",
-          },
-          swapi_id: {
-            type: "number",
-            example: 1,
-          },
-          name: {
-            type: "string",
-            example: "Human",
-          },
-          classification: {
-            type: "string",
-            example: "mammal",
-          },
-          designation: {
-            type: "string",
-            example: "sentient",
-          },
-          average_height: {
-            type: "number",
-            example: 180,
-          },
-          skin_colors: {
-            type: "string",
-            example: "caucasian, black, asian, hispanic",
-          },
-          hair_colors: {
-            type: "string",
-            example: "blonde, brown, black, red",
-          },
-          eye_colors: {
-            type: "string",
-            example: "brown, blue, green, hazel, grey, amber",
-          },
-          average_lifespan: {
-            type: "number",
-            example: 120,
-          },
-          language: {
-            type: "string",
-            example: "Galactic Basic",
-          },
-        },
-      },
-
-      SpecieInput: {
-        type: "object",
-        required: [
-          "name",
-          "classification",
-          "designation",
-          "average_height",
-          "skin_colors",
-          "hair_colors",
-          "eye_colors",
-          "average_lifespan",
-          "language",
-        ],
-        properties: {
-          name: {
-            type: "string",
-            example: "Human",
-          },
-          classification: {
-            type: "string",
-            example: "mammal",
-          },
-          designation: {
-            type: "string",
-            example: "sentient",
-          },
-          average_height: {
-            type: "number",
-            example: 180,
-          },
-          skin_colors: {
-            type: "string",
-            example: "caucasian, black, asian, hispanic",
-          },
-          hair_colors: {
-            type: "string",
-            example: "blonde, brown, black, red",
-          },
-          eye_colors: {
-            type: "string",
-            example: "brown, blue, green, hazel, grey, amber",
-          },
-          average_lifespan: {
-            type: "number",
-            example: 120,
-          },
-          language: {
-            type: "string",
-            example: "Galactic Basic",
-          },
-        },
-      },
-
-      Vehicle: {
-        type: "object",
-        properties: {
-          _id: {
-            type: "string",
-            example: "67f2b8a0d6d123456789abd1",
-          },
-          name: {
-            type: "string",
-            example: "Sand Crawler",
-          },
-          model: {
-            type: "string",
-            example: "Digger Crawler",
-          },
-          manufacturer: {
-            type: "string",
-            example: "Corellia Mining Corporation",
-          },
-          cost_in_credits: {
-            type: "number",
-            example: 150000,
-          },
-          length: {
-            type: "number",
-            example: 36.8,
-          },
-          max_atmosphering_speed: {
-            type: "number",
-            example: 30,
-          },
-          crew: {
-            type: "number",
-            example: 46,
-          },
-          passengers: {
-            type: "number",
-            example: 30,
-          },
-          cargo_capacity: {
-            type: "number",
-            example: 50000,
-          },
-          consumables: {
-            type: "string",
-            example: "2 months",
-          },
-          vehicle_class: {
-            type: "string",
-            example: "wheeled",
-          },
-        },
-      },
-
-      VehicleInput: {
-        type: "object",
-        required: [
-          "name",
-          "model",
-          "manufacturer",
-          "cost_in_credits",
-          "length",
-          "max_atmosphering_speed",
-          "crew",
-          "passengers",
-          "cargo_capacity",
-          "consumables",
-          "vehicle_class",
-        ],
-        properties: {
-          name: {
-            type: "string",
-            example: "Sand Crawler",
-          },
-          model: {
-            type: "string",
-            example: "Digger Crawler",
-          },
-          manufacturer: {
-            type: "string",
-            example: "Corellia Mining Corporation",
-          },
-          cost_in_credits: {
-            type: "number",
-            example: 150000,
-          },
-          length: {
-            type: "number",
-            example: 36.8,
-          },
-          max_atmosphering_speed: {
-            type: "number",
-            example: 30,
-          },
-          crew: {
-            type: "number",
-            example: 46,
-          },
-          passengers: {
-            type: "number",
-            example: 30,
-          },
-          cargo_capacity: {
-            type: "number",
-            example: 50000,
-          },
-          consumables: {
-            type: "string",
-            example: "2 months",
-          },
-          vehicle_class: {
-            type: "string",
-            example: "wheeled",
-          },
-        },
-      },
-
-      Starship: {
-        type: "object",
-        properties: {
-          _id: {
-            type: "string",
-            example: "67f2b8a0d6d123456789abd2",
-          },
-          name: {
-            type: "string",
-            example: "X-wing",
-          },
-          model: {
-            type: "string",
-            example: "T-65 X-wing",
-          },
-          manufacturer: {
-            type: "string",
-            example: "Incom Corporation",
-          },
-          cost_in_credits: {
-            type: "number",
-            example: 149999,
-          },
-          length: {
-            type: "number",
-            example: 12.5,
-          },
-          max_atmosphering_speed: {
-            type: "number",
-            example: 1050,
-          },
-          crew: {
-            type: "string",
-            example: "1",
-          },
-          passengers: {
-            type: "number",
-            example: 0,
-          },
-          cargo_capacity: {
-            type: "number",
-            example: 110,
-          },
-          consumables: {
-            type: "string",
-            example: "1 week",
-          },
-          hyperdrive_rating: {
-            type: "number",
-            example: 1,
-          },
-          MGLT: {
-            type: "number",
-            example: 100,
-          },
-          starship_class: {
-            type: "string",
-            example: "Starfighter",
-          },
-        },
-      },
-
-      StarshipInput: {
-        type: "object",
-        required: [
-          "name",
-          "model",
-          "manufacturer",
-          "cost_in_credits",
-          "length",
-          "max_atmosphering_speed",
-          "crew",
-          "passengers",
-          "cargo_capacity",
-          "consumables",
-          "hyperdrive_rating",
-          "MGLT",
-          "starship_class",
-        ],
-        properties: {
-          name: {
-            type: "string",
-            example: "X-wing",
-          },
-          model: {
-            type: "string",
-            example: "T-65 X-wing",
-          },
-          manufacturer: {
-            type: "string",
-            example: "Incom Corporation",
-          },
-          cost_in_credits: {
-            type: "number",
-            example: 149999,
-          },
-          length: {
-            type: "number",
-            example: 12.5,
-          },
-          max_atmosphering_speed: {
-            type: "number",
-            example: 1050,
-          },
-          crew: {
-            type: "string",
-            example: "1",
-          },
-          passengers: {
-            type: "number",
-            example: 0,
-          },
-          cargo_capacity: {
-            type: "number",
-            example: 110,
-          },
-          consumables: {
-            type: "string",
-            example: "1 week",
-          },
-          hyperdrive_rating: {
-            type: "number",
-            example: 1,
-          },
-          MGLT: {
-            type: "number",
-            example: 100,
-          },
-          starship_class: {
-            type: "string",
-            example: "Starfighter",
+            example: "2026-05-13T10:00:00.000Z",
           },
         },
       },
     },
   },
-
   paths: {
     "/user": {
       post: {
         tags: ["Auth"],
-        summary: "Cadastrar usuário",
-        description: "Cria um novo usuário no sistema.",
+        summary: "Cadastrar novo usuário",
         requestBody: {
           required: true,
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/UserRegisterInput",
+                $ref: "#/components/schemas/RegisterInput",
               },
             },
           },
         },
         responses: {
-          201: {
-            description: "Usuário cadastrado com sucesso",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/MessageResponse",
-                },
-              },
-            },
-          },
-          500: {
-            description: "Erro interno do servidor",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/ErrorResponse",
-                },
-              },
-            },
-          },
+          201: { description: "Usuário cadastrado com sucesso" },
+          400: { description: "Dados inválidos ou e-mail já cadastrado" },
+          500: { description: "Erro interno do servidor" },
         },
       },
     },
@@ -749,14 +240,13 @@ const swaggerSpec = {
     "/auth": {
       post: {
         tags: ["Auth"],
-        summary: "Autenticar usuário",
-        description: "Realiza login e retorna um token JWT.",
+        summary: "Realizar login",
         requestBody: {
           required: true,
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/AuthLoginInput",
+                $ref: "#/components/schemas/LoginInput",
               },
             },
           },
@@ -767,629 +257,324 @@ const swaggerSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/AuthLoginResponse",
+                  $ref: "#/components/schemas/LoginResponse",
                 },
               },
             },
           },
-          401: {
-            description: "Credenciais inválidas",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/ErrorResponse",
+          401: { description: "Credenciais inválidas" },
+          500: { description: "Erro interno do servidor" },
+        },
+      },
+    },
+
+    "/clothes": {
+      get: {
+        tags: ["Clothes"],
+        summary: "Listar peças de roupa",
+        responses: {
+          200: { description: "Lista de peças cadastradas" },
+          500: { description: "Erro interno do servidor" },
+        },
+      },
+      post: {
+        tags: ["Clothes"],
+        summary: "Cadastrar nova peça de roupa",
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            "multipart/form-data": {
+              schema: {
+                $ref: "#/components/schemas/ClothingInput",
+              },
+            },
+          },
+        },
+        responses: {
+          201: { description: "Peça cadastrada com sucesso" },
+          401: { description: "Não autorizado" },
+          500: { description: "Erro interno do servidor" },
+        },
+      },
+    },
+
+    "/clothes/{id}": {
+      get: {
+        tags: ["Clothes"],
+        summary: "Buscar peça por ID",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: { description: "Peça encontrada" },
+          404: { description: "Peça não encontrada" },
+          500: { description: "Erro interno do servidor" },
+        },
+      },
+      delete: {
+        tags: ["Clothes"],
+        summary: "Excluir peça de roupa",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: { description: "Peça excluída com sucesso" },
+          401: { description: "Não autorizado" },
+          404: { description: "Peça não encontrada" },
+        },
+      },
+    },
+
+    "/my-clothes": {
+      get: {
+        tags: ["Clothes"],
+        summary: "Listar minhas peças de roupa",
+        description: "Retorna as peças cadastradas pelo usuário autenticado.",
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: { description: "Lista de peças do usuário autenticado" },
+          401: { description: "Não autorizado" },
+        },
+      },
+    },
+
+    "/api/like/{clothingId}": {
+      post: {
+        tags: ["Likes"],
+        summary: "Curtir uma peça de roupa",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            name: "clothingId",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: { description: "Curtida registrada com sucesso" },
+          401: { description: "Não autorizado" },
+          404: { description: "Peça não encontrada" },
+        },
+      },
+      delete: {
+        tags: ["Likes"],
+        summary: "Remover curtida de uma peça de roupa",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            name: "clothingId",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: { description: "Curtida removida com sucesso" },
+          401: { description: "Não autorizado" },
+          404: { description: "Peça ou curtida não encontrada" },
+        },
+      },
+    },
+
+    "/api/my-likes": {
+      get: {
+        tags: ["Likes"],
+        summary: "Listar minhas curtidas",
+        description: "Retorna as peças curtidas pelo usuário autenticado.",
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: { description: "Lista de curtidas do usuário autenticado" },
+          401: { description: "Não autorizado" },
+        },
+      },
+    },
+
+    "/api/matches": {
+      get: {
+        tags: ["Matches"],
+        summary: "Listar matches do usuário autenticado",
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: { description: "Lista de matches" },
+          401: { description: "Não autorizado" },
+        },
+      },
+    },
+
+    "/api/notifications": {
+      get: {
+        tags: ["Notifications"],
+        summary: "Listar notificações do usuário autenticado",
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: { description: "Lista de notificações" },
+          401: { description: "Não autorizado" },
+        },
+      },
+    },
+
+    "/api/notifications/{notificationId}/read": {
+      patch: {
+        tags: ["Notifications"],
+        summary: "Marcar notificação como lida",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            name: "notificationId",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: { description: "Notificação marcada como lida" },
+          404: { description: "Notificação não encontrada" },
+        },
+      },
+    },
+
+    "/api/notifications/read-all": {
+      patch: {
+        tags: ["Notifications"],
+        summary: "Marcar todas as notificações como lidas",
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: { description: "Todas as notificações foram marcadas como lidas" },
+          401: { description: "Não autorizado" },
+        },
+      },
+    },
+
+    "/api/notifications/clear-read": {
+      patch: {
+        tags: ["Notifications"],
+        summary: "Limpar notificações lidas",
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: { description: "Notificações lidas removidas com sucesso" },
+          401: { description: "Não autorizado" },
+        },
+      },
+    },
+
+    "/api/chat/matches": {
+      post: {
+        tags: ["Matches"],
+        summary: "Criar match para conversa",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  user1: {
+                    type: "string",
+                    example: "663f1b2a9b3c2d001234abcd",
+                  },
+                  user2: {
+                    type: "string",
+                    example: "663f1b2a9b3c2d001234abce",
+                  },
+                  clothingId: {
+                    type: "string",
+                    example: "663f1b2a9b3c2d001234abcf",
+                  },
                 },
               },
             },
           },
-          404: {
-            description: "Usuário não encontrado ou email inválido",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/ErrorResponse",
+        },
+        responses: {
+          201: { description: "Match criado com sucesso" },
+          500: { description: "Erro interno do servidor" },
+        },
+      },
+    },
+
+    "/api/chat/messages": {
+      post: {
+        tags: ["Chat"],
+        summary: "Enviar mensagem no chat",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                required: ["matchId", "senderId", "text"],
+                properties: {
+                  matchId: {
+                    type: "string",
+                    example: "663f1b2a9b3c2d001234abcd",
+                  },
+                  senderId: {
+                    type: "string",
+                    example: "663f1b2a9b3c2d001234abce",
+                  },
+                  text: {
+                    type: "string",
+                    example: "Olá! Tenho interesse nessa peça.",
+                  },
                 },
               },
             },
           },
-          500: {
-            description: "Erro interno do sistema",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/ErrorResponse",
-                },
-              },
-            },
-          },
+        },
+        responses: {
+          201: { description: "Mensagem enviada com sucesso" },
+          500: { description: "Erro interno do servidor" },
         },
       },
     },
 
-    "/films": {
+    "/api/chat/matches/{matchId}/messages": {
       get: {
-        tags: ["Films"],
-        summary: "Listar filmes",
-        security: [{ bearerAuth: [] }],
+        tags: ["Chat"],
+        summary: "Listar mensagens de um match",
+        parameters: [
+          {
+            name: "matchId",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
         responses: {
-          200: {
-            description: "Lista de filmes",
-          },
-          401: {
-            description: "Não autorizado",
-          },
-        },
-      },
-      post: {
-        tags: ["Films"],
-        summary: "Cadastrar filme",
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/FilmInput",
-              },
-            },
-          },
-        },
-        responses: {
-          201: {
-            description: "Filme cadastrado com sucesso",
-          },
-          401: {
-            description: "Não autorizado",
-          },
+          200: { description: "Lista de mensagens do match" },
+          404: { description: "Match não encontrado" },
         },
       },
     },
 
-    "/films/{id}": {
+    "/api/chat/users/{userId}/matches": {
       get: {
-        tags: ["Films"],
-        summary: "Buscar filme por ID",
-        security: [{ bearerAuth: [] }],
+        tags: ["Chat"],
+        summary: "Listar matches de um usuário",
         parameters: [
           {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        responses: {
-          200: {
-            description: "Filme encontrado",
-          },
-          400: {
-            description: "ID inválida",
-          },
-          404: {
-            description: "Filme não encontrado",
-          },
-        },
-      },
-      put: {
-        tags: ["Films"],
-        summary: "Atualizar filme",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/FilmInput",
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: "Filme atualizado com sucesso",
-          },
-          404: {
-            description: "Filme não encontrado",
-          },
-        },
-      },
-      delete: {
-        tags: ["Films"],
-        summary: "Excluir filme",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        responses: {
-          204: {
-            description: "Filme excluído com sucesso",
-          },
-          400: {
-            description: "ID inválida",
-          },
-        },
-      },
-    },
-
-    "/persons": {
-      get: {
-        tags: ["Persons"],
-        summary: "Listar personagens",
-        security: [{ bearerAuth: [] }],
-        responses: {
-          200: {
-            description: "Lista de personagens",
-          },
-        },
-      },
-      post: {
-        tags: ["Persons"],
-        summary: "Cadastrar personagem",
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/PersonInput",
-              },
-            },
-          },
-        },
-        responses: {
-          201: {
-            description: "Personagem cadastrado com sucesso",
-          },
-        },
-      },
-    },
-
-    "/persons/{id}": {
-      get: {
-        tags: ["Persons"],
-        summary: "Buscar personagem por ID",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
+            name: "userId",
             in: "path",
             required: true,
             schema: { type: "string" },
           },
         ],
         responses: {
-          200: { description: "Personagem encontrado" },
-          404: { description: "Personagem não encontrado" },
-        },
-      },
-      put: {
-        tags: ["Persons"],
-        summary: "Atualizar personagem",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/PersonInput",
-              },
-            },
-          },
-        },
-        responses: {
-          200: { description: "Personagem atualizado com sucesso" },
-          404: { description: "Personagem não encontrado" },
-        },
-      },
-      delete: {
-        tags: ["Persons"],
-        summary: "Excluir personagem",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          204: { description: "Personagem excluído com sucesso" },
-        },
-      },
-    },
-
-    "/planets": {
-      get: {
-        tags: ["Planets"],
-        summary: "Listar planetas",
-        security: [{ bearerAuth: [] }],
-        responses: {
-          200: { description: "Lista de planetas" },
-        },
-      },
-      post: {
-        tags: ["Planets"],
-        summary: "Cadastrar planeta",
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/PlanetInput",
-              },
-            },
-          },
-        },
-        responses: {
-          201: { description: "Planeta cadastrado com sucesso" },
-        },
-      },
-    },
-
-    "/planets/{id}": {
-      get: {
-        tags: ["Planets"],
-        summary: "Buscar planeta por ID",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          200: { description: "Planeta encontrado" },
-          404: { description: "Planeta não encontrado" },
-        },
-      },
-      put: {
-        tags: ["Planets"],
-        summary: "Atualizar planeta",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/PlanetInput",
-              },
-            },
-          },
-        },
-        responses: {
-          200: { description: "Planeta atualizado com sucesso" },
-          404: { description: "Planeta não encontrado" },
-        },
-      },
-      delete: {
-        tags: ["Planets"],
-        summary: "Excluir planeta",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          204: { description: "Planeta excluído com sucesso" },
-        },
-      },
-    },
-
-    "/species": {
-      get: {
-        tags: ["Species"],
-        summary: "Listar espécies",
-        security: [{ bearerAuth: [] }],
-        responses: {
-          200: { description: "Lista de espécies" },
-        },
-      },
-      post: {
-        tags: ["Species"],
-        summary: "Cadastrar espécie",
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/SpecieInput",
-              },
-            },
-          },
-        },
-        responses: {
-          201: { description: "Espécie cadastrada com sucesso" },
-        },
-      },
-    },
-
-    "/species/{id}": {
-      get: {
-        tags: ["Species"],
-        summary: "Buscar espécie por ID",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          200: { description: "Espécie encontrada" },
-          404: { description: "Espécie não encontrada" },
-        },
-      },
-      put: {
-        tags: ["Species"],
-        summary: "Atualizar espécie",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/SpecieInput",
-              },
-            },
-          },
-        },
-        responses: {
-          200: { description: "Espécie atualizada com sucesso" },
-          404: { description: "Espécie não encontrada" },
-        },
-      },
-      delete: {
-        tags: ["Species"],
-        summary: "Excluir espécie",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          204: { description: "Espécie excluída com sucesso" },
-        },
-      },
-    },
-
-    "/vehicles": {
-      get: {
-        tags: ["Vehicles"],
-        summary: "Listar veículos",
-        security: [{ bearerAuth: [] }],
-        responses: {
-          200: { description: "Lista de veículos" },
-        },
-      },
-      post: {
-        tags: ["Vehicles"],
-        summary: "Cadastrar veículo",
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/VehicleInput",
-              },
-            },
-          },
-        },
-        responses: {
-          201: { description: "Veículo cadastrado com sucesso" },
-        },
-      },
-    },
-
-    "/vehicles/{id}": {
-      get: {
-        tags: ["Vehicles"],
-        summary: "Buscar veículo por ID",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          200: { description: "Veículo encontrado" },
-          404: { description: "Veículo não encontrado" },
-        },
-      },
-      put: {
-        tags: ["Vehicles"],
-        summary: "Atualizar veículo",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/VehicleInput",
-              },
-            },
-          },
-        },
-        responses: {
-          200: { description: "Veículo atualizado com sucesso" },
-          404: { description: "Veículo não encontrado" },
-        },
-      },
-      delete: {
-        tags: ["Vehicles"],
-        summary: "Excluir veículo",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          204: { description: "Veículo excluído com sucesso" },
-        },
-      },
-    },
-
-    "/starships": {
-      get: {
-        tags: ["Starships"],
-        summary: "Listar espaçonaves",
-        security: [{ bearerAuth: [] }],
-        responses: {
-          200: { description: "Lista de espaçonaves" },
-        },
-      },
-      post: {
-        tags: ["Starships"],
-        summary: "Cadastrar espaçonave",
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/StarshipInput",
-              },
-            },
-          },
-        },
-        responses: {
-          201: { description: "Espaçonave cadastrada com sucesso" },
-        },
-      },
-    },
-
-    "/starships/{id}": {
-      get: {
-        tags: ["Starships"],
-        summary: "Buscar espaçonave por ID",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          200: { description: "Espaçonave encontrada" },
-          404: { description: "Espaçonave não encontrada" },
-        },
-      },
-      put: {
-        tags: ["Starships"],
-        summary: "Atualizar espaçonave",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/StarshipInput",
-              },
-            },
-          },
-        },
-        responses: {
-          200: { description: "Espaçonave atualizada com sucesso" },
-          404: { description: "Espaçonave não encontrada" },
-        },
-      },
-      delete: {
-        tags: ["Starships"],
-        summary: "Excluir espaçonave",
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true,
-            schema: { type: "string" },
-          },
-        ],
-        responses: {
-          204: { description: "Espaçonave excluída com sucesso" },
+          200: { description: "Lista de matches do usuário" },
+          404: { description: "Usuário não encontrado" },
         },
       },
     },
