@@ -11,12 +11,14 @@ import { useEffect, useState } from "react";
 
 import Footer from "./components/Footer";
 import AuthPanel from "./components/AuthPanel";
+
 import FeedTikTok from "./pages/FeedTikTok";
 import MyCloset from "./pages/MyCloset";
 import AddClothing from "./pages/AddClothing";
 import Matches from "./pages/Matches";
 import SearchClosets from "./pages/SearchClosets";
-import NotificationBell from "./components/NotificationBell";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -26,7 +28,13 @@ function LoginPage() {
     return <Navigate to="/feed" replace />;
   }
 
-  return <AuthPanel onAuthSuccess={() => navigate("/feed")} />;
+  return (
+    <Login
+      onAuthSuccess={() =>
+        navigate("/feed")
+      }
+    />
+  );
 }
 
 function AppContent() {
@@ -47,40 +55,67 @@ function AppContent() {
 
   const pagesWithoutGlobalLayout = [
     "/",
+    "/register",
     "/feed",
     "/feed-tiktok",
     "/closet",
     "/add-clothing",
     "/matches",
-    "/search-closets"
+    "/search-closets",
   ];
 
-  const hideGlobalLayout = pagesWithoutGlobalLayout.includes(location.pathname);
+  const hideGlobalLayout =
+    pagesWithoutGlobalLayout.includes(
+      location.pathname
+    );
 
   return (
     <>
-      {!hideGlobalLayout && <Navbar />}
-
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={<LoginPage />}
+        />
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
 
         <Route
           path="/feed"
-          element={<FeedTikTok theme={theme} toggleTheme={toggleTheme} />}
+          element={<FeedTikTok />}
         />
 
         <Route
           path="/feed-tiktok"
-          element={<FeedTikTok theme={theme} toggleTheme={toggleTheme} />}
+          element={<FeedTikTok />}
         />
 
-        <Route path="/closet" element={<MyCloset />} />
-        <Route path="/add-clothing" element={<AddClothing />} />
-        <Route path="/matches" element={<Matches />} />
+        <Route
+          path="/closet"
+          element={<MyCloset />}
+        />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route
+          path="/add-clothing"
+          element={<AddClothing />}
+        />
 
-        <Route path="/search-closets" element={<SearchClosets />} />
+        <Route
+          path="/matches"
+          element={<Matches />}
+        />
+
+        <Route
+          path="/search-closets"
+          element={<SearchClosets />}
+        />
+
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
       </Routes>
 
       <NotificationBell />
