@@ -7,6 +7,8 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import { useEffect, useState } from "react";
+
 import Footer from "./components/Footer";
 import AuthPanel from "./components/AuthPanel";
 
@@ -36,6 +38,19 @@ function LoginPage() {
 }
 
 function AppContent() {
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "dark";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+  };
+
   const location = useLocation();
 
   const pagesWithoutGlobalLayout = [
@@ -102,6 +117,8 @@ function AppContent() {
           element={<Navigate to="/" replace />}
         />
       </Routes>
+
+      <NotificationBell />
 
       {!hideGlobalLayout && <Footer />}
     </>

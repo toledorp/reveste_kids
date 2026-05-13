@@ -1,9 +1,13 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import "./AddClothing.css";
 
 function AddClothing() {
   const navigate = useNavigate();
+
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme") || "dark";
 
   const [formData, setFormData] = useState({
     title: "",
@@ -19,14 +23,6 @@ function AddClothing() {
   const [error, setError] = useState("");
   const [uploadingImages, setUploadingImages] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
-
-  const user = useMemo(() => {
-    try {
-      return JSON.parse(localStorage.getItem("user"));
-    } catch {
-      return null;
-    }
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +42,7 @@ function AddClothing() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:4000/clothes", {
+      const response = await fetch(`${API_BASE_URL}/clothes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -221,13 +217,6 @@ function AddClothing() {
             <span className="add-home-label">Home</span>
           </button>
         </div>
-
-        <div className="add-user-card">
-          <span>Logado por</span>
-          <strong>
-            {user?.name || user?.email?.split("@")[0] || "Usuário"}
-          </strong>
-        </div>
       </aside>
 
       <main className="add-page">
@@ -239,11 +228,6 @@ function AddClothing() {
           >
             ← Voltar para o Closet
           </button>
-
-          <div>
-            <h1>Studio de Cadastro</h1>
-            <p>Publique uma peça com fotos, vídeo e detalhes para troca.</p>
-          </div>
         </header>
 
         <section className="add-content">
@@ -278,8 +262,17 @@ function AddClothing() {
               </div>
 
               <div className="upload-actions">
-                <label className="upload-label">
-                  📸 Selecionar fotos
+                <label className="upload-icon-btn">
+                  <img
+                    src={
+                      currentTheme === "dark"
+                        ? "/add-image_sem_fundo.png"
+                        : "/add-image_sem_fundo_dark.png"
+                    }
+                    alt="Adicionar fotos"
+                    className="upload-icon"
+                  />
+
                   <input
                     type="file"
                     accept="image/*"
@@ -288,8 +281,17 @@ function AddClothing() {
                   />
                 </label>
 
-                <label className="upload-label secondary">
-                  🎥 Selecionar vídeo
+                <label className="upload-icon-btn">
+                  <img
+                    src={
+                      currentTheme === "dark"
+                        ? "/add-video_sem_fundo.png"
+                        : "/add-video_sem_fundo_dark.png"
+                    }
+                    alt="Adicionar vídeo"
+                    className="upload-icon"
+                  />
+
                   <input
                     type="file"
                     accept="video/*"
@@ -351,11 +353,31 @@ function AddClothing() {
                 className="cancel-btn"
                 onClick={() => navigate("/closet")}
               >
-                Cancelar
+                <img
+                  src={
+                    currentTheme === "dark"
+                      ? "/cancel_sem_fundo.png"
+                      : "/cancel_sem_fundo_dark.png"
+                  }
+                  alt="Cancelar"
+                  className="form-action-icon"
+                />
               </button>
 
               <button type="submit" className="submit-btn" disabled={loading}>
-                {loading ? "Salvando..." : "Cadastrar peça"}
+                {loading ? (
+                  <span className="form-loading-text">...</span>
+                ) : (
+                  <img
+                    src={
+                      currentTheme === "dark"
+                        ? "/add-document_sem_fundo.png"
+                        : "/add-document_sem_fundo_dark.png"
+                    }
+                    alt="Cadastrar peça"
+                    className="form-action-icon"
+                  />
+                )}
               </button>
             </div>
 

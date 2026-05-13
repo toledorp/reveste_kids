@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import API_BASE_URL from "../services/api";
 import "./NotificationBell.css";
 
 function NotificationBell() {
@@ -10,7 +11,7 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:4000/api/notifications", {
+      const response = await fetch(`${API_BASE_URL}/api/notifications`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -29,7 +30,7 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch(`http://localhost:4000/api/notifications/${notificationId}/read`, {
+      await fetch(`${API_BASE_URL}/api/notifications/${notificationId}/read`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -40,8 +41,8 @@ function NotificationBell() {
         prev.map((notification) =>
           notification._id === notificationId
             ? { ...notification, read: true }
-            : notification
-        )
+            : notification,
+        ),
       );
 
       setUnreadCount((prev) => Math.max(prev - 1, 0));
@@ -54,7 +55,7 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch("http://localhost:4000/api/notifications/read-all", {
+      await fetch(`${API_BASE_URL}/api/notifications/read-all`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,7 +66,7 @@ function NotificationBell() {
         prev.map((notification) => ({
           ...notification,
           read: true,
-        }))
+        })),
       );
 
       setUnreadCount(0);
@@ -78,7 +79,7 @@ function NotificationBell() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch("http://localhost:4000/api/notifications/clear-read", {
+      await fetch(`${API_BASE_URL}/api/notifications/clear-read`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -86,7 +87,7 @@ function NotificationBell() {
       });
 
       setNotifications((prev) =>
-        prev.filter((notification) => !notification.read)
+        prev.filter((notification) => !notification.read),
       );
     } catch (error) {
       console.log(error);
@@ -111,17 +112,19 @@ function NotificationBell() {
   return (
     <div className="notification-container">
       <button
-        className={`tiktok-action-btn notification-btn ${unreadCount > 0 ? "has-notifications" : ""
-          }`}
-        onClick={() => setOpen(!open)}
+        type="button"
+        className={`tiktok-action-btn notification-btn ${
+          unreadCount > 0 ? "has-notifications" : ""
+        }`}
+        onClick={() => setOpen((prev) => !prev)}
         title="Notificações"
       >
-        🔔
+        <span className="notification-icon">🔔</span>
 
         {unreadCount > 0 && (
-          <span className="notification-count">
+          <strong className="notification-count">
             {unreadCount > 9 ? "9+" : unreadCount}
-          </span>
+          </strong>
         )}
       </button>
 
@@ -151,15 +154,16 @@ function NotificationBell() {
             notifications.map((notification) => (
               <div
                 key={notification._id}
-                className={`notification-card ${notification.read ? "read" : "unread"
-                  }`}
+                className={`notification-card ${
+                  notification.read ? "read" : "unread"
+                }`}
                 onClick={() => markAsRead(notification._id)}
               >
                 <p>{notification.message}</p>
 
-                <span>
+                <small>
                   {new Date(notification.createdAt).toLocaleString("pt-BR")}
-                </span>
+                </small>
               </div>
             ))
           )}

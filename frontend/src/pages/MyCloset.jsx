@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import "./MyCloset.css";
 import MediaCarousel from "../components/MediaCarousel";
 
 function MyCloset() {
   const navigate = useNavigate();
+
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme") || "dark";
 
   const [clothes, setClothes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +30,7 @@ function MyCloset() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:4000/my-clothes", {
+    fetch(`${API_BASE_URL}/my-clothes`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -67,7 +71,7 @@ function MyCloset() {
 
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`http://localhost:4000/clothes/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/clothes/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -249,7 +253,7 @@ function MyCloset() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:4000/clothes/${editingItem._id}`,
+        `${API_BASE_URL}/clothes/${editingItem._id}`,
         {
           method: "PUT",
           headers: {
@@ -308,9 +312,7 @@ function MyCloset() {
             <span className="closet-home-label">Home</span>
           </button>
         </div>
-
-              </aside>
-
+      </aside>
       <main className="closet-container">
         <div className="closet-header">
           <div>
@@ -332,7 +334,10 @@ function MyCloset() {
           <div className="closet-empty">
             <h2>Seu closet ainda está vazio</h2>
             <p>Cadastre sua primeira peça para começar as trocas.</p>
-            <button onClick={() => navigate("/add-clothing")}>
+            <button
+              onClick={() => navigate("/add-clothing")}
+              src="/addClothes_sem_fundo.png"
+            >
               Cadastrar peça
             </button>
           </div>
@@ -357,7 +362,14 @@ function MyCloset() {
                         className="closet-edit-btn"
                         onClick={() => openEditModal(item)}
                       >
-                        <img src="/file-edit.png" alt="Editar" />
+                        <img
+                          src={
+                            currentTheme === "dark"
+                              ? "/file-edit_sem_fundo.png"
+                              : "/file-edit_sem_fundo_dark.png"
+                          }
+                          alt="Editar"
+                        />
                       </button>
 
                       <button
@@ -366,7 +378,14 @@ function MyCloset() {
                         onClick={() => handleDelete(item._id)}
                         disabled={deletingId === item._id}
                       >
-                        <img src="/trash.png" alt="Excluir" />
+                        <img
+                          src={
+                            currentTheme === "dark"
+                              ? "/trash_sem_fundo.png"
+                              : "/trash_sem_fundo_dark.png"
+                          }
+                          alt="Excluir"
+                        />
                       </button>
                     </div>
                   </div>
@@ -417,13 +436,21 @@ function MyCloset() {
                 <div className="modal-media-header">
                   <div>
                     <h3>Mídias da peça</h3>
-                    <p>Adicione, substitua ou remova fotos e vídeo.</p>
                   </div>
                 </div>
 
                 <div className="modal-upload-actions">
-                  <label className="modal-upload-label">
-                    Adicionar fotos
+                  <label className="modal-upload-btn">
+                    <img
+                      src={
+                        currentTheme === "dark"
+                          ? "/add-image_sem_fundo.png"
+                          : "/add-image_sem_fundo_dark.png"
+                      }
+                      alt="Adicionar fotos"
+                      className="modal-upload-icon"
+                    />
+
                     <input
                       type="file"
                       accept="image/*"
@@ -432,8 +459,17 @@ function MyCloset() {
                     />
                   </label>
 
-                  <label className="modal-upload-label secondary">
-                    Trocar vídeo
+                  <label className="modal-upload-btn secondary">
+                    <img
+                      src={
+                        currentTheme === "dark"
+                          ? "/add-video_sem_fundo.png"
+                          : "/add-video_sem_fundo_dark.png"
+                      }
+                      alt="Trocar vídeo"
+                      className="modal-upload-icon"
+                    />
+
                     <input
                       type="file"
                       accept="video/*"
@@ -499,7 +535,15 @@ function MyCloset() {
                   className="modal-cancel-btn"
                   onClick={closeEditModal}
                 >
-                  Cancelar
+                  <img
+                    src={
+                      currentTheme === "dark"
+                        ? "/cancel_sem_fundo.png"
+                        : "/cancel_sem_fundo_dark.png"
+                    }
+                    alt="Cancelar"
+                    className="modal-action-icon"
+                  />
                 </button>
 
                 <button
@@ -507,7 +551,19 @@ function MyCloset() {
                   className="modal-save-btn"
                   disabled={savingEdit}
                 >
-                  {savingEdit ? "Salvando..." : "Salvar alterações"}
+                  {savingEdit ? (
+                    <span className="modal-saving-text">...</span>
+                  ) : (
+                    <img
+                      src={
+                        currentTheme === "dark"
+                          ? "/send_sem_fundo.png"
+                          : "/send_sem_fundo_dark.png"
+                      }
+                      alt="Salvar"
+                      className="modal-action-icon"
+                    />
+                  )}
                 </button>
               </div>
             </form>

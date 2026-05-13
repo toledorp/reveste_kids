@@ -18,10 +18,18 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://reveste-kids-sepia.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

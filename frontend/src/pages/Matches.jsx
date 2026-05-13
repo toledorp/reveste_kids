@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import { socket } from "../services/socket";
 import "./Matches.css";
 
 function Matches() {
   const navigate = useNavigate();
+
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme") || "dark";
 
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,11 +31,9 @@ function Matches() {
       return;
     }
 
-    fetch(`http://localhost:4000/api/chat/users/${user._id}/matches`)
+    fetch(`${API_BASE_URL}/api/chat/users/${user._id}/matches`)
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Erro ao buscar matches");
-        }
+        if (!res.ok) throw new Error("Erro ao buscar matches");
         return res.json();
       })
       .then((data) => {
@@ -82,12 +84,10 @@ function Matches() {
     setMessageLoading(true);
 
     fetch(
-      `http://localhost:4000/api/chat/matches/${selectedMatch._id}/messages?userId=${user._id}`,
+      `${API_BASE_URL}/api/chat/matches/${selectedMatch._id}/messages?userId=${user._id}`,
     )
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Erro ao carregar mensagens");
-        }
+        if (!res.ok) throw new Error("Erro ao carregar mensagens");
         return res.json();
       })
       .then((data) => {
@@ -181,7 +181,7 @@ function Matches() {
     if (!selectedMatch?._id || !user?._id || !content.trim()) return;
 
     try {
-      const response = await fetch("http://localhost:4000/api/chat/messages", {
+      const response = await fetch(`${API_BASE_URL}/api/chat/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -211,7 +211,11 @@ function Matches() {
   return (
     <div className="matches-page-layout">
       <aside className="matches-page-sidebar compact-brand">
-        <img src="/logo_sem_fundo.png" alt="logo" className="matches-page-logo" />
+        <img
+          src="/logo_sem_fundo.png"
+          alt="logo"
+          className="matches-page-logo"
+        />
 
         <div className="matches-page-actions-menu">
           <button
@@ -341,7 +345,22 @@ function Matches() {
                     }
                   }}
                 />
-                <button onClick={handleSendMessage}>Enviar</button>
+
+                <button
+                  type="button"
+                  className="chat-send-btn"
+                  onClick={handleSendMessage}
+                >
+                  <img
+                    src={
+                      currentTheme === "dark"
+                        ? "/send_sem_fundo.png"
+                        : "/send_sem_fundo_dark.png"
+                    }
+                    alt="Enviar"
+                    className="chat-send-icon"
+                  />
+                </button>
               </div>
             </section>
           </div>

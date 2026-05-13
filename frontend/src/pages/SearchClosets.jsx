@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/api";
 import MediaCarousel from "../components/MediaCarousel";
 import Footer from "../components/Footer";
 import "./SearchClosets.css";
@@ -23,7 +24,7 @@ function SearchClosets() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:4000/clothes")
+    fetch(`${API_BASE_URL}/clothes`)
       .then((res) => res.json())
       .then((data) => {
         setClothes(data || []);
@@ -39,7 +40,7 @@ function SearchClosets() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    fetch("http://localhost:4000/api/my-likes", {
+    fetch(`${API_BASE_URL}/api/my-likes`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -166,15 +167,12 @@ function SearchClosets() {
     const alreadyLiked = likedIds.includes(clothingId);
 
     try {
-      const response = await fetch(
-        `http://localhost:4000/api/like/${clothingId}`,
-        {
-          method: alreadyLiked ? "DELETE" : "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_BASE_URL}/api/like/${clothingId}`, {
+        method: alreadyLiked ? "DELETE" : "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       const data = await response.json();
 
@@ -193,7 +191,9 @@ function SearchClosets() {
       if (data.matchCreated) {
         setMessage("Deu match! A conversa já está disponível em Matches.");
       } else {
-        setMessage("Like enviado! Se houver interesse mútuo, o match será criado.");
+        setMessage(
+          "Like enviado! Se houver interesse mútuo, o match será criado.",
+        );
       }
     } catch (error) {
       console.log(error);
@@ -221,6 +221,7 @@ function SearchClosets() {
         </aside>
 
         <main className="search-closets-page">
+          {/* BOTÃO HOME MOBILE */}
           <header className="search-closets-header">
             <div>
               <h1>Buscar Closets</h1>
@@ -245,7 +246,9 @@ function SearchClosets() {
               </div>
 
               {loading ? (
-                <p className="search-closets-status">Carregando closets...</p>
+                <p className="search-closets-status">
+                  Carregando closets...
+                </p>
               ) : filteredClosets.length === 0 ? (
                 <p className="search-closets-status">
                   Nenhum closet encontrado.
@@ -261,10 +264,11 @@ function SearchClosets() {
                       <button
                         key={closet.owner._id}
                         type="button"
-                        className={`search-closets-user-card ${
-                          isActive ? "active" : ""
-                        }`}
-                        onClick={() => setSelectedOwnerId(closet.owner._id)}
+                        className={`search-closets-user-card ${isActive ? "active" : ""
+                          }`}
+                        onClick={() =>
+                          setSelectedOwnerId(closet.owner._id)
+                        }
                       >
                         <strong>
                           {closet.owner?.name ||
@@ -272,11 +276,16 @@ function SearchClosets() {
                             "Usuário"}
                         </strong>
 
-                        <span>{closet.owner?.email || "Email não disponível"}</span>
+                        <span>
+                          {closet.owner?.email ||
+                            "Email não disponível"}
+                        </span>
 
                         <small>
                           {closet.items.length}{" "}
-                          {closet.items.length === 1 ? "peça" : "peças"}
+                          {closet.items.length === 1
+                            ? "peça"
+                            : "peças"}
                         </small>
                       </button>
                     );
@@ -295,6 +304,7 @@ function SearchClosets() {
                   <div className="search-closets-selected-header">
                     <div>
                       <span>Closet de</span>
+
                       <h2>
                         {selectedCloset.owner?.name ||
                           selectedCloset.owner?.email?.split("@")[0] ||
@@ -313,31 +323,53 @@ function SearchClosets() {
                   <div className="search-closets-grid">
                     {selectedCloset.items.map((item) => {
                       const previewMedia = getPreviewMedia(item);
+
                       const isLiked = likedIds.includes(item._id);
+
                       const isOwnClothing =
-                        String(getOwnerId(item)) === String(user?._id);
+                        String(getOwnerId(item)) ===
+                        String(user?._id);
 
                       return (
-                        <article key={item._id} className="search-closets-card">
+                        <article
+                          key={item._id}
+                          className="search-closets-card"
+                        >
                           <div className="search-closets-media">
-                            <MediaCarousel media={previewMedia} alt={item.title} />
+                            <MediaCarousel
+                              media={previewMedia}
+                              alt={item.title}
+                            />
                           </div>
 
                           <div className="search-closets-info">
-                            <h3>{item.title || "Peça sem título"}</h3>
-                            <p>{item.description || "Sem descrição"}</p>
+                            <h3>
+                              {item.title || "Peça sem título"}
+                            </h3>
+
+                            <p>
+                              {item.description ||
+                                "Sem descrição"}
+                            </p>
 
                             <div className="search-closets-tags">
-                              {item.category && <span>{item.category}</span>}
-                              {item.size && <span>Tam. {item.size}</span>}
-                              {item.condition && <span>{item.condition}</span>}
+                              {item.category && (
+                                <span>{item.category}</span>
+                              )}
+
+                              {item.size && (
+                                <span>Tam. {item.size}</span>
+                              )}
+
+                              {item.condition && (
+                                <span>{item.condition}</span>
+                              )}
                             </div>
 
                             <button
                               type="button"
-                              className={`search-closets-like-btn ${
-                                isLiked ? "liked" : ""
-                              }`}
+                              className={`search-closets-like-btn ${isLiked ? "liked" : ""
+                                }`}
                               disabled={isOwnClothing}
                               onClick={() => handleLike(item._id)}
                             >
@@ -375,7 +407,11 @@ function SearchClosets() {
           </section>
         </main>
 
-        {message && <div className="search-closets-toast">{message}</div>}
+        {message && (
+          <div className="search-closets-toast">
+            {message}
+          </div>
+        )}
       </div>
 
       <Footer />
