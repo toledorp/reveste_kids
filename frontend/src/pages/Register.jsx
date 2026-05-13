@@ -1,7 +1,44 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
 
 function Register() {
+  useEffect(() => {
+    const media = window.matchMedia(
+      "(prefers-color-scheme: light)"
+    );
+
+    const applyTheme = (e) => {
+      if (e.matches) {
+        document.body.classList.add(
+          "light-mode"
+        );
+      } else {
+        document.body.classList.remove(
+          "light-mode"
+        );
+      }
+    };
+
+    applyTheme(media);
+
+    media.addEventListener(
+      "change",
+      applyTheme
+    );
+
+    return () => {
+      media.removeEventListener(
+        "change",
+        applyTheme
+      );
+
+      document.body.classList.remove(
+        "light-mode"
+      );
+    };
+  }, []);
+
   return (
     <section className="register-page">
       <div className="register-main">
