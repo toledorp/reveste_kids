@@ -13,6 +13,7 @@ function FeedTikTok({ theme, toggleTheme }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeClothingId, setActiveClothingId] = useState(null);
   const [settingsMenuKey, setSettingsMenuKey] = useState(null);
+  const [likeCounts, setLikeCounts] = useState({});
 
   const cardRefs = useRef({});
   const navigate = useNavigate();
@@ -28,7 +29,23 @@ function FeedTikTok({ theme, toggleTheme }) {
   useEffect(() => {
     fetch(`${API_BASE_URL}/clothes`)
       .then((res) => res.json())
-      .then((data) => setClothes(data || []))
+      .then((data) => {
+        const items = data || [];
+        setClothes(items);
+
+        const counts = {};
+
+        items.forEach((item) => {
+          counts[item._id] =
+            item.likesCount ||
+            item.likeCount ||
+            item.likes?.length ||
+            item.likedBy?.length ||
+            0;
+        });
+
+        setLikeCounts(counts);
+      })
       .catch((error) => console.log("Erro ao carregar feed:", error));
   }, []);
 
@@ -50,15 +67,22 @@ function FeedTikTok({ theme, toggleTheme }) {
   const filteredClothes = useMemo(() => {
     const search = searchTerm.trim().toLowerCase();
 
-    if (!search) return clothes;
-
     return clothes.filter((item) => {
+      const ownerId =
+        typeof item.userId === "object" ? item.userId?._id : item.userId;
+
+      const isOwnClothing = String(ownerId) === String(user?._id);
+
+      if (isOwnClothing) return false;
+
       const title = item.title?.toLowerCase() || "";
       const description = item.description?.toLowerCase() || "";
 
+      if (!search) return true;
+
       return title.includes(search) || description.includes(search);
     });
-  }, [clothes, searchTerm]);
+  }, [clothes, searchTerm, user]);
 
   const activeItem = useMemo(() => {
     return (
@@ -234,6 +258,11 @@ function FeedTikTok({ theme, toggleTheme }) {
       if (alreadyLiked) {
         setLikedIds((prev) => prev.filter((id) => id !== clothingId));
 
+        setLikeCounts((prev) => ({
+          ...prev,
+          [clothingId]: Math.max((prev[clothingId] || 0) - 1, 0),
+        }));
+
         showToast(
           "Like removido",
           "A peça foi removida da sua lista de curtidas.",
@@ -243,6 +272,11 @@ function FeedTikTok({ theme, toggleTheme }) {
       }
 
       setLikedIds((prev) => [...prev, clothingId]);
+
+      setLikeCounts((prev) => ({
+        ...prev,
+        [clothingId]: Math.min((prev[clothingId] || 0) + 1, 99),
+      }));
 
       if (data.matchCreated) {
         showToast(
@@ -259,6 +293,19 @@ function FeedTikTok({ theme, toggleTheme }) {
       console.log(error);
       alert("Não foi possível atualizar o like.");
     }
+  };
+
+  const handleShareWhatsApp = (mediaUrl, item) => {
+    if (!mediaUrl) {
+      alert("Não há imagem ou vídeo para compartilhar.");
+      return;
+    }
+
+    const title = item?.title || "Peça do Reveste Kids";
+    const text = `${title}\n\nVeja essa peça no Reveste Kids:\n${mediaUrl}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+
+    window.open(whatsappUrl, "_blank");
   };
 
   const renderSearchBox = (variant = "") => (
@@ -354,45 +401,6 @@ function FeedTikTok({ theme, toggleTheme }) {
     return (
       <div className={`tiktok-actions ${variant}`}>
         <NotificationBell />
-
-        <button
-          type="button"
-          className={`tiktok-action-btn ${isLiked ? "liked" : ""}`}
-          onClick={() => handleLike(item._id)}
-          disabled={isOwnClothing}
-          title={
-            isOwnClothing ? "Você não pode curtir sua própria peça" : "Curtir"
-          }
-        >
-          {isOwnClothing ? (
-            <img
-              src={
-                theme === "dark"
-                  ? "/notLike_sem_fundo.png"
-                  : "/notLike_sem_fundo_dark.png"
-              }
-              alt="Not Like"
-              className="action-icon-img"
-            />
-          ) : (
-            <img
-              src={
-                theme === "dark"
-                  ? isLiked
-                    ? "/like_coracao_sem_fundo.png"
-                    : "/like_sem_fundo.png"
-                  : isLiked
-                    ? "/like_coracao_sem_fundo_dark.png"
-                    : "/like_sem_fundo_dark.png"
-              }
-              alt={isLiked ? "Curtido" : "Curtir"}
-              className="action-icon-img"
-            />
-          )}
-        </button>
-        <span>
-          {isOwnClothing ? "Sua peça" : isLiked ? "Curtido" : "Curtir"}
-        </span>
 
         <button
           type="button"
@@ -597,6 +605,50 @@ function FeedTikTok({ theme, toggleTheme }) {
                         </div>
                       </>
                     )}
+
+                    <div className="media-floating-actions">
+                      <button
+                        type="button"
+                        className={`media-action-btn ${isLiked ? "liked" : ""}`}
+                        onClick={() => handleLike(item._id)}
+                        disabled={isOwnClothing}
+                        title={isOwnClothing ? "Você não pode curtir sua própria peça" : "Curtir"}
+                      >
+                        <img
+                          src={
+                            theme === "dark"
+                              ? isLiked
+                                ? "/like_sem_fundo.png"
+                                : "/deslike_sem_fundo.png"
+                              : isLiked
+                                ? "/like_sem_fundo_dark.png"
+                                : "/deslike_sem_fundo_dark.png"
+                          }
+                          alt={isLiked ? "Curtido" : "Curtir"}
+                          className="media-action-icon"
+                        />
+
+                        <span className="like-count-badge">
+                          {Math.min(likeCounts[item._id] || 0, 99)}
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        className="media-action-btn share"
+                        onClick={() => handleShareWhatsApp(activeMedia?.url, item)}
+                        title="Compartilhar no WhatsApp"
+                      >
+                        <img
+                          src={
+                            theme === "dark"
+                              ? "/share_sem_fundo.png"
+                              : "/share_sem_fundo_dark.png"
+                          }
+                          alt="Compartilhar"
+                          className="media-action-icon"
+                        />
+                      </button>
+                    </div>
 
                     {isLiked && <div className="tiktok-like-pop">❤️</div>}
                   </div>
