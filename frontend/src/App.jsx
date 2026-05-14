@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from "react";
 
 import Footer from "./components/Footer";
-import AuthPanel from "./components/AuthPanel";
+import NotificationBell from "./components/NotificationBell";
 
 import FeedTikTok from "./pages/FeedTikTok";
 import MyCloset from "./pages/MyCloset";
