@@ -1,4 +1,5 @@
 import Clothing from "../models/Clothing.js";
+import Interest from "../models/Interest.js";
 
 class ClothingService {
   async create(data) {
@@ -14,8 +15,24 @@ class ClothingService {
 
   async getAll() {
     try {
-      const clothes = await Clothing.find().populate("userId", "name email");
-      return clothes;
+      const clothes = await Clothing.find()
+        .populate("userId", "name email")
+        .lean();
+
+      const clothesWithLikes = await Promise.all(
+        clothes.map(async (item) => {
+          const likesCount = await Interest.countDocuments({
+            clothingId: item._id,
+          });
+
+          return {
+            ...item,
+            likesCount,
+          };
+        }),
+      );
+
+      return clothesWithLikes;
     } catch (error) {
       console.log(error);
       throw error;
@@ -33,19 +50,19 @@ class ClothingService {
   }
 
   async update(id, data) {
-  try {
-    const clothing = await Clothing.findByIdAndUpdate(
-      id,
-      data,
-      { new: true }
-    );
+    try {
+      const clothing = await Clothing.findByIdAndUpdate(
+        id,
+        data,
+        { new: true }
+      );
 
-    return clothing;
-  } catch (error) {
-    console.log(error);
-    throw error;
+      return clothing;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
-}
 
   async delete(id) {
     try {

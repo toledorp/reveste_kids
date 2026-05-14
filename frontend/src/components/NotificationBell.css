@@ -13,11 +13,12 @@
   position: relative;
   width: 54px;
   height: 54px;
-  padding: 0;
+  padding: 0px;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .notification-icon {
@@ -30,7 +31,7 @@
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  font-size: 1.15rem;
+  font-size: 1.35rem;
   line-height: 1;
   pointer-events: none;
 }
