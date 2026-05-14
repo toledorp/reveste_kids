@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import API_BASE_URL from "../services/api";
 import "./NotificationBell.css";
 
-const API_BASE_URL = "http://localhost:4000";
 
 function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
