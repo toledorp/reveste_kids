@@ -2,11 +2,18 @@ import Notification from "../models/Notification.js";
 
 class NotificationService {
   async createNotification(data) {
-    return await Notification.create(data);
+    return await Notification.create({
+      ...data,
+      active: true,
+      read: false,
+    });
   }
 
   async getUserNotifications(userId) {
-    return await Notification.find({ userId, active: true })
+    return await Notification.find({
+      userId,
+      $or: [{ active: true }, { active: { $exists: false } }],
+    })
       .populate("senderId", "name email")
       .populate("clothingId", "title media")
       .populate("matchId")
@@ -17,7 +24,7 @@ class NotificationService {
     return await Notification.countDocuments({
       userId,
       read: false,
-      active: true,
+      $or: [{ active: true }, { active: { $exists: false } }],
     });
   }
 

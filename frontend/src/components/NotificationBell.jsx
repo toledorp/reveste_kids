@@ -1,26 +1,55 @@
-import { useEffect, useState } from "react";
-import API_BASE_URL from "../services/api";
+import { useEffect, useRef, useState } from "react";
 import "./NotificationBell.css";
+
+const API_BASE_URL = "http://localhost:4000";
 
 function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
 
+  const previousUnreadCountRef = useRef(0);
+  const firstLoadRef = useRef(true);
+
+  const playNotificationSound = () => {
+    const audio = new Audio("/notification-beep.mp3");
+    audio.volume = 0.5;
+
+    audio.play().catch(() => {
+      console.log("Som bloqueado pelo navegador até interação do usuário.");
+    });
+  };
+
   const loadNotifications = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`${API_BASE_URL}/api/notifications`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${API_BASE_URL}/api/notifications?t=${Date.now()}`,
+        {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Cache-Control": "no-cache",
+          },
         },
-      });
+      );
 
       const data = await response.json();
 
+      const newUnreadCount = data.unreadCount || 0;
+      const previousUnreadCount = previousUnreadCountRef.current;
+
+      if (!firstLoadRef.current && newUnreadCount > previousUnreadCount) {
+        playNotificationSound();
+      }
+
+      firstLoadRef.current = false;
+      previousUnreadCountRef.current = newUnreadCount;
+
       setNotifications(data.notifications || []);
-      setUnreadCount(data.unreadCount || 0);
+      setUnreadCount(newUnreadCount);
     } catch (error) {
       console.log("Erro ao carregar notificações:", error);
     }
@@ -45,7 +74,11 @@ function NotificationBell() {
         ),
       );
 
-      setUnreadCount((prev) => Math.max(prev - 1, 0));
+      setUnreadCount((prev) => {
+        const updatedCount = Math.max(prev - 1, 0);
+        previousUnreadCountRef.current = updatedCount;
+        return updatedCount;
+      });
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +102,7 @@ function NotificationBell() {
         })),
       );
 
+      previousUnreadCountRef.current = 0;
       setUnreadCount(0);
     } catch (error) {
       console.log(error);
@@ -107,24 +141,23 @@ function NotificationBell() {
       clearTimeout(timeout);
       clearInterval(interval);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="notification-container">
       <button
-        type="button"
         className={`tiktok-action-btn notification-btn ${
           unreadCount > 0 ? "has-notifications" : ""
         }`}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => setOpen(!open)}
         title="Notificações"
       >
-        <span className="notification-icon">🔔</span>
-
+        🔔
         {unreadCount > 0 && (
-          <strong className="notification-count">
+          <span className="notification-count">
             {unreadCount > 9 ? "9+" : unreadCount}
-          </strong>
+          </span>
         )}
       </button>
 
@@ -161,9 +194,9 @@ function NotificationBell() {
               >
                 <p>{notification.message}</p>
 
-                <small>
+                <span>
                   {new Date(notification.createdAt).toLocaleString("pt-BR")}
-                </small>
+                </span>
               </div>
             ))
           )}
