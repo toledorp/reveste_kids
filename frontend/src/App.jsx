@@ -28,13 +28,7 @@ function LoginPage() {
     return <Navigate to="/feed" replace />;
   }
 
-  return (
-    <Login
-      onAuthSuccess={() =>
-        navigate("/feed")
-      }
-    />
-  );
+  return <Login onAuthSuccess={() => navigate("/feed")} />;
 }
 
 function AppContent() {
@@ -64,58 +58,44 @@ function AppContent() {
     "/search-closets",
   ];
 
-  const hideGlobalLayout =
-    pagesWithoutGlobalLayout.includes(
-      location.pathname
-    );
+  const hideGlobalLayout = pagesWithoutGlobalLayout.includes(location.pathname);
 
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={<LoginPage />}
-        />
+        <Route path="/" element={<LoginPage />} />
 
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="/feed"
-          element={<FeedTikTok />}
+          element={
+            <FeedTikTok
+              theme={theme}
+              toggleTheme={toggleTheme}
+            />
+          }
         />
 
         <Route
           path="/feed-tiktok"
-          element={<FeedTikTok />}
+          element={
+            <FeedTikTok
+              theme={theme}
+              toggleTheme={toggleTheme}
+            />
+          }
         />
 
-        <Route
-          path="/closet"
-          element={<MyCloset />}
-        />
+        <Route path="/closet" element={<MyCloset />} />
 
-        <Route
-          path="/add-clothing"
-          element={<AddClothing />}
-        />
+        <Route path="/add-clothing" element={<AddClothing />} />
 
-        <Route
-          path="/matches"
-          element={<Matches />}
-        />
+        <Route path="/matches" element={<Matches />} />
 
-        <Route
-          path="/search-closets"
-          element={<SearchClosets />}
-        />
+        <Route path="/search-closets" element={<SearchClosets />} />
 
-        <Route
-          path="*"
-          element={<Navigate to="/" replace />}
-        />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       <NotificationBell />
