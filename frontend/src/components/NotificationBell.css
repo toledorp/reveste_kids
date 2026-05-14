@@ -7,6 +7,7 @@
   justify-content: center;
   flex-shrink: 0;
   z-index: 10000;
+  margin-bottom: 28px;
 }
 
 .notification-btn {
@@ -71,18 +72,29 @@
 }
 
 .notification-dropdown {
-  position: fixed;
-  left: 182px;
-  top: 122px;
-  width: 300px;
-  max-height: 390px;
+  position: absolute;
+
+  left: 72px;
+  top: 0;
+
+  width: 320px;
+  max-height: 420px;
+
   overflow-y: auto;
-  background: #111111;
-  border: 1px solid rgba(192, 132, 252, 0.35);
+
+  background: rgba(15, 15, 15, 0.98);
+
+  border: 1px solid rgba(192, 132, 252, 0.25);
+
   border-radius: 18px;
+
   padding: 16px;
-  z-index: 99999;
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.45);
+
+  z-index: 999999;
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+
+  backdrop-filter: blur(12px);
 }
 
 .notification-header {
@@ -168,21 +180,135 @@
   }
 }
 
+.notification-container {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  overflow: visible !important;
+  z-index: 999999;
+}
+
+.notification-btn {
+  position: relative;
+  overflow: visible !important;
+}
+
+.notification-count {
+  position: absolute !important;
+  right: -8px !important;
+  bottom: -6px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 1000000 !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+
+  border-radius: 999px;
+  background: #ff2d2d;
+  color: #ffffff;
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(255, 45, 45, 0.8);
+}
+
+.notification-dropdown {
+  position: fixed !important;
+  left: 115px !important;
+  top: 170px !important;
+
+  width: 340px;
+  max-height: 430px;
+  overflow-y: auto;
+
+  background: #111111;
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  border-radius: 18px;
+  padding: 16px;
+
+  z-index: 999999 !important;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55);
+}
+
+.tiktok-layout,
+.tiktok-sidebar,
+.tiktok-actions,
+.sidebar-actions {
+  overflow: visible !important;
+}
+
+.sidebar-actions .notification-count,
+.mobile-actions .notification-count {
+  display: flex !important;
+}
+
+.notification-btn.has-notifications .notification-count {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.notification-count {
+  position: absolute !important;
+  top: 40px !important;
+  right: -10px !important;
+  bottom: auto !important;
+  left: auto !important;
+
+  z-index: 1000001 !important;
+
+  min-width: 24px !important;
+  height: 24px !important;
+  padding: 0 6px !important;
+
+  border-radius: 999px !important;
+  background: #ff2d2d !important;
+  color: #ffffff !important;
+
+  font-size: 0.75rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  box-shadow: 0 0 12px rgba(255, 45, 45, 0.95) !important;
+  pointer-events: none !important;
+}
+
+.notification-btn,
+.notification-container {
+  overflow: visible !important;
+}
+
 @media (max-width: 900px) {
-  .notification-container {
-    width: 44px;
-    height: 44px;
+  .mobile-actions .notification-container {
+    width: 44px !important;
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  .notification-btn {
-    width: 44px;
-    height: 44px;
+  .mobile-actions .notification-btn {
+    width: 44px !important;
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  .notification-dropdown {
-    left: auto;
-    right: 14px;
-    top: 72px;
-    width: min(320px, calc(100vw - 28px));
+  .mobile-actions .notification-count {
+    top: 40px !important;
+    right: -8px !important;
   }
 }
