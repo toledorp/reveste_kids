@@ -450,3 +450,59 @@ body.dark .matches-home-btn,
 .matches-home-icon {
   filter: drop-shadow(0 0 4px rgba(192, 132, 252, 0.45));
 }
+
+.match-delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: end;
+}
+
+.match-delete-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  align-items: start;
+}
+
+.match-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Header do chat com botão de exclusão */
+.chat-panel-user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-panel-user-text h2 {
+  margin: 0 0 4px;
+  color: var(--purple-main);
+}
+
+.chat-panel-user-text p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Botão de exclusão dentro do header */
+.chat-panel-delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.chat-panel-delete-btn img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
