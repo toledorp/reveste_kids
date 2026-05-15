@@ -746,3 +746,53 @@ body.dark .tiktok-action-btn,
     top: 16px;
   }
 }
+
+.tiktok-owner-card {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  cursor: pointer;
+  color: var(--text-main);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.tiktok-owner-card strong {
+  font-weight: 700;
+  color: var(--purple-main);
+}
+
+.tiktok-owner-card:hover {
+  text-decoration: underline;
+}
+
+/* Scroll do tiktok-info-card */
+.tiktok-info-card p {
+  max-height: 52%;
+  overflow-y: auto;
+  padding-right: 4px;
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #c085fd transparent;
+}
+
+/* Chrome, Edge, Safari */
+.tiktok-info-card p::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tiktok-info-card p::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px; /* borda arredondada da track */
+}
+
+.tiktok-info-card p::-webkit-scrollbar-thumb {
+  background-color: #c085fd; /* cor da barra */
+  border-radius: 6px; /* arredondamento da barra */
+  border: 2px solid transparent; /* mantém arredondamento uniforme */
+}
+
+.tiktok-info-card p::-webkit-scrollbar-thumb:hover {
+  background-color: #a763f5; /* leve variação no hover */
+}

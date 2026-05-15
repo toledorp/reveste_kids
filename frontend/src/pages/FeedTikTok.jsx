@@ -87,7 +87,7 @@ function FeedTikTok({ theme, toggleTheme }) {
   const activeItem = useMemo(() => {
     return (
       filteredClothes.find(
-        (item) => String(item._id) === String(activeClothingId)
+        (item) => String(item._id) === String(activeClothingId),
       ) ||
       filteredClothes[0] ||
       null
@@ -111,7 +111,7 @@ function FeedTikTok({ theme, toggleTheme }) {
       },
       {
         threshold: 0.55,
-      }
+      },
     );
 
     filteredClothes.forEach((item) => {
@@ -197,8 +197,14 @@ function FeedTikTok({ theme, toggleTheme }) {
     if (typeof item.userId === "object") {
       return item.userId._id;
     }
-
     return item.userId;
+  };
+
+  const getOwnerName = (item) => {
+    if (!item?.userId) return "Usuário desconhecido";
+    return typeof item.userId === "object"
+      ? item.userId.name || item.userId.email.split("@")[0]
+      : "Usuário externo";
   };
 
   const handleNextMedia = (itemId, total) => {
@@ -265,7 +271,7 @@ function FeedTikTok({ theme, toggleTheme }) {
 
         showToast(
           "Like removido",
-          "A peça foi removida da sua lista de curtidas."
+          "A peça foi removida da sua lista de curtidas.",
         );
 
         return;
@@ -281,12 +287,12 @@ function FeedTikTok({ theme, toggleTheme }) {
       if (data.matchCreated) {
         showToast(
           "Deu match!",
-          "Vocês demonstraram interesse em trocar peças. A conversa já está disponível em Matches."
+          "Vocês demonstraram interesse em trocar peças. A conversa já está disponível em Matches.",
         );
       } else {
         showToast(
           "Like enviado!",
-          "Se houver interesse mútuo, o match aparecerá na área de Matches."
+          "Se houver interesse mútuo, o match aparecerá na área de Matches.",
         );
       }
     } catch (error) {
@@ -486,7 +492,7 @@ function FeedTikTok({ theme, toggleTheme }) {
             activeItem,
             isActiveLiked,
             isActiveOwnClothing,
-            "sidebar-actions"
+            "sidebar-actions",
           )}
         </aside>
 
@@ -506,7 +512,7 @@ function FeedTikTok({ theme, toggleTheme }) {
               activeItem,
               isActiveLiked,
               isActiveOwnClothing,
-              "mobile-actions"
+              "mobile-actions",
             )}
           </div>
 
@@ -546,9 +552,11 @@ function FeedTikTok({ theme, toggleTheme }) {
                   onMouseEnter={() => setActiveClothingId(item._id)}
                 >
                   <div className="tiktok-info-card">
+                    <p className="tiktok-owner-text">
+                      Peça de <strong>{getOwnerName(item)}</strong>
+                    </p>
                     <h2>{item.title || "Peça sem título"}</h2>
                     <p>{item.description || "Peça disponível para troca."}</p>
-
                     {tags.length > 0 && (
                       <div className="tiktok-tags">
                         {tags.map((tag) => (

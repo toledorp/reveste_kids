@@ -14,7 +14,6 @@ const matchSchema = new mongoose.Schema(
       required: true,
     },
 
-    // 👇 NOVO (duas peças)
     ownerClothingId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Clothing",
@@ -32,6 +31,11 @@ const matchSchema = new mongoose.Schema(
       enum: ["PENDING", "MATCHED"],
       default: "MATCHED",
     },
+
+    active: {
+      type: Boolean,
+      default: true
+    }
   },
   { timestamps: true }
 );
